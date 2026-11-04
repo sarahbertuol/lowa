@@ -112,6 +112,16 @@ p{margin:0}
 .frame .inner{background:var(--paper);color:var(--ink);border-radius:18px;padding:22px;max-width:300px;box-shadow:0 18px 36px -22px rgba(0,0,0,.45)}
 .frame .inner strong{font-family:'Instrument Serif',serif;font-weight:400;font-size:30px;line-height:1.05;display:block}
 .frame .inner span{font-size:14px;color:var(--muted)}
+/* Browser window with a looping recording of a delivered site. The card and the stamp sit on top */
+.frame .inner{position:relative;z-index:2}
+.frame .stamp{z-index:3}
+.browser{position:absolute;z-index:1;left:10%;top:11%;width:80%;margin:0;border-radius:12px;overflow:hidden;background:#FBF7F1;box-shadow:0 30px 60px -30px rgba(10,30,40,.7),0 0 0 1px rgba(255,255,255,.14)}
+.browser-bar{height:28px;display:flex;align-items:center;gap:6px;padding:0 4px 0 11px;background:#F1E9DE;border-bottom:1px solid #E2D6C6}
+.browser-bar i{width:8px;height:8px;border-radius:50%;background:#D6C7B6;flex:none}
+.browser-url{flex:1;min-width:0;margin:0 6px;height:17px;border-radius:999px;background:#FFFCF8;font-family:'Space Mono',ui-monospace,monospace;font-size:10px;line-height:17px;color:var(--muted);text-align:center;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.browser-toggle{flex:none;width:24px;height:24px;border:0;padding:0;border-radius:6px;background:transparent;color:var(--brown);display:grid;place-items:center;cursor:pointer}
+.browser-toggle:hover{background:rgba(74,36,21,.08)}
+.browser video{display:block;width:100%;height:auto;aspect-ratio:16/10;object-fit:cover;background:#EFE7DA}
 .stamp{position:absolute;right:-6px;bottom:18%;width:128px;height:128px;border-radius:50%;background:var(--butter);display:grid;place-items:center;text-align:center;color:var(--brown);box-shadow:0 14px 30px -14px rgba(47,21,9,.6);animation:spin 24s linear infinite}
 .stamp b{font-family:'Instrument Serif',serif;font-weight:400;font-style:italic;font-size:34px;display:block;line-height:1}
 .stamp small{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase}

@@ -5,6 +5,7 @@ import HeroParallax from "@/components/HeroParallax";
 import ProcessProgress from "@/components/ProcessProgress";
 import Preloader from "@/components/Preloader";
 import Walter from "@/components/Walter";
+import BrowserVideo from "@/components/BrowserVideo";
 
 export default function HomePage() {
   return (
@@ -59,6 +60,11 @@ export default function HomePage() {
       <section className="band" id="what-we-do">
         <div className="intro">
           <Reveal className="frame">
+            <BrowserVideo
+              src="/work/convitelorena"
+              url="convitelorena.vercel.app"
+              label="Screen recording of convitelorena.vercel.app loading, a site built by LoWa Studio"
+            />
             <div className="inner">
               <strong>Live in 24 hours</strong>
               <span>From brief to a live site on your agency&apos;s domain.</span>
