@@ -17,7 +17,7 @@ export default function Nav() {
   const [open, setOpen] = useState(false);
 
   return (
-    <header>
+    <header className="site-header">
       <nav className="nav" aria-label="Main">
         <Link className="logo" href="/">
           LoWa <em>Studio</em>

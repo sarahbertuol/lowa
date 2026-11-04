@@ -51,7 +51,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body>
         <div className="wrap">
-          <div className="hero-spacer" aria-hidden="true" />
           <Nav />
           {children}
           <Footer />

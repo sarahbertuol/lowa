@@ -3,10 +3,12 @@ import Reveal from "@/components/Reveal";
 import Ticker from "@/components/Ticker";
 import HeroParallax from "@/components/HeroParallax";
 import ProcessProgress from "@/components/ProcessProgress";
+import Preloader from "@/components/Preloader";
 
 export default function HomePage() {
   return (
     <main id="top">
+      <Preloader />
       <section className="hero">
         <HeroParallax />
         <div className="hero-inner">
