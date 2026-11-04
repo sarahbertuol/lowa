@@ -1,9 +1,11 @@
 # LoWa Studio, marketing site
 
-Static marketing site for LoWa Studio, a US-only production studio that sells AI-built websites to small US agencies. Starting offer: US$920 (Small website). Deploy target: Vercel. Do not use Webflow.
+Static marketing site for LoWa Studio, a US-only production studio that sells AI-built websites to small US agencies. Starting offer: US$920 (Small website). Deploy target: Vercel. Stack: Next.js (App Router), TypeScript, no Webflow.
 
 ## Current state
-- `index.html` is the finished Home page, self-contained (inline CSS, no build step). It is the visual source of truth.
+- Built in Next.js. `app/page.tsx` is the Home page, `app/globals.css` holds the tokens and styles. `reference/home-v4.html` is the approved static version kept as the visual source of truth.
+- Interactions already in place: pointer parallax on the hero frames, scroll-linked process timeline, reveal on scroll, mobile menu, validated briefing form (stub, no submission).
+- Run locally: `npm install`, then `npm run dev`.
 - Visual direction follows the approved reference: apricot sunset hero, cream ground, butter wordmark, dusty-sky band, brown proof card, blue calls to action (text and borders).
 - Fonts (Google Fonts): Instrument Serif (italic accents), Familjen Grotesk (body), Space Mono (labels).
 
@@ -13,11 +15,11 @@ Static marketing site for LoWa Studio, a US-only production studio that sells AI
 - Light theme only. Do not add dark mode without approval.
 
 ## Tasks, in order
-1. Split `index.html` into a proper structure (Vercel static, or Next.js if you prefer), keeping the look identical. Move tokens into CSS variables in one file.
-2. Build the pages linked from the nav and footer: `/about`, `/services` (aligned with the Pricing section), `/contact` with the 3-minute briefing form.
+1. Done: Next.js structure, tokens in `app/globals.css`. Next: review on mobile and tighten spacing.
+2. Done: `/about`, `/services`, `/contact` with the briefing form. Next: add real copy review and a styled 404.
 3. Briefing form: fields for name, agency, email, website goal, audience, deadline, and a short "what you need" select. No submission endpoint is decided yet, so keep the form handler as a stub that shows a clear thank you state and logs nothing to third parties.
 4. Replace the colour blocks in the hero, cards, case studies and founder tiles with real images once provided. Keep the aspect ratios and rounded frames.
-5. SEO and social: unique `<title>`, meta description, Open Graph image, canonical URL, favicon. Language `en`.
+5. SEO and social: titles, descriptions and canonicals are in place. Still missing: an Open Graph image at `public/og.png` (1200x630), and the final domain in `app/layout.tsx` (currently www.lowastudio.com, unconfirmed).
 6. Performance: target PageSpeed 90+ on mobile. No heavy libraries. Preload the Google Fonts used above, with `display=swap`.
 7. Accessibility: check contrast of the blue text on cream and on the sky band, visible focus, reduced motion (already set).
 
