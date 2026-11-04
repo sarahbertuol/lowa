@@ -116,7 +116,11 @@ export default function HomePage() {
             <div className="stamp" aria-hidden="true">
               <div>
                 <b>24h</b>
-                <small>Human-directed</small>
+                <small>
+                  Human
+                  <br />
+                  directed
+                </small>
               </div>
             </div>
           </Reveal>
