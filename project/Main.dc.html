@@ -1,0 +1,376 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LoWa Studio - Home</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Gloock&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#F7F3EC;color:#2A1A1E;font-family:'Manrope',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+a:hover{opacity:.75}
+.wrap{max-width:1200px;margin:0 auto;padding:0 40px;box-sizing:border-box}
+.label{font-size:12px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:#6B1E2E}
+.h1{font-size:76px;line-height:1.02;letter-spacing:-.03em;font-weight:800;margin:0}
+.h2{font-size:44px;line-height:1.08;letter-spacing:-.02em;font-weight:800;margin:0}
+.lead{font-size:19px;line-height:1.6;margin:0;max-width:560px;color:#4A3339}
+.btn,.btn-ghost{position:relative;display:inline-flex;align-items:center;gap:10px;isolation:isolate;overflow:hidden;font-weight:700;font-size:15px;border-radius:999px;transition:color .35s ease,transform .3s ease,box-shadow .3s ease}
+.btn{background:#6B1E2E;color:#F7F3EC;padding:16px 26px}
+.btn-ghost{background:transparent;border:1.5px solid #6B1E2E;color:#6B1E2E;padding:14px 24px}
+.btn::before,.btn-ghost::before{content:"";position:absolute;inset:0;z-index:-1;border-radius:999px;transform:scaleX(0);transform-origin:left center;transition:transform .45s cubic-bezier(.2,.7,.2,1)}
+.btn::before{background:#F3D98B}
+.btn-ghost::before{background:#6B1E2E}
+.btn::after,.btn-ghost::after{content:"→";font-weight:800;transition:transform .35s ease}
+.btn:hover,.btn-ghost:hover{opacity:1;transform:translateY(-2px);box-shadow:0 12px 24px -14px rgba(42,26,30,.55)}
+.btn:hover{color:#6B1E2E}
+.btn-ghost:hover{color:#F7F3EC}
+.btn:hover::before,.btn-ghost:hover::before{transform:scaleX(1)}
+.btn:hover::after,.btn-ghost:hover::after{transform:translateX(5px)}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:28px}
+.card{background:#FFFDF8;border:1px solid #E6DCCB;border-radius:18px;overflow:hidden}
+.ph{background:#B7D3E6;position:relative;aspect-ratio:4/3;display:flex;align-items:flex-end;padding:18px;box-sizing:border-box}
+.ph.alt{background:#F3D98B}
+.ph.dark{background:#6B1E2E}
+.ph span{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#2A1A1E;opacity:.7}
+.ph.dark span{color:#F7F3EC}
+.tag{font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#6B1E2E}
+.cardbody{padding:22px 24px 26px}
+.cardbody h3{font-size:19px;margin:6px 0 0;font-weight:700}
+.mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px;color:#6B1E2E}
+.ticker{background:#F3D98B;color:#6B1E2E;overflow:hidden;white-space:nowrap;padding:14px 0}
+.wave{display:block;width:100%;height:20px}
+.wave-bottom{transform:rotate(180deg)}
+.ticker-track{display:inline-flex;align-items:center;gap:26px;animation:tick 30s linear infinite;font-family:'Gloock',serif;font-weight:400;font-size:26px;letter-spacing:.02em;text-transform:uppercase}
+.ticker-track .sep{color:#6B1E2E;font-size:12px}
+@keyframes tick{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@keyframes wordIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@keyframes drawUl{to{stroke-dashoffset:0}}
+.w{display:inline-block;opacity:0;animation:wordIn .5s ease-out forwards;animation-delay:var(--d)}
+.uline{position:relative;display:inline-block;white-space:nowrap}
+.uline svg{position:absolute;left:-2%;bottom:-.2em;width:104%;height:.36em;overflow:visible;pointer-events:none}
+.uline path{fill:none;stroke:#F3D98B;stroke-width:7;stroke-linecap:round;stroke-dasharray:1;stroke-dashoffset:1;animation:drawUl 1s ease-in-out forwards;animation-delay:var(--ud)}
+.hl{background:linear-gradient(transparent 52%,#B7D3E6 52%,#B7D3E6 92%,transparent 92%);color:#2A1A1E;padding:0 .1em;-webkit-box-decoration-break:clone;box-decoration-break:clone}
+.sign{position:fixed;top:0;right:36px;z-index:30;transform-origin:50% 0;animation:sway 3.6s ease-in-out infinite;display:flex;flex-direction:column;align-items:center}
+.sign .string{width:2px;height:64px;background:#2A1A1E}
+.sign .board{background:#F3D98B;color:#6B1E2E;border:2px solid #6B1E2E;border-radius:10px;padding:14px 18px;text-align:center;box-shadow:0 6px 0 rgba(42,26,30,.25);min-width:170px;box-sizing:border-box}
+.sign small{display:block;font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:700}
+.sign strong{display:block;font-size:17px;font-weight:800;margin-top:4px;line-height:1.2}
+@keyframes sway{0%,100%{transform:rotate(-4deg)}50%{transform:rotate(4deg)}}
+@media (max-width: 760px){.sign{right:12px}.sign .board{min-width:150px;padding:10px 12px}}
+.hl-y{background:linear-gradient(transparent 45%,#B7D3E6 45%,#B7D3E6 92%,transparent 92%);color:#F3D98B;padding:0 .1em;text-shadow:0 0 2px #6B1E2E,0 0 4px #6B1E2E;-webkit-box-decoration-break:clone;box-decoration-break:clone}
+@keyframes lit{from{background:#6B1E2E;transform:scale(.6)}to{background:#F3D98B;transform:scale(1)}}
+@keyframes grow{from{width:0}to{width:100%}}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(243,217,139,.7)}70%{box-shadow:0 0 0 18px rgba(243,217,139,0)}}
+.tl{position:relative;display:grid;grid-template-columns:repeat(5,1fr);gap:24px;margin-top:64px}
+.tl:before{content:"";position:absolute;top:12px;left:0;height:2px;background:#F3D98B;width:0;animation:grow 2.4s ease-out forwards}
+.dot{width:26px;height:26px;border-radius:50%;border:2px solid #F3D98B;background:#6B1E2E;animation:lit .5s ease-out forwards;animation-delay:var(--d);position:relative;z-index:1}
+.step-live .dot{animation:lit .5s ease-out forwards,pulse 2s infinite;animation-delay:var(--d),calc(var(--d) + .5s)}
+.tl-card{background:rgba(247,243,236,.08);border-radius:16px;padding:22px;margin-top:22px;border:1px solid rgba(247,243,236,.18)}
+.tl-card.live{background:#F3D98B;color:#6B1E2E;border-color:#F3D98B}
+.card-svc{background:#FFFDF8;border:1px solid #E6DCCB;border-radius:18px;padding:34px;display:flex;flex-direction:column}
+.card-svc.feat{background:#6B1E2E;color:#F7F3EC;border-color:#6B1E2E}
+.bullets{list-style:none;padding:0;margin:22px 0 0;display:grid;gap:10px;font-size:15px;line-height:1.5}
+.bullets li:before{content:"→ ";color:#6B1E2E}
+.card-svc.feat .bullets li:before{color:#F7F3EC}
+.g3{display:grid;gap:28px;grid-template-columns:repeat(3,1fr)}
+.g2{display:grid;gap:28px;grid-template-columns:repeat(2,1fr)}
+.svc-box{background:#F7F3EC;border:1px solid #E6DCCB;border-radius:18px;padding:32px}
+.svc-box h3{font-size:22px;margin:14px 0 10px}
+.svc-box p{margin:0;line-height:1.6;color:#4A3339}
+.callout{margin-top:40px;background:#F3D98B;color:#2A1A1E;border-radius:18px;padding:32px 36px}
+.maint{margin-top:28px;background:#FFFDF8;border:1px solid #E6DCCB;border-radius:18px;padding:36px;display:grid;grid-template-columns:1fr 1fr;gap:40px}
+@media (max-width: 900px){.g3,.g2,.maint{grid-template-columns:1fr}}
+@media (max-width: 760px){
+.tl{grid-template-columns:1fr;gap:28px}
+.tl:before{top:13px;bottom:13px;left:12px;width:2px;height:auto;animation:none}
+}
+@media (max-width: 760px){
+.wrap{padding:0 16px}
+.h1{font-size:44px}
+.h2{font-size:32px}
+.grid{grid-template-columns:1fr}
+.nav-links{display:none !important}
+.hero-row{flex-direction:column !important;align-items:flex-start !important}
+.about-row{flex-direction:column !important}
+}
+</style>
+</helmet>
+
+<div style="width:100%;box-sizing:border-box">
+
+<!-- HANGING SIGN -->
+<div class="sign" role="status" aria-label="Available for work: 2 slots left this month">
+<div class="string" aria-hidden="true"></div>
+<div class="board"><small>We're open</small><strong>2 slots left this month</strong></div>
+</div>
+
+<!-- NAV -->
+<header style="position:sticky;top:0;z-index:10;background:#F7F3EC;border-bottom:1px solid #E6DCCB">
+<div class="wrap" style="display:flex;align-items:center;justify-content:space-between;height:72px">
+<a href="#" style="font-weight:800;font-size:20px;letter-spacing:-.01em">LoWa<span style="color:#6B1E2E">.</span>Studio</a>
+<nav class="nav-links" style="display:flex;gap:32px;font-size:15px;font-weight:600">
+<a href="#work">Work</a>
+<a href="#about-page">About</a>
+<a href="#services">Services</a><a href="#pricing">Pricing</a>
+<a href="#contact">Contact</a>
+</nav>
+<a href="#contact" class="btn" style="padding:12px 20px;font-size:14px">Book a call</a>
+</div>
+</header>
+
+<!-- 1. HERO -->
+<section style="background:#F7F3EC;padding:110px 0 100px">
+<div class="wrap">
+<div class="label">AI-built websites for US agencies</div>
+<h1 class="h1" style="margin-top:22px;max-width:960px">We built.<br>You sell.</h1>
+<p class="lead" style="margin-top:28px">LoWa Studio is a production team behind US agencies that resell AI-built websites. Fast delivery, great price, happy clients.</p>
+<div class="hero-row" style="display:flex;gap:14px;margin-top:40px;align-items:center">
+<a href="#what-we-do" class="btn">What we deliver</a>
+<a href="#work" class="btn-ghost">See the work</a>
+</div>
+</div>
+</section>
+
+<!-- BANNER -->
+<svg class="wave" viewBox="0 0 1200 20" preserveAspectRatio="none" aria-hidden="true"><path fill="#F3D98B" d="M0 10 Q15 0 30 10 T60 10 T90 10 T120 10 T150 10 T180 10 T210 10 T240 10 T270 10 T300 10 T330 10 T360 10 T390 10 T420 10 T450 10 T480 10 T510 10 T540 10 T570 10 T600 10 T630 10 T660 10 T690 10 T720 10 T750 10 T780 10 T810 10 T840 10 T870 10 T900 10 T930 10 T960 10 T990 10 T1020 10 T1050 10 T1080 10 T1110 10 T1140 10 T1170 10 T1200 10 L1200 20 L0 20 Z"/></svg>
+<div class="ticker" aria-label="Highlights">
+<div class="ticker-track">
+<span>Website in a day</span><span class="sep">●</span><span>Start at $920</span><span class="sep">●</span><span>SEO-ready builds</span><span class="sep">●</span><span>Free hosting forever*</span><span class="sep">●</span><span>Fixed price</span><span class="sep">●</span><span>No surprises</span><span class="sep">●</span><span>Human-directed AI</span><span class="sep">●</span><span>PageSpeed-first</span><span class="sep">●</span><span>Your outside team</span><span class="sep">●</span>
+<span>Website in a day</span><span class="sep">●</span><span>Start at $920</span><span class="sep">●</span><span>SEO-ready builds</span><span class="sep">●</span><span>Free hosting forever*</span><span class="sep">●</span><span>Fixed price</span><span class="sep">●</span><span>No surprises</span><span class="sep">●</span><span>Human-directed AI</span><span class="sep">●</span><span>PageSpeed-first</span><span class="sep">●</span><span>Your outside team</span><span class="sep">●</span>
+</div>
+</div>
+<svg class="wave wave-bottom" viewBox="0 0 1200 20" preserveAspectRatio="none" aria-hidden="true"><path fill="#F3D98B" d="M0 10 Q15 0 30 10 T60 10 T90 10 T120 10 T150 10 T180 10 T210 10 T240 10 T270 10 T300 10 T330 10 T360 10 T390 10 T420 10 T450 10 T480 10 T510 10 T540 10 T570 10 T600 10 T630 10 T660 10 T690 10 T720 10 T750 10 T780 10 T810 10 T840 10 T870 10 T900 10 T930 10 T960 10 T990 10 T1020 10 T1050 10 T1080 10 T1110 10 T1140 10 T1170 10 T1200 10 L1200 20 L0 20 Z"/></svg>
+
+<!-- 1B. WHAT WE DO -->
+<section id="what-we-do" style="background:#F7F3EC;padding:100px 0">
+<div class="wrap">
+<div class="label">What we do</div>
+<h2 class="h2" style="margin-top:14px;max-width:880px">AI-built websites<br><span class="uline"><span class="w" style="--d:.3s">with</span> <span class="w" style="--d:.6s">no</span> <span class="w" style="--d:.9s">AI</span> <span class="w" style="--d:1.2s">look.</span><svg viewBox="0 0 300 14" preserveAspectRatio="none"><path pathLength="1" d="M4 9 C 70 3, 160 12, 296 5" style="--ud:1.6s"/></svg></span></h2>
+<p class="lead" style="margin-top:22px">We build websites with AI tools, driven by a senior designer and a project manager expert in web businesses. The result is fast delivery and beautiful pages ready to convert.</p>
+<div class="g3" style="margin-top:56px">
+<div style="background:#F7F3EC;border-radius:18px;padding:32px;border:1px solid #E6DCCB">
+<div class="mono">01</div>
+<h3 style="font-size:22px;margin:14px 0 10px">Human-directed</h3>
+<p style="margin:0;line-height:1.6;color:#4A3339">We use AI to speed up production. We own the structure, the copy frame and the quality check before anything goes live.</p>
+</div>
+<div style="background:#F3D98B;border-radius:18px;padding:32px;border:1px solid #F3D98B">
+<div class="mono">02</div>
+<h3 style="font-size:22px;margin:14px 0 10px">Live in 24 hours</h3>
+<p style="margin:0;line-height:1.6;color:#2A1A1E">We go from approved brief to published one-page site in one working day. Your client gets speed without losing control.</p>
+</div>
+<div style="background:#B7D3E6;border-radius:18px;padding:32px;border:1px solid #B7D3E6">
+<div class="mono">03</div>
+<h3 style="font-size:22px;margin:14px 0 10px">No AI look</h3>
+<p style="margin:0;line-height:1.6;color:#2A1A1E">We avoid generic gradients, stock hero blocks and repeated layouts. Each site gets its own type, palette, photo direction and real copy.</p>
+</div>
+</div>
+</div>
+</section>
+
+<!-- 1C. SERVICES -->
+<section id="services" style="background:#FFFDF8;padding:100px 0;border-top:1px solid #E6DCCB">
+<div class="wrap">
+<div class="label">Services</div>
+<h2 class="h2" style="margin-top:14px;max-width:820px">Your client website<br>with the <span class="hl">best web experience.</span></h2>
+<div class="g3" style="margin-top:56px">
+<div class="svc-box"><div class="mono">01</div><h3>Design and build</h3><p>A custom layout for mobile and desktop, built with AI tools and directed by our team.</p></div>
+<div class="svc-box"><div class="mono">02</div><h3>Copy structure</h3><p>A section map and copy frame approved before we build. Send your own copy, or we frame it for you.</p></div>
+<div class="svc-box"><div class="mono">03</div><h3>CMS panel</h3><p>Blog posts, case studies and team pages in a simple panel, so your client can publish content without us.</p></div>
+<div class="svc-box"><div class="mono">04</div><h3>Performance and SEO</h3><p>PageSpeed-first builds, clean metadata, sitemap and analytics set up from day one.</p></div>
+<div class="svc-box"><div class="mono">05</div><h3>Forms and tracking</h3><p>Contact form with email delivery, a booking link and tracking tags ready for your client's pixels.</p></div>
+<div class="svc-box"><div class="mono">06</div><h3>Launch and handoff</h3><p>Domain connection, a handoff guide and a short walkthrough video for your client.</p></div>
+</div>
+</div>
+</section>
+
+<!-- 1D. PRICING -->
+<section id="pricing" style="background:#F7F3EC;padding:100px 0">
+<div class="wrap">
+<div class="label">Pricing</div>
+<h2 class="h2" style="margin-top:14px;max-width:820px">Fixed prices.<br><span class="uline"><span class="w" style="--d:.3s">One</span> <span class="w" style="--d:.6s">process</span> <span class="w" style="--d:.9s">behind</span> <span class="w" style="--d:1.2s">all</span> <span class="w" style="--d:1.4s">of</span> <span class="w" style="--d:1.6s">them.</span><svg viewBox="0 0 300 14" preserveAspectRatio="none"><path pathLength="1" d="M4 9 C 70 3, 160 12, 296 5" style="--ud:1.9s"/></svg></span></h2>
+<div class="g2" style="margin-top:56px;align-items:stretch">
+<div class="card-svc feat">
+<div class="mono" style="color:#F3D98B">Small website</div>
+<h3 style="font-size:26px;margin:12px 0 0">Home, About and Contact</h3>
+<p style="margin:14px 0 0;line-height:1.6;opacity:.92">The essentials for a lean, credible site that gets your client talking.</p>
+<div style="margin-top:26px;font-size:44px;font-weight:800;letter-spacing:-.02em">US$ 920</div>
+<ul class="bullets" style="color:#F7F3EC">
+<li>Custom layout, mobile and desktop</li>
+<li>Copy structure and section map</li>
+<li>Contact form with email delivery</li>
+<li>Basic SEO and analytics</li>
+<li>One review round, launch and handoff guide</li>
+<li>CMS panel included</li>
+</ul>
+<a href="#contact" class="btn" style="background:#F3D98B;color:#6B1E2E;align-self:flex-start;margin-top:30px">Start this project</a>
+</div>
+<div class="card-svc">
+<div class="mono">Bigger websites</div>
+<h3 style="font-size:26px;margin:12px 0 0">Starting at 4 pages</h3>
+<p style="margin:14px 0 0;line-height:1.6;color:#4A3339">For agencies that need services, case studies or a deeper story for their client.</p>
+<div style="margin-top:26px;font-size:44px;font-weight:800;letter-spacing:-.02em">from US$ 1,200</div>
+<div style="margin-top:8px;font-size:16px;font-weight:600;color:#4A3339">+ US$ 250 for each extra page</div>
+<ul class="bullets">
+<li>Full site map and copy frame</li>
+<li>Case study layouts</li>
+<li>CMS panel included</li>
+<li>Analytics and technical SEO</li>
+</ul>
+<a href="#contact" class="btn" style="align-self:flex-start;margin-top:30px">Start 2-minute briefing</a>
+</div>
+</div>
+<div class="callout">
+<div class="mono" style="color:#6B1E2E">Important</div>
+<p style="margin:12px 0 0;font-size:18px;line-height:1.6">Every site comes with a CMS panel, so your client can publish blog posts, case studies and team pages on their own. Copy edits, content changes and general adjustments are handled through Monthly Maintenance.</p>
+</div>
+<div class="maint">
+<div>
+<div class="mono">Monthly maintenance</div>
+<h3 style="font-size:28px;margin:12px 0 0">Keep the site working after launch</h3>
+<div style="margin-top:22px;font-size:40px;font-weight:800;letter-spacing:-.02em">US$ 180 / month</div>
+<p style="margin:14px 0 0;line-height:1.6;color:#4A3339;text-wrap:balance;max-width:460px">A monthly retainer for every change and upkeep the site needs after it goes live.</p>
+</div>
+<ul class="bullets" style="margin-top:0">
+<li>Copy edits and text changes</li>
+<li>Content updates and new sections</li>
+<li>General adjustments and design tweaks</li>
+<li>Uptime and speed monitoring</li>
+<li>Monthly performance report</li>
+</ul>
+</div>
+</div>
+</section>
+
+<!-- 1D. PROCESS -->
+<section id="process" style="background:#6B1E2E;color:#F7F3EC;padding:100px 0">
+<div class="wrap">
+<div class="label" style="color:#F3D98B">How it goes live</div>
+<h2 class="h2" style="margin-top:14px;color:#F7F3EC;max-width:820px">From brief to live, <span class="hl-y">step by step.</span></h2>
+<p class="lead" style="margin-top:20px;color:#F7F3EC;opacity:.9">Five stages, one working day. Each stage has an owner and a clear handoff to the next.</p>
+<div class="tl">
+<div style="--d:.2s">
+<div class="dot"></div>
+<div class="tl-card">
+<div class="mono" style="color:#F3D98B">0 h</div>
+<h3 style="font-size:20px;margin:10px 0 8px">Brief</h3>
+<p style="margin:0;line-height:1.55;font-size:15px;opacity:.9">You fill a two-minute form. We confirm scope the same hour.</p>
+</div>
+</div>
+<div style="--d:.7s">
+<div class="dot"></div>
+<div class="tl-card">
+<div class="mono" style="color:#F3D98B">2 h</div>
+<h3 style="font-size:20px;margin:10px 0 8px">Structure</h3>
+<p style="margin:0;line-height:1.55;font-size:15px;opacity:.9">Section map and copy frame sent for your approval.</p>
+</div>
+</div>
+<div style="--d:1.2s">
+<div class="dot"></div>
+<div class="tl-card">
+<div class="mono" style="color:#F3D98B">8 h</div>
+<h3 style="font-size:20px;margin:10px 0 8px">Build</h3>
+<p style="margin:0;line-height:1.55;font-size:15px;opacity:.9">AI-assisted build, styled to your client's brand.</p>
+</div>
+</div>
+<div style="--d:1.7s">
+<div class="dot"></div>
+<div class="tl-card">
+<div class="mono" style="color:#F3D98B">16 h</div>
+<h3 style="font-size:20px;margin:10px 0 8px">Review</h3>
+<p style="margin:0;line-height:1.55;font-size:15px;opacity:.9">One review round with your edits, checked on mobile and desktop.</p>
+</div>
+</div>
+<div class="step-live" style="--d:2.2s">
+<div class="dot"></div>
+<div class="tl-card live">
+<div class="mono" style="color:#6B1E2E">24 h</div>
+<h3 style="font-size:20px;margin:10px 0 8px;color:#6B1E2E">Live</h3>
+<p style="margin:0;line-height:1.55;font-size:15px;color:#2A1A1E">Published on your client's domain, with the handoff pack.</p>
+</div>
+</div>
+</div>
+<div style="margin-top:60px"><a href="#contact" class="btn" style="background:#F3D98B;color:#6B1E2E">Start your 24-hour site</a></div>
+</div>
+</section>
+
+<!-- 2. WORK (anchor #work) -->
+<section id="work" style="background:#FFFDF8;padding:100px 0;border-top:1px solid #E6DCCB">
+<div class="wrap">
+<div style="display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:20px;margin-bottom:56px">
+<div>
+<div class="label">Selected work</div>
+<h2 class="h2" style="margin-top:14px">Built to convert</h2>
+</div>
+<p class="lead" style="font-size:16px;max-width:360px">Each project follows the same production file: brief, structure, build, review, launch.</p>
+</div>
+
+<div class="grid">
+<div class="card"><div class="ph"><span>Screenshot placeholder</span></div><div class="cardbody"><div class="tag">finance</div><h3>Simplifique Capital</h3></div></div>
+<div class="card"><div class="ph alt"><span>Screenshot placeholder</span></div><div class="cardbody"><div class="tag">Legal</div><h3>Wottrich Advocacia</h3></div></div>
+<div class="card"><div class="ph dark"><span>Screenshot placeholder</span></div><div class="cardbody"><div class="tag">Personal brand</div><h3>Fabiana Campos</h3></div></div>
+<div class="card"><div class="ph"><span>[Case 04]</span></div><div class="cardbody"><div class="tag">[Site type]</div><h3>[Client name]</h3></div></div>
+<div class="card"><div class="ph alt"><span>[Case 05]</span></div><div class="cardbody"><div class="tag">[Site type]</div><h3>[Client name]</h3></div></div>
+<div class="card"><div class="ph dark"><span>[Case 06]</span></div><div class="cardbody"><div class="tag">[Site type]</div><h3>[Client name]</h3></div></div>
+<div class="card"><div class="ph"><span>[Case 07]</span></div><div class="cardbody"><div class="tag">[Site type]</div><h3>[Client name]</h3></div></div>
+<div class="card"><div class="ph alt"><span>[Case 08]</span></div><div class="cardbody"><div class="tag">[Site type]</div><h3>[Client name]</h3></div></div>
+</div>
+</div>
+</section>
+
+<!-- 3. ABOUT (brief) -->
+<section style="background:#6B1E2E;color:#F7F3EC;padding:100px 0">
+<div class="wrap about-row" style="display:flex;gap:70px;align-items:center">
+<div style="flex:1">
+<div class="label" style="color:#F3D98B">Who we are</div>
+<h2 class="h2" style="margin-top:14px;color:#F7F3EC">Two founders,<br>one studio.</h2>
+<p style="font-size:18px;line-height:1.65;margin-top:24px;color:#F7F3EC;opacity:.9">I'm Sarah, a project manager and web strategist. Marco is my partner and co-founder. Together we run LoWa from the first brief to the handoff. Our name has a personal story behind it, and you can read it on the About page.</p>
+<a href="#about-page" class="btn" style="margin-top:34px;background:#F3D98B;color:#6B1E2E">Read our story</a>
+</div>
+<div style="flex:1;display:grid;grid-template-columns:1fr 1fr;gap:16px">
+<div style="background:#B7D3E6;aspect-ratio:3/4;border-radius:16px;display:flex;align-items:flex-end;padding:14px;box-sizing:border-box"><span class="mono" style="color:#2A1A1E">[Photo: Sarah]</span></div>
+<div style="background:#F3D98B;aspect-ratio:3/4;border-radius:16px;display:flex;align-items:flex-end;padding:14px;box-sizing:border-box;margin-top:40px"><span class="mono" style="color:#2A1A1E">[Photo: Marco]</span></div>
+</div>
+</div>
+</section>
+
+<!-- 4. FINAL CTA -->
+<section id="contact" style="background:#F7F3EC;padding:110px 0">
+<div class="wrap" style="text-align:left">
+<div class="label">Start</div>
+<h2 class="h2" style="margin-top:14px;max-width:760px">Ready to sell websites?</h2>
+<p class="lead" style="margin-top:20px">Fill in our 3-minute briefing and we reply within 5 hours with the structure, timeline and fixed price.</p>
+<div style="display:flex;gap:14px;margin-top:36px;flex-wrap:wrap">
+<a href="#briefing-form" class="btn">Start the 3-minute briefing</a>
+<a href="mailto:hello@lowastudio.com" class="btn-ghost">hello@lowastudio.com</a>
+</div>
+</div>
+</section>
+
+<footer style="background:#2A1A1E;color:#F7F3EC;padding:44px 0">
+<div class="wrap" style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:20px;font-size:14px">
+<div style="font-weight:800;font-size:17px">LoWa<span style="color:#F3D98B">.</span>Studio</div>
+<div style="display:flex;gap:26px;flex-wrap:wrap">
+<a href="#work">Work</a><a href="#about-page">About</a><a href="#services">Services</a><a href="#pricing">Pricing</a><a href="#contact">Contact</a>
+</div>
+<div style="opacity:.7">US market · English · Stripe billing in USD</div>
+</div>
+</footer>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1500}}'>
+class Component extends DCLogic {
+renderVals() {
+return {};
+}
+}
+</script>
+</body>
+</html>
