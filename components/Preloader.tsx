@@ -1,13 +1,35 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Walter from "@/components/Walter";
 
 // Shown once per full page load. Client-side navigation back to Home skips it.
 let alreadyShown = false;
 
-const MIN_MS = 1800; // long enough to see the dog run at least once
+const MIN_MS = 1800; // long enough to see Walter jump a couple of times
 const MAX_MS = 6000; // never block the page longer than this
 const MORPH_MS = 1000;
+const JUMP_MS = 950;
+
+/** Walter leaps along an arc into his spot in the hero, then sits there. */
+function leapTo(el: HTMLElement, target: DOMRect) {
+  const from = el.getBoundingClientRect();
+  if (!from.width) return;
+  const s = target.width / from.width;
+  const dx = target.left + target.width / 2 - (from.left + from.width / 2);
+  const dy = target.top + target.height / 2 - (from.top + from.height / 2);
+  const lift = 160 + Math.max(0, -dy); // peak of the arc above the straight line
+  const frames: Keyframe[] = [];
+  for (let i = 0; i <= 12; i++) {
+    const t = i / 12;
+    const x = dx * t;
+    const y = dy * t - lift * 4 * t * (1 - t);
+    const k = 1 + (s - 1) * t;
+    const tilt = (dx < 0 ? -1 : 1) * 14 * Math.sin(Math.PI * t);
+    frames.push({ transform: `translate(${x}px, ${y}px) scale(${k}) rotate(${tilt}deg)` });
+  }
+  el.animate(frames, { duration: JUMP_MS, easing: "cubic-bezier(.3,0,.5,1)", fill: "forwards" });
+}
 
 /** Return the box of the rendered text itself (not the full-width block). */
 function textRect(el: Element) {
@@ -21,7 +43,7 @@ export default function Preloader() {
   const [pct, setPct] = useState(0);
   const [leaving, setLeaving] = useState(false);
   const logoRef = useRef<HTMLDivElement>(null);
-  const rootRef = useRef<HTMLDivElement>(null);
+  const dogRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!visible) return;
@@ -61,6 +83,12 @@ export default function Preloader() {
       const to = textRect(mark);
       const onScreen = to.bottom > 0 && to.top < window.innerHeight;
       setLeaving(true);
+      const dog = dogRef.current;
+      const spot = document.querySelector(".hero-dog .walter");
+      if (dog && spot) {
+        const target = spot.getBoundingClientRect();
+        if (target.bottom > 0 && target.top < window.innerHeight) leapTo(dog, target);
+      }
       if (onScreen && from.width > 0) {
         const scale = to.width / from.width;
         const dx = to.left + to.width / 2 - (from.left + from.width / 2);
@@ -68,7 +96,7 @@ export default function Preloader() {
         logo.style.transform = `translate(${dx}px, ${dy}px) scale(${scale})`;
         logo.classList.add("to-mark");
       }
-      window.setTimeout(finishUp, MORPH_MS);
+      window.setTimeout(finishUp, Math.max(MORPH_MS, JUMP_MS) + 40);
     };
 
     let last = start;
@@ -101,41 +129,14 @@ export default function Preloader() {
   if (!visible) return null;
 
   return (
-    <div ref={rootRef} className={`preloader${leaving ? " leaving" : ""}`}>
-      <div className="pl-run" aria-hidden="true">
-        <svg className="pl-dog" viewBox="0 0 120 80" width="120" height="80">
-          <ellipse className="pl-shadow" cx="56" cy="76" rx="40" ry="3" />
-          <g className="pl-body">
-            <path className="pl-tail" d="M24 36 C 14 30, 10 22, 6 14" />
-            <g className="pl-leg pl-a">
-              <rect x="27" y="44" width="7" height="26" rx="3.5" />
-            </g>
-            <g className="pl-leg pl-b">
-              <rect x="36" y="44" width="7" height="26" rx="3.5" />
-            </g>
-            <g className="pl-leg pl-b">
-              <rect x="66" y="44" width="7" height="26" rx="3.5" />
-            </g>
-            <g className="pl-leg pl-a">
-              <rect x="75" y="44" width="7" height="26" rx="3.5" />
-            </g>
-            <ellipse cx="52" cy="42" rx="31" ry="14" />
-            <path d="M72 36 L84 22 L92 30 L80 46 Z" />
-            <circle cx="88" cy="24" r="13" />
-            <ellipse cx="101" cy="29" rx="10" ry="6.5" />
-            <circle className="pl-nose" cx="110" cy="27" r="2.6" />
-            <ellipse className="pl-ear" cx="82" cy="22" rx="5" ry="11" transform="rotate(28 82 22)" />
-            <circle className="pl-eye" cx="93" cy="20" r="1.9" />
-            <rect className="pl-collar" x="74" y="31" width="5" height="14" rx="2" transform="rotate(-38 76 38)" />
-          </g>
-        </svg>
-        <span className="pl-ball-wrap">
-          <span className="pl-ball" />
-          <span className="pl-ball-shadow" />
-        </span>
-      </div>
-
+    <div className={`preloader${leaving ? " leaving" : ""}`}>
       <div className="pl-center">
+        <div className="pl-stage" aria-hidden="true">
+          <span className="pl-ball" />
+          <div ref={dogRef} className="pl-walter">
+            <Walter />
+          </div>
+        </div>
         <div
           className="pl-pct"
           role="progressbar"

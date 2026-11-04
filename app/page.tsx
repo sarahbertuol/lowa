@@ -4,6 +4,7 @@ import Ticker from "@/components/Ticker";
 import HeroParallax from "@/components/HeroParallax";
 import ProcessProgress from "@/components/ProcessProgress";
 import Preloader from "@/components/Preloader";
+import Walter from "@/components/Walter";
 
 export default function HomePage() {
   return (
@@ -47,6 +48,9 @@ export default function HomePage() {
         </div>
         <div className="mark" aria-hidden="true">
           LoWa<em>Studio</em>
+        </div>
+        <div className="hero-dog" aria-hidden="true">
+          <Walter className="idle" />
         </div>
       </section>
 
