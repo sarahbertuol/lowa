@@ -81,6 +81,8 @@ p{margin:0}
 .hero .cta-row{justify-content:center;margin-top:30px}
 /* AA: blue text on the sunset gradient is under 4.5:1, so the hero ghost pill gets a cream fill */
 .hero .btn-ghost{background:rgba(247,240,230,.85)}
+/* AA: the blue focus ring is 2.99:1 on the sunset gradient, so the hero uses brown (7.2:1) */
+.hero :focus-visible{outline-color:var(--brown)}
 .hero-photos{position:absolute;inset:0;pointer-events:none;z-index:1}
 .hp{position:absolute;border-radius:28px;overflow:hidden;box-shadow:0 30px 60px -28px rgba(74,36,21,.55);padding:18px;display:flex;flex-direction:column;justify-content:space-between;color:#F7E6D6;will-change:transform;transition:transform .6s var(--ease)}
 .hp small{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;opacity:.8}
@@ -174,6 +176,8 @@ p{margin:0}
 .case:hover{transform:translateY(-6px);box-shadow:0 24px 40px -28px rgba(47,21,9,.5)}
 .case .shot{height:250px;padding:18px;display:flex;flex-direction:column;justify-content:space-between;color:#F7E6D6;background:linear-gradient(160deg,#4A2415,#8A4330)}
 .case .shot.b{background:linear-gradient(160deg,#86B6C6,#2F4A55)}
+/* AA: the tag sits on the light top of this gradient, so it uses brown (6.1:1) */
+.case .shot.b .mono{color:var(--brown);opacity:1}
 .case .shot.c{background:linear-gradient(160deg,#F4DFA4,#D9A56C);color:var(--brown)}
 .case .shot .mono{color:inherit;opacity:.85}
 .case .shot strong{font-family:'Instrument Serif',serif;font-weight:400;font-size:32px;line-height:1.05}
@@ -188,7 +192,8 @@ p{margin:0}
 .people{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 .person{border-radius:28px;height:360px;padding:18px;display:flex;flex-direction:column;justify-content:flex-end;color:#F7E6D6;background:linear-gradient(170deg,#4A2415,#8A4330);transition:transform .6s var(--ease)}
 .person:hover{transform:translateY(-8px)}
-.person.b{background:linear-gradient(170deg,#2F4A55,#86B6C6);margin-top:44px}
+/* AA: light end at the top, dark end under the cream text (7.7:1 on the darkest part) */
+.person.b{background:linear-gradient(170deg,#86B6C6,#2F4A55);margin-top:44px}
 .person small{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;opacity:.85}
 .person strong{font-family:'Instrument Serif',serif;font-weight:400;font-size:30px;line-height:1.05}
 
