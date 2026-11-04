@@ -32,8 +32,9 @@ export default function BriefingForm() {
     const found = validate(new FormData(form));
     setErrors(found);
     if (Object.keys(found).length) {
-      const first = form.querySelector<HTMLElement>('[aria-invalid="true"]');
-      first?.focus();
+      // aria-invalid is not rendered yet at this point, so focus by field order instead.
+      const firstKey = (["name", "agency", "email", "need", "goal"] as const).find((k) => found[k]);
+      if (firstKey) form.querySelector<HTMLElement>(`#${firstKey}`)?.focus();
       return;
     }
     // No submission endpoint is decided yet (see CLAUDE.md). The brief is not sent anywhere.

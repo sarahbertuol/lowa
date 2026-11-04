@@ -50,7 +50,7 @@ p{margin:0}
   transform:translateX(-101%);transition:transform .5s var(--ease);border-radius:inherit;
 }
 .btn .arr{display:inline-block;transition:transform .35s var(--ease)}
-.btn:hover{color:var(--blue);transform:translateY(-2px);box-shadow:0 14px 28px -14px rgba(47,111,134,.7)}
+.btn:hover{color:var(--brown);transform:translateY(-2px);box-shadow:0 14px 28px -14px rgba(47,111,134,.7)}
 .btn:hover::before{transform:translateX(0)}
 .btn:hover .arr{transform:translateX(5px)}
 .btn:disabled{opacity:.6;cursor:not-allowed;transform:none}
@@ -79,6 +79,8 @@ p{margin:0}
 .hero h1 em{color:#FBF0E4}
 .hero .lead{margin:24px auto 0;text-align:center;color:#4A2415;max-width:500px;opacity:.9}
 .hero .cta-row{justify-content:center;margin-top:30px}
+/* AA: blue text on the sunset gradient is under 4.5:1, so the hero ghost pill gets a cream fill */
+.hero .btn-ghost{background:rgba(247,240,230,.85)}
 .hero-photos{position:absolute;inset:0;pointer-events:none;z-index:1}
 .hp{position:absolute;border-radius:28px;overflow:hidden;box-shadow:0 30px 60px -28px rgba(74,36,21,.55);padding:18px;display:flex;flex-direction:column;justify-content:space-between;color:#F7E6D6;will-change:transform;transition:transform .6s var(--ease)}
 .hp small{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;opacity:.8}
@@ -278,3 +280,5 @@ footer.site{padding-block:48px 40px;display:flex;justify-content:space-between;g
   .js .reveal{opacity:1;transform:none}
 }
 :focus-visible{outline:2px solid var(--blue);outline-offset:3px;border-radius:8px}
+/* AA: the blue ring is 2.4:1 on brown surfaces, use butter there */
+.proof-card :focus-visible,.plan.feat :focus-visible{outline-color:var(--butter)}
