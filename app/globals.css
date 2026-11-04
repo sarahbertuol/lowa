@@ -205,9 +205,16 @@ p{margin:0}
 .case .body{padding:22px;display:grid;gap:6px}
 .case .body p{color:var(--muted);font-size:15px}
 /* Live client sites: a real screenshot fills the shot */
-.case .shot.photo{position:relative;height:300px;padding:0;background:#EFE7DA;justify-content:flex-start}
-.case .shot.photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .6s var(--ease)}
-.case:hover .shot.photo img{transform:scale(1.03)}
+.case .shot{height:300px}
+.case .shot.d{background:linear-gradient(160deg,#F6D3BC,#E29A72);color:var(--brown)}
+/* Live client sites: the coloured block stays, the site sits in a small browser window, as in What we do */
+.case .shot.has-site{position:relative;justify-content:flex-start}
+.mini-browser{position:absolute;left:50%;bottom:24px;width:min(80%,320px);margin:0;translate:-50% 0;border-radius:10px;overflow:hidden;background:#FBF7F1;box-shadow:0 26px 50px -26px rgba(20,20,30,.6),0 0 0 1px rgba(255,255,255,.14);transition:transform .5s var(--ease)}
+.mini-browser .browser-bar{height:22px;gap:5px;padding:0 9px}
+.mini-browser .browser-bar i{width:6px;height:6px}
+.mini-browser .browser-url{height:14px;line-height:14px;font-size:9px;margin-right:0}
+.mini-browser img{display:block;width:100%;height:auto;aspect-ratio:16/10;object-fit:cover;object-position:top}
+.case:hover .mini-browser{transform:translateY(-6px)}
 .case-link{justify-self:start;margin-top:8px;color:var(--blue);font-weight:500;text-decoration:none;border-bottom:1px solid currentColor}
 .case-link:hover{color:var(--brown)}
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
@@ -347,7 +354,8 @@ html.pl-lock{overflow:hidden}
   .hero .cta-row .btn,.hero .cta-row .btn-ghost{width:100%;justify-content:center;box-sizing:border-box}
   .cases,.svc-list{grid-template-columns:1fr}
   .case.wide:last-child{grid-column:auto}
-  .case .shot.photo{height:220px}
+  .case .shot{height:280px}
+  .mini-browser{bottom:18px}
   .people{grid-template-columns:1fr}
   .person.b{margin-top:0}
   .person{height:260px}

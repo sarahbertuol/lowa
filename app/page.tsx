@@ -7,6 +7,50 @@ import Preloader from "@/components/Preloader";
 import Walter from "@/components/Walter";
 import BrowserVideo from "@/components/BrowserVideo";
 
+type Case = {
+  tag: string;
+  name: string;
+  cls: string;
+  text: string;
+  wide?: boolean;
+  site?: { url: string; host: string; img: string };
+};
+
+// Wottrich is still a placeholder (no live site yet). The others link to the delivered sites.
+const cases: Case[] = [
+  { tag: "Legal", name: "Wottrich Advocacia", cls: "", text: "A calm, credible site that puts the practice's expertise first." },
+  {
+    tag: "Finance",
+    name: "Simplifique Capital",
+    cls: " b",
+    text: "A clear site for a financial advisor who teaches clients to run a simple, low-cost portfolio.",
+    site: { url: "https://www.simplifiquecapital.com.br/", host: "simplifiquecapital.com.br", img: "/work/simplifiquecapital.webp" },
+  },
+  {
+    tag: "Psychology",
+    name: "Fabiana Campos",
+    cls: " c",
+    text: "A warm personal site for a psychologist, with therapy and assessment explained in plain words.",
+    site: { url: "https://www.fabianacampos.com.br/", host: "fabianacampos.com.br", img: "/work/fabianacampos.webp" },
+  },
+  {
+    tag: "Finance",
+    name: "Geraldo Búrigo",
+    cls: " d",
+    wide: true,
+    text: "An editorial site for an independent investment advisor, built around a clear path to the first meeting.",
+    site: { url: "https://geraldoburigo.com/", host: "geraldoburigo.com", img: "/work/geraldoburigo.webp" },
+  },
+  {
+    tag: "Event",
+    name: "Bruna Fagundes",
+    cls: " b",
+    wide: true,
+    text: "A hand-illustrated invitation site for a law graduation, with RSVP and gift list in one place.",
+    site: { url: "https://www.brunafagundes.com.br/", host: "brunafagundes.com.br", img: "/work/brunafagundes.webp" },
+  },
+];
+
 export default function HomePage() {
   return (
     <main id="top">
@@ -266,64 +310,47 @@ export default function HomePage() {
           </p>
         </div>
         <div className="cases">
-          {[
-            { tag: "Legal", name: "Wottrich Advocacia", cls: "", text: "A calm, credible site that puts the practice's expertise first." },
-            { tag: "Finance", name: "Simplifique Capital", cls: " b", text: "A clear, trustworthy page for a finance team with a lot to explain." },
-            { tag: "Personal brand", name: "Fabiana Campos", cls: " c", text: "A personal site with warmth, built to bring in new clients." },
-          ].map((c, i) => (
-            <Reveal key={c.name} delay={(i + 1) as 1 | 2 | 3} as="article" className="case">
-              <div className={`shot${c.cls}`}>
+          {cases.map((c, i) => (
+            <Reveal
+              key={c.name}
+              delay={((i % 3) + 1) as 1 | 2 | 3}
+              as="article"
+              className={`case${c.wide ? " wide" : ""}`}
+            >
+              <div className={`shot${c.cls}${c.site ? " has-site" : ""}`}>
                 <span className="mono">{c.tag}</span>
-                <strong>{c.name}</strong>
+                {c.site ? (
+                  <figure className="mini-browser">
+                    <div className="browser-bar" aria-hidden="true">
+                      <i />
+                      <i />
+                      <i />
+                      <span className="browser-url">{c.site.host}</span>
+                    </div>
+                    {/* eslint-disable-next-line @next/next/no-img-element -- static screenshot, sized by CSS */}
+                    <img
+                      src={c.site.img}
+                      alt={`Home page of ${c.site.host}`}
+                      width={1120}
+                      height={700}
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  </figure>
+                ) : (
+                  <strong>{c.name}</strong>
+                )}
               </div>
               <div className="body">
                 <span className="mono">{c.tag}</span>
                 <h3>{c.name}</h3>
                 <p>{c.text}</p>
-              </div>
-            </Reveal>
-          ))}
-          {[
-            {
-              tag: "Finance",
-              name: "Geraldo Búrigo",
-              url: "https://geraldoburigo.com/",
-              host: "geraldoburigo.com",
-              img: "/work/geraldoburigo.webp",
-              pos: "top",
-              text: "An editorial site for an independent investment advisor, built around a clear path to the first meeting.",
-            },
-            {
-              tag: "Event",
-              name: "Bruna Fagundes",
-              url: "https://www.brunafagundes.com.br/",
-              host: "brunafagundes.com.br",
-              img: "/work/brunafagundes.webp",
-              pos: "center 30%",
-              text: "A hand-illustrated invitation site for a law graduation, with RSVP and gift list in one place.",
-            },
-          ].map((c, i) => (
-            <Reveal key={c.name} delay={(i + 1) as 1 | 2 | 3} as="article" className="case wide">
-              <div className="shot photo">
-                {/* eslint-disable-next-line @next/next/no-img-element -- static screenshot, sized by CSS */}
-                <img
-                  src={c.img}
-                  alt={`Home page of ${c.host}`}
-                  width={1120}
-                  height={700}
-                  loading="lazy"
-                  decoding="async"
-                  style={{ objectPosition: c.pos }}
-                />
-              </div>
-              <div className="body">
-                <span className="mono">{c.tag}</span>
-                <h3>{c.name}</h3>
-                <p>{c.text}</p>
-                <a className="case-link" href={c.url} target="_blank" rel="noopener noreferrer">
-                  Visit {c.host} <span aria-hidden="true">↗</span>
-                  <span className="sr-only"> (opens in a new tab)</span>
-                </a>
+                {c.site && (
+                  <a className="case-link" href={c.site.url} target="_blank" rel="noopener noreferrer">
+                    Visit {c.site.host} <span aria-hidden="true">↗</span>
+                    <span className="sr-only"> (opens in a new tab)</span>
+                  </a>
+                )}
               </div>
             </Reveal>
           ))}
