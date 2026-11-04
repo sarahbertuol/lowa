@@ -154,20 +154,20 @@ p{margin:0}
 .white h3{font-family:'Instrument Serif',serif;font-weight:400;font-size:40px;line-height:1.05}
 .white .price{font-family:'Instrument Serif',serif;font-size:56px;line-height:1}
 .white .price small{font-family:'Familjen Grotesk',sans-serif;font-size:15px;margin-left:6px;color:var(--muted)}
-.white ul{list-style:none;padding:0;margin:4px 0 6px;display:grid;gap:8px;font-size:15px}
+.white ul{list-style:none;padding:0;margin:4px 0 6px;display:grid;gap:8px;font-size:16px;font-weight:300;line-height:1.5}
 .white li::before{content:"→ ";color:var(--blue);font-weight:500}
 .white p{font-size:15px;color:var(--muted)}
 
 /* Services list */
 .svc-list{display:grid;grid-template-columns:repeat(3,1fr);margin-top:48px;border-top:1px solid var(--line)}
-.svc{padding:26px 22px 26px 0;border-bottom:1px solid var(--line);display:grid;gap:8px;transition:padding-left .4s var(--ease)}
-.svc:hover{padding-left:12px}
-.svc p{font-size:15px;color:var(--muted)}
+.svc{padding:26px 22px 26px 0;border-bottom:1px solid var(--line);display:grid;gap:8px}
+.svc h3{font-weight:400}
+.svc p{font-size:16px;font-weight:300;color:var(--muted)}
 
 /* Maintenance */
 .maint{margin-top:24px;border-radius:28px;padding:28px clamp(24px,4vw,40px);background:var(--sky);color:var(--brown);display:grid;grid-template-columns:1fr auto;gap:20px;align-items:center}
 .maint .mono{color:var(--brown)}
-.maint p{margin-top:8px;max-width:560px;font-size:15px}
+.maint p{margin-top:8px;max-width:560px;font-size:17px;font-weight:300}
 .maint .amount{font-family:'Instrument Serif',serif;font-size:52px;line-height:1}
 .maint .amount small{font-family:'Familjen Grotesk';font-size:15px}
 
