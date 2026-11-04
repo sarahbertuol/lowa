@@ -276,15 +276,10 @@ html.pl-lock{overflow:hidden}
 .pl-ball{position:absolute;z-index:1;left:calc(50% - 10px);top:100px;width:20px;height:20px;border-radius:50%;background:var(--blue);box-shadow:inset -4px -4px 0 rgba(0,0,0,.15);animation:wBall .9s infinite;transition:opacity .25s}
 .preloader.leaving .pl-ball,.preloader.leaving .pl-pct{opacity:0}
 
-.walter .w-body,.walter .w-paws,.walter .w-head,.walter .w-tail,.walter .w-eyes,.walter .w-shadow{transform-box:fill-box}
-.walter .w-tail{transform-origin:10% 90%;animation:wWag .32s ease-in-out infinite alternate}
-.walter .w-eyes{transform-origin:50% 50%;animation:wBlink 4.2s infinite}
-.walter .w-shadow{transform-origin:50% 50%}
-.pl-walter .w-body{transform-origin:50% 100%;animation:wJump .9s infinite}
-.pl-walter .w-paws{animation:wReach .9s infinite}
-.pl-walter .w-head{transform-origin:50% 60%;animation:wLook .9s infinite}
-.pl-walter .w-shadow{animation:wShadow .9s infinite}
-.preloader.leaving .pl-walter .w-body,.preloader.leaving .pl-walter .w-paws,.preloader.leaving .pl-walter .w-head,.preloader.leaving .pl-walter .w-shadow{animation:none}
+.walter{user-select:none;-webkit-user-drag:none}
+.pl-walter picture,.hero-dog picture{display:block}
+.pl-walter .walter{transform-origin:50% 100%;animation:wJump .9s infinite}
+.preloader.leaving .pl-walter .walter{animation:none}
 
 @keyframes wJump{
   0%,100%{transform:translateY(0) scale(1.05,.94);animation-timing-function:cubic-bezier(.2,.7,.4,1)}
@@ -292,24 +287,16 @@ html.pl-lock{overflow:hidden}
   50%{transform:translateY(-34px) scale(.99,1.02);animation-timing-function:cubic-bezier(.6,0,.8,.3)}
   88%{transform:translateY(0) scale(1)}
 }
-@keyframes wReach{0%,100%{transform:none}50%{transform:translateY(-12px)}}
-@keyframes wLook{0%,100%{transform:rotate(0)}50%{transform:rotate(-5deg) translateY(-2px)}}
-@keyframes wShadow{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(.6);opacity:.5}}
 @keyframes wBall{
   0%,100%{transform:translateY(-92px);animation-timing-function:cubic-bezier(.6,0,.8,.3)}
   50%{transform:translateY(-4px) scale(1.08,.92);animation-timing-function:cubic-bezier(.2,.7,.4,1)}
 }
-@keyframes wWag{from{transform:rotate(-10deg)}to{transform:rotate(14deg)}}
-@keyframes wBlink{0%,94%,100%{transform:scaleY(1)}96%{transform:scaleY(.1)}}
 
 /* Walter's spot in the hero, where he lands and stays */
 .hero-dog{position:absolute;z-index:3;left:var(--gutter);bottom:clamp(6px,1vw,14px);width:clamp(72px,7vw,120px);pointer-events:none}
 .js body:has(.preloader) .hero-dog{visibility:hidden}
-.hero-dog .w-body{transform-origin:50% 100%;animation:wBreathe 2.6s ease-in-out infinite}
-.hero-dog .w-head{transform-origin:50% 70%;animation:wTilt 5s ease-in-out infinite}
-.hero-dog .w-tail{animation-duration:.5s}
-@keyframes wBreathe{0%,100%{transform:scale(1)}50%{transform:scale(1.015,1.025)}}
-@keyframes wTilt{0%,60%,100%{transform:rotate(0)}70%,85%{transform:rotate(-7deg)}}
+.hero-dog .walter{transform-origin:50% 100%;animation:wBreathe 2.6s ease-in-out infinite}
+@keyframes wBreathe{0%,100%{transform:scale(1)}50%{transform:scale(1.012,1.03)}}
 
 .pl-pct{font-family:'Space Mono',ui-monospace,monospace;font-size:14px;letter-spacing:.12em;color:var(--brown);font-variant-numeric:tabular-nums;transition:opacity .3s}
 .pl-logo{
