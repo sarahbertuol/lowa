@@ -64,7 +64,11 @@ p{margin:0}
   border:1.5px solid var(--blue);color:var(--blue);text-decoration:none;font-weight:500;font-size:15px;
   background:transparent;transition:background .3s,color .3s,transform .3s;cursor:pointer;font-family:inherit;
 }
-.btn-ghost:hover{background:var(--blue);color:#FBF7F1;transform:translateY(-2px)}
+/* Same sweep as the primary button: a fill slides in from the left, the text flips to a high-contrast colour */
+.btn-ghost{position:relative;overflow:hidden;isolation:isolate;--sweep:var(--blue);--sweep-ink:#FBF7F1}
+.btn-ghost::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--sweep);border-radius:inherit;transform:translateX(-101%);transition:transform .5s var(--ease)}
+.btn-ghost:hover{color:var(--sweep-ink);transform:translateY(-2px)}
+.btn-ghost:hover::before{transform:translateX(0)}
 .btn-ghost .dot{width:8px;height:8px;border-radius:50%;background:var(--blue);transition:transform .3s,background .3s}
 .btn-ghost:hover .dot{transform:scale(1.6);background:var(--butter)}
 
@@ -270,7 +274,8 @@ p{margin:0}
 .plan li::before{content:"→ ";color:var(--blue);font-weight:500}
 .plan.feat li::before{color:var(--butter)}
 .plan.feat .btn-ghost{color:var(--butter);border-color:var(--butter)}
-.plan.feat .btn-ghost:hover{background:var(--butter);color:var(--brown)}
+.plan.feat .btn-ghost{--sweep:var(--butter);--sweep-ink:var(--brown)}
+.plan.feat .btn-ghost:hover .dot{background:var(--brown)}
 
 /* Footer */
 footer.site{padding-block:48px 40px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;color:var(--muted);font-size:14px}
