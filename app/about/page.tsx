@@ -30,11 +30,11 @@ export default function AboutPage() {
 
       <section className="band" style={{ paddingTop: 48 }}>
         <div className="cards" style={{ gridTemplateColumns: "1fr 1fr" }}>
-          <Reveal className="person">
+          <Reveal className="person photo sarah">
             <small>Co-founder · Projects</small>
             <strong>Sarah Bertuol</strong>
           </Reveal>
-          <Reveal delay={1} className="person b">
+          <Reveal delay={1} className="person b photo marco">
             <small>Co-founder</small>
             <strong>Marco</strong>
           </Reveal>

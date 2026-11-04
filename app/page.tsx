@@ -381,11 +381,11 @@ export default function HomePage() {
             </div>
           </Reveal>
           <div className="people">
-            <Reveal className="person">
+            <Reveal className="person photo sarah">
               <small>Co-founder</small>
               <strong>Sarah Bertuol</strong>
             </Reveal>
-            <Reveal delay={1} className="person b">
+            <Reveal delay={1} className="person b photo marco">
               <small>Co-founder</small>
               <strong>Marco</strong>
             </Reveal>

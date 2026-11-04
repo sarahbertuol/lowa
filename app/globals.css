@@ -244,6 +244,10 @@ p{margin:0}
 .person.b{background:linear-gradient(170deg,#86B6C6,#2F4A55);margin-top:44px}
 .person small{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;opacity:.85}
 .person strong{font-family:'Instrument Serif',serif;font-weight:400;font-size:30px;line-height:1.05}
+/* Founder photos: a dark fade at the bottom keeps the cream name readable */
+.person.photo{background-color:#2B1A12;background-size:cover;background-position:center 18%}
+.person.photo.sarah{background-image:linear-gradient(180deg,rgba(28,14,8,0) 45%,rgba(28,14,8,.78)),url(/team/sarah-bertuol.webp)}
+.person.photo.marco{background-image:linear-gradient(180deg,rgba(28,14,8,0) 45%,rgba(28,14,8,.78)),url(/team/marco.webp)}
 
 /* Contact and form */
 .contact{background:var(--butter);border-radius:36px;padding:clamp(40px,7vw,80px);margin-top:clamp(40px,6vw,64px)}
