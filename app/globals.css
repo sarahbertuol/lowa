@@ -252,7 +252,9 @@ footer.site{padding-block:48px 40px;display:flex;justify-content:space-between;g
   .nav .btn{display:none}
   .hero-photos{display:none}
   .hero h1{font-size:50px}
-  .mark{font-size:24vw;margin-top:36px}
+  .mark{font-size:22.5vw;margin-top:36px}
+  .card-img{padding:14px;min-height:0}
+  .white{padding:26px 22px}
   .hero .cta-row{flex-direction:column;width:100%}
   .hero .cta-row .btn,.hero .cta-row .btn-ghost{width:100%;justify-content:center;box-sizing:border-box}
   .cases,.svc-list{grid-template-columns:1fr}
