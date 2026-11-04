@@ -22,7 +22,7 @@ function textRect(el: Element) {
   return range.getBoundingClientRect();
 }
 
-const ease = (t: number) => (t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2);
+const ease = (t: number) => -(Math.cos(Math.PI * t) - 1) / 2; // gentle in and out
 const clamp01 = (v: number) => Math.min(1, Math.max(0, v));
 
 export default function Nav() {
@@ -45,7 +45,10 @@ export default function Nav() {
     let from = { cx: 0, cy: 0, w: 0 };
     let to = { cx: 0, cy: 0, w: 0 };
     const measure = () => {
-      range = Math.max(160, Math.min(window.innerHeight * 0.4, 420));
+      // A long stretch of scroll for the flight, but it must land while the hero (which clips it) is on screen.
+      const hero = mark?.closest(".hero") as HTMLElement | null;
+      const room = hero ? hero.offsetHeight - 120 : 420;
+      range = Math.max(220, Math.min(window.innerHeight * 0.9, room));
       if (!mark) return;
       const prevMark = mark.style.transform;
       const prevHeader = header.style.transform;
@@ -66,15 +69,23 @@ export default function Nav() {
 
     let lastY = window.scrollY;
     let frame = 0;
-    const update = () => {
+    let smooth = -1; // eased copy of the scroll progress, so the logo glides instead of snapping
+    let lastT = 0;
+    const update = (now = performance.now()) => {
       frame = 0;
       const y = window.scrollY;
       const dy = y - lastY;
       lastY = y;
+      const dt = lastT ? Math.min(64, now - lastT) : 16;
+      lastT = now;
 
       // 1. On Home, the giant wordmark shrinks into the nav logo over the first scroll.
       if (mark && from.w > 0) {
-        const p = clamp01(y / range);
+        const target = clamp01(y / range);
+        smooth = smooth < 0 || reduced ? target : smooth + (target - smooth) * (1 - Math.exp(-dt / 180));
+        if (Math.abs(target - smooth) < 0.0015) smooth = target;
+        else if (!frame) frame = requestAnimationFrame(update);
+        const p = smooth;
         const fade = clamp01((p - 0.9) / 0.1); // short cross-fade once they overlap
         logo.style.opacity = String(fade);
         logo.style.visibility = fade > 0 ? "visible" : "hidden";
@@ -107,7 +118,10 @@ export default function Nav() {
       }
     };
     const onScroll = () => {
-      if (!frame) frame = requestAnimationFrame(update);
+      if (!frame) {
+        lastT = performance.now();
+        frame = requestAnimationFrame(update);
+      }
     };
     const onResize = () => {
       measure();
