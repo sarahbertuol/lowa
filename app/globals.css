@@ -100,11 +100,12 @@ p{margin:0}
 
 /* Ticker */
 .ticker{background:var(--cream);color:var(--brown);overflow:hidden;white-space:nowrap;padding:16px 0;border-bottom:1px solid var(--line)}
-.ticker-track{display:inline-flex;gap:18px;animation:tick 30s linear infinite;padding-left:18px}
+/* Two identical groups; moving the track by exactly one group (-50%) makes the loop seamless */
+.ticker-track{display:inline-flex;width:max-content;animation:tick 40s linear infinite;will-change:transform}
+.ticker-group{display:inline-flex;flex:none;gap:18px;padding-right:18px}
 .ticker-track span{display:inline-flex;align-items:center;gap:18px;font-size:15px}
 .ticker-track span::after{content:"+";color:var(--blue);font-weight:500}
-.ticker:hover .ticker-track{animation-play-state:paused}
-@keyframes tick{to{transform:translateX(-50%)}}
+@keyframes tick{from{transform:translate3d(0,0,0)}to{transform:translate3d(-50%,0,0)}}
 
 /* Intro and frames */
 .intro{display:grid;grid-template-columns:.9fr 1.1fr;gap:clamp(32px,5vw,72px);align-items:center}
@@ -113,8 +114,10 @@ p{margin:0}
 .frame .inner strong{font-family:'Instrument Serif',serif;font-weight:400;font-size:30px;line-height:1.05;display:block}
 .frame .inner span{font-size:14px;color:var(--muted)}
 /* Browser window with a looping recording of a delivered site. The card and the stamp sit on top */
-.frame .inner{position:relative;z-index:2}
-.frame .stamp{z-index:3}
+/* The card hangs off the bottom-left corner and the stamp off the top-right corner of the frame */
+.frame{overflow:visible;--hang:clamp(12px,2.6vw,36px)}
+.frame .inner{position:absolute;z-index:2;left:calc(-1 * var(--hang));bottom:calc(-1 * var(--hang));width:min(300px,calc(100% - 24px));box-sizing:border-box}
+.frame .stamp{z-index:3;top:calc(-1 * var(--hang));right:calc(-1 * var(--hang));bottom:auto}
 .browser{position:absolute;z-index:1;left:10%;top:11%;width:80%;margin:0;border-radius:12px;overflow:hidden;background:#FBF7F1;box-shadow:0 30px 60px -30px rgba(10,30,40,.7),0 0 0 1px rgba(255,255,255,.14)}
 .browser-bar{height:28px;display:flex;align-items:center;gap:6px;padding:0 4px 0 11px;background:#F1E9DE;border-bottom:1px solid #E2D6C6}
 .browser-bar i{width:8px;height:8px;border-radius:50%;background:#D6C7B6;flex:none}
