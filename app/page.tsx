@@ -283,6 +283,50 @@ export default function HomePage() {
               </div>
             </Reveal>
           ))}
+          {[
+            {
+              tag: "Finance",
+              name: "Geraldo Búrigo",
+              url: "https://geraldoburigo.com/",
+              host: "geraldoburigo.com",
+              img: "/work/geraldoburigo.webp",
+              pos: "top",
+              text: "An editorial site for an independent investment advisor, built around a clear path to the first meeting.",
+            },
+            {
+              tag: "Event",
+              name: "Bruna Fagundes",
+              url: "https://www.brunafagundes.com.br/",
+              host: "brunafagundes.com.br",
+              img: "/work/brunafagundes.webp",
+              pos: "center 30%",
+              text: "A hand-illustrated invitation site for a law graduation, with RSVP and gift list in one place.",
+            },
+          ].map((c, i) => (
+            <Reveal key={c.name} delay={(i + 1) as 1 | 2 | 3} as="article" className="case wide">
+              <div className="shot photo">
+                {/* eslint-disable-next-line @next/next/no-img-element -- static screenshot, sized by CSS */}
+                <img
+                  src={c.img}
+                  alt={`Home page of ${c.host}`}
+                  width={1120}
+                  height={700}
+                  loading="lazy"
+                  decoding="async"
+                  style={{ objectPosition: c.pos }}
+                />
+              </div>
+              <div className="body">
+                <span className="mono">{c.tag}</span>
+                <h3>{c.name}</h3>
+                <p>{c.text}</p>
+                <a className="case-link" href={c.url} target="_blank" rel="noopener noreferrer">
+                  Visit {c.host} <span aria-hidden="true">↗</span>
+                  <span className="sr-only"> (opens in a new tab)</span>
+                </a>
+              </div>
+            </Reveal>
+          ))}
         </div>
       </section>
 
