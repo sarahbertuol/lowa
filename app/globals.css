@@ -289,7 +289,7 @@ html.pl-lock{overflow:hidden}
 .pl-stage{position:relative;width:clamp(100px,9vw,130px);padding-top:100px}
 .pl-walter{position:relative;z-index:2;transform-origin:50% 50%}
 .walter{display:block;width:100%;height:auto;overflow:visible}
-.pl-ball{position:absolute;z-index:1;left:calc(50% - 10px);top:100px;width:20px;height:20px;border-radius:50%;background:var(--blue);box-shadow:inset -4px -4px 0 rgba(0,0,0,.15);animation:wBall .9s infinite;transition:opacity .25s}
+.pl-ball{position:absolute;z-index:3;transform-origin:50% 100%;left:calc(50% - 10px);top:100px;width:20px;height:20px;border-radius:50%;background:var(--blue);box-shadow:inset -4px -4px 0 rgba(0,0,0,.15);animation:wBall .9s infinite;transition:opacity .25s}
 .preloader.leaving .pl-ball,.preloader.leaving .pl-pct{opacity:0}
 
 .walter{user-select:none;-webkit-user-drag:none}
@@ -303,9 +303,10 @@ html.pl-lock{overflow:hidden}
   50%{transform:translateY(-34px) scale(.99,1.02);animation-timing-function:cubic-bezier(.6,0,.8,.3)}
   88%{transform:translateY(0) scale(1)}
 }
+/* The ball bottoms out on top of his head, which is about 55px above the resting spot at the peak of his jump */
 @keyframes wBall{
-  0%,100%{transform:translateY(-92px);animation-timing-function:cubic-bezier(.6,0,.8,.3)}
-  50%{transform:translateY(-4px) scale(1.08,.92);animation-timing-function:cubic-bezier(.2,.7,.4,1)}
+  0%,100%{transform:translateY(-118px);animation-timing-function:cubic-bezier(.6,0,.8,.3)}
+  50%{transform:translateY(-55px) scale(1.12,.88);animation-timing-function:cubic-bezier(.2,.7,.4,1)}
 }
 
 /* Walter's spot in the hero, where he lands and stays */
