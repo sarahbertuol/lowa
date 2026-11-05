@@ -90,7 +90,7 @@ export default function HomePage() {
           </div>
           <div className="hp hp2">
             <small>Client site · About</small>
-            <LoopClip src="/fun/cat-typing" className="hp-media" />
+            <LoopClip src="/fun/finger-guns" className="hp-media" />
             <small>Fixed price</small>
           </div>
         </div>
