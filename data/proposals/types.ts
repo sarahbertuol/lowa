@@ -43,7 +43,8 @@ export type Proposal = {
   readonly pagespeed: {
     readonly mobile: PsiScores;
     readonly desktop: PsiScores;
-    readonly prints: { readonly mobile: string; readonly desktop: string };
+    /** Kept in the data for reference; not shown on the page. */
+    readonly prints?: { readonly mobile: string; readonly desktop: string };
   };
   readonly insights: readonly { readonly tipo: InsightTipo; readonly titulo: string; readonly texto: string }[];
   readonly melhorias: readonly string[];

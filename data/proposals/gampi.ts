@@ -13,8 +13,8 @@ export const proposal = {
 
   autora: {
     nome: "Sarah Bertuol",
-    empresa: "Walter Web Works",
-    whatsapp: "5551999999999", // TODO: número real, somente dígitos com DDI
+    empresa: "LoWa Studio",
+    whatsapp: "5554981490779",
     mensagemWhatsapp:
       "Oi Sarah, vi a proposta da Gampi e quero conversar sobre os próximos passos!",
     linkAgenda: "", // opcional
@@ -108,7 +108,7 @@ export const proposal = {
     // Grupo: "agencias" (Para vender aos seus clientes)
     { id: "white-label", grupo: "agencias", titulo: "Produção white label", descricao: "Sites para os clientes da agência, com a marca da agência.", match: true },
     { id: "entrega-rapida", grupo: "agencias", titulo: "Entrega rápida para agências", descricao: "Prazos curtos para a agência fechar e entregar sem atraso.", match: true },
-    { id: "operacao-webflow", grupo: "agencias", titulo: "Operação técnica Webflow", descricao: "A WWW executa, a agência mantém o relacionamento com o cliente.", match: true },
+    { id: "operacao-webflow", grupo: "agencias", titulo: "Operação técnica Webflow", descricao: "A LoWa Studio executa, a agência mantém o relacionamento com o cliente.", match: true },
     { id: "auditoria-venda", grupo: "agencias", titulo: "Auditoria de performance como ferramenta de venda", descricao: "Um diagnóstico como o desta proposta, aplicado aos clientes da agência.", match: true },
     { id: "automacao-agencia", grupo: "agencias", titulo: "Automações com IA para a agência", descricao: "Processos internos e entregas mais rápidas.", match: false },
   ],
@@ -122,7 +122,7 @@ export const proposal = {
     },
     {
       titulo: "Venda sites rápidos com a sua marca",
-      texto: "Sites em Webflow produzidos pela WWW e entregues com a marca da Gampi. Você fica com o cliente, a entrega fica com a gente.",
+      texto: "Sites em Webflow produzidos pela LoWa Studio e entregues com a marca da Gampi. Você fica com o cliente, a entrega fica com a gente.",
     },
     {
       titulo: "Ofereça manutenção e performance contínua",

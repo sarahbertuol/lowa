@@ -36,13 +36,32 @@
 .pp h3{font-size:20px;line-height:1.25;font-weight:500}
 
 /* Hero */
-.pp-hero{background:var(--accent);color:var(--on-accent);padding:clamp(56px,10vw,132px) var(--pg) clamp(64px,11vw,140px)}
+.pp-hero{
+  position:relative;isolation:isolate;overflow:hidden;color:var(--on-accent);
+  padding:clamp(96px,12vw,168px) var(--pg) clamp(150px,13vw,170px);
+  /* Texture: soft light and shade over the client colour, plus a fine grain layer below */
+  background:
+    radial-gradient(120% 90% at 85% 0%,rgba(255,255,255,.22),transparent 55%),
+    radial-gradient(90% 80% at 0% 100%,rgba(58,30,18,.22),transparent 60%),
+    var(--accent);
+}
+.pp-hero::before{
+  content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;opacity:.32;mix-blend-mode:multiply;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .23 0 0 0 0 .12 0 0 0 0 .07 0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+.pp-brand{position:absolute;top:clamp(24px,3.5vw,40px);left:50%;transform:translateX(-50%);margin:0;font-family:'Instrument Serif',Georgia,serif;font-size:clamp(24px,2.4vw,30px);line-height:1;letter-spacing:-.01em;white-space:nowrap;color:var(--on-accent)}
+.pp-brand em{font-style:italic}
+.pp-hero-dog{position:absolute;z-index:1;right:var(--pg);bottom:0;width:clamp(104px,11vw,168px);pointer-events:none}
+.pp-hero-dog picture{display:block}
+.pp-hero-dog .walter{transform-origin:50% 100%;animation:wBreathe 2.6s ease-in-out infinite}
+.pp-hero-inner{position:relative;z-index:2}
 .pp-hero :focus-visible{outline-color:var(--on-accent)}
 .pp-hero-inner{max-width:900px}
 .pp-logo{display:inline-flex;align-items:center;min-height:56px;padding:10px 20px;border-radius:999px;background:#FFFBF5;color:var(--ink);margin-bottom:clamp(40px,7vw,80px)}
 .pp-logo img{height:36px;width:auto;max-width:180px;object-fit:contain}
 .pp-logo-text{font-family:'Instrument Serif',Georgia,serif;font-size:26px;line-height:1;letter-spacing:-.01em}
-.pp-hero h1{font-size:clamp(46px,9vw,124px);line-height:.98;color:inherit}
+/* White H1 on the client colour: AA for large text (3:1 and up), the H1 is never under 46px */
+.pp-hero h1{font-size:clamp(46px,9vw,124px);line-height:.98;color:#FFFFFF}
 .pp-hero-sub{margin-top:clamp(20px,3vw,32px);font-size:clamp(17px,2vw,21px);font-weight:400}
 .pp-hero-meta{display:flex;flex-wrap:wrap;gap:8px 20px;margin-top:20px}
 .pp .pp-hero-meta{color:inherit}
@@ -84,9 +103,9 @@
 .pp-metrics div{border-top:1px solid var(--rule);padding-top:10px}
 .pp-metrics dt{font-size:13px;color:var(--soft)}
 .pp-metrics dd{margin:2px 0 0;font-size:20px;font-weight:500}
-.pp-print{margin:0;border-radius:var(--radius-lg);overflow:hidden;border:1px solid var(--rule);background:var(--surface)}
-.pp-print img{width:100%;height:auto}
-.pp-print-empty{min-height:240px;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:24px;text-align:center;color:var(--soft);background:repeating-linear-gradient(135deg,transparent 0 14px,rgba(122,90,76,.06) 14px 15px)}
+.pp-source{align-self:end;max-width:360px;border-left:2px solid var(--accent-line);padding:4px 0 4px 18px;font-size:15px;color:var(--soft)}
+.pp-source .mono{margin-bottom:6px}
+@media (min-width:900px){.pp-psi-panel{grid-template-columns:minmax(0,1.6fr) minmax(0,.9fr)}}
 
 /* Insights */
 .pp-insights{list-style:none;margin:0;padding:0;display:grid;gap:16px}

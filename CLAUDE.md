@@ -43,7 +43,7 @@ Static marketing site for LoWa Studio, a US-only production studio that sells AI
 
 ## Contexto de negócio
 
-- Foco do site: vender para AGÊNCIAS. A agência parceira usa a Walter Web Works (WWW) para criar sites para os clientes dela.
+- Foco do site: vender para AGÊNCIAS. A agência parceira usa a LoWa Studio para criar sites para os clientes dela.
 - A proposta mostra primeiro o que já foi feito no site da agência (ex.: Gampi) e depois as soluções que a agência pode vender aos próprios clientes.
 - Propostas ficam em /proposal/[slug]. Não aparecem no menu, não têm links de entrada, usam noindex/nofollow e são excluídas do robots.txt.
 - Novo cliente = novo arquivo em data/proposals/[slug].ts. Nunca criar uma página nova por cliente.
@@ -55,6 +55,8 @@ Static marketing site for LoWa Studio, a US-only production studio that sells AI
 
 - Página: `app/proposal/[slug]/page.tsx` (fora do grupo `app/(site)`, por isso sem header e footer do site). Estilos em `app/proposal/proposal.css`.
 - Dados: `data/proposals/[slug].ts` exporta `proposal` (formato em `data/proposals/types.ts`). As páginas são geradas a partir dos arquivos dessa pasta, então basta duplicar `gampi.ts` e trocar o `slug`.
-- Assets em `public/proposals/[slug]/` (logo.svg, psi-mobile.png, psi-desktop.png). Se faltar algum, a página mostra um placeholder no lugar.
+- Logo do cliente em `public/proposals/[slug]/logo.svg`. Se faltar, a página mostra o nome do cliente no lugar.
 - A cor primária do cliente vira acento; `lib/proposal-color.ts` ajusta os tons para manter contraste AA.
-- Pendências da Gampi: logo e prints do PSI, laranja exato, número real do WhatsApp, nome do contato, métricas LCP/CLS/TBT/FCP.
+- Marca: tudo é LoWa Studio (não usar Walter Web Works nem WWW).
+- Os prints do PSI não aparecem na página: no lugar, um aviso com a data da medição.
+- Pendências da Gampi: logo, laranja exato, nome do contato, métricas LCP/CLS/TBT/FCP.

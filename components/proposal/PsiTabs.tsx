@@ -8,7 +8,7 @@ type Tab = "mobile" | "desktop";
 type Props = {
   mobile: PsiScores;
   desktop: PsiScores;
-  prints: { mobile: string | null; desktop: string | null };
+  dataMedicao: string;
   site: string;
 };
 
@@ -57,7 +57,7 @@ function Ring({ score, label }: { score: number; label: string }) {
   );
 }
 
-export default function PsiTabs({ mobile, desktop, prints, site }: Props) {
+export default function PsiTabs({ mobile, desktop, dataMedicao, site }: Props) {
   const [active, setActive] = useState<Tab>("mobile");
   const [animated, setAnimated] = useState<Tab[]>([]);
   const [seen, setSeen] = useState(false);
@@ -140,7 +140,6 @@ export default function PsiTabs({ mobile, desktop, prints, site }: Props) {
       {TABS.map((t) => {
         const d = data[t.id];
         const metricas = METRICAS.filter((m) => (d[m.key] ?? "").trim() !== "");
-        const print = prints[t.id];
         return (
           <div
             key={t.id}
@@ -172,22 +171,13 @@ export default function PsiTabs({ mobile, desktop, prints, site }: Props) {
                 <span className="is-bom">90 a 100</span>
               </p>
             </div>
-            <figure className="pp-print">
-              {print ? (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
-                  src={print}
-                  alt={`Relatório do PageSpeed Insights de ${site} no ${t.label.toLowerCase()}`}
-                  loading="lazy"
-                  decoding="async"
-                />
-              ) : (
-                <div className="pp-print-empty">
-                  <span className="mono">Print do PageSpeed ({t.label.toLowerCase()})</span>
-                  <span>Imagem pendente</span>
-                </div>
-              )}
-            </figure>
+            <aside className="pp-source">
+              <p className="mono">Fonte</p>
+              <p>
+                Dados extraídos do Google PageSpeed Insights para {site} em {dataMedicao}, versão{" "}
+                {t.id === "mobile" ? "celular" : "computador"}.
+              </p>
+            </aside>
           </div>
         );
       })}

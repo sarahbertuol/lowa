@@ -4,6 +4,7 @@ import type { CSSProperties, ReactNode } from "react";
 import type { Metadata, Viewport } from "next";
 import { notFound } from "next/navigation";
 import Reveal from "@/components/Reveal";
+import Walter from "@/components/Walter";
 import PsiTabs from "@/components/proposal/PsiTabs";
 import { getProposal, proposalSlugs } from "@/data/proposals";
 import type { InsightTipo, Servico } from "@/data/proposals/types";
@@ -123,13 +124,18 @@ export default async function ProposalPage({ params }: Params) {
   } as CSSProperties;
 
   const logo = publicAsset(p.cliente.logo);
-  const prints = { mobile: publicAsset(p.pagespeed.prints.mobile), desktop: publicAsset(p.pagespeed.prints.desktop) };
   const whatsappHref = `https://wa.me/${p.autora.whatsapp.replace(/\D/g, "")}?text=${encodeURIComponent(p.autora.mensagemWhatsapp)}`;
   const agenda = (p.autora.linkAgenda ?? "").trim();
 
   return (
     <div className="pp" lang="pt-BR" style={vars}>
       <header className="pp-hero">
+        <p className="pp-brand" aria-label="LoWa Studio">
+          LoWa <em>Studio</em>
+        </p>
+        <div className="pp-hero-dog">
+          <Walter />
+        </div>
         <div className="pp-hero-inner">
           <div className="pp-logo">
             {logo ? (
@@ -159,11 +165,8 @@ export default async function ProposalPage({ params }: Params) {
             <h2 id="sec-psi">
               Diagnóstico <em>PageSpeed</em>
             </h2>
-            <p className="pp-intro">
-              Índices do Google PageSpeed Insights para {p.cliente.site}, medidos em {p.dataMedicao}.
-            </p>
           </Reveal>
-          <PsiTabs mobile={p.pagespeed.mobile} desktop={p.pagespeed.desktop} prints={prints} site={p.cliente.site} />
+          <PsiTabs mobile={p.pagespeed.mobile} desktop={p.pagespeed.desktop} dataMedicao={p.dataMedicao} site={p.cliente.site} />
         </section>
 
         <section className="pp-sec" aria-labelledby="sec-insights">
