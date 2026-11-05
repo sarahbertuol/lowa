@@ -6,6 +6,7 @@ import ProcessProgress from "@/components/ProcessProgress";
 import Preloader from "@/components/Preloader";
 import Walter from "@/components/Walter";
 import BrowserVideo from "@/components/BrowserVideo";
+import LoopClip from "@/components/LoopClip";
 
 type Case = {
   tag: string;
@@ -84,6 +85,7 @@ export default function HomePage() {
         <div className="hero-photos" aria-hidden="true">
           <div className="hp hp1">
             <small>Client site · Home</small>
+            <LoopClip src="/fun/cat-typing" className="hp-media" />
             <small>24h to live</small>
           </div>
           <div className="hp hp2">
