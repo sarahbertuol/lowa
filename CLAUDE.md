@@ -12,7 +12,7 @@ Static marketing site for LoWa Studio, a US-only production studio that sells AI
 ## Tokens (keep in sync if you extract them)
 - sunset #EDB08A, cream #F7F0E6, paper #FFFFFF, butter #F4DFA4, brown #4A2415, sky #B5D6DF, ink #3A1E12, muted #7A5A4C, blue #2F6F86, line #E7D6C6.
 - Calls to action: blue. Primary is a blue pill with butter sweep on hover. Secondary is a blue outlined pill.
-- Light theme only. Do not add dark mode without approval.
+- Light theme only on the main site. Do not add dark mode there without approval. (Exception approved in the proposal brief: /proposal/[slug] follows prefers-color-scheme.)
 
 ## Tasks, in order
 1. Done: Next.js structure, tokens in `app/globals.css`. Next: review on mobile and tighten spacing.
@@ -40,3 +40,21 @@ Static marketing site for LoWa Studio, a US-only production studio that sells AI
 - Free hosting condition (for the footnote).
 - Briefing form destination (email, CRM or form service).
 - Domain: lowastudio.com availability (to check manually) and trademark search for LoWa Studio (US classes 35 and 42) before launch.
+
+## Contexto de negócio
+
+- Foco do site: vender para AGÊNCIAS. A agência parceira usa a Walter Web Works (WWW) para criar sites para os clientes dela.
+- A proposta mostra primeiro o que já foi feito no site da agência (ex.: Gampi) e depois as soluções que a agência pode vender aos próprios clientes.
+- Propostas ficam em /proposal/[slug]. Não aparecem no menu, não têm links de entrada, usam noindex/nofollow e são excluídas do robots.txt.
+- Novo cliente = novo arquivo em data/proposals/[slug].ts. Nunca criar uma página nova por cliente.
+- A lista "servicos" com o campo "match" decide o que é destacado para cada cliente.
+- Nunca usar travessão (—) em nenhum texto da interface. Usar vírgula, dois-pontos ou parênteses.
+- Textos em português com acentuação correta.
+
+## Propostas: como funciona no código
+
+- Página: `app/proposal/[slug]/page.tsx` (fora do grupo `app/(site)`, por isso sem header e footer do site). Estilos em `app/proposal/proposal.css`.
+- Dados: `data/proposals/[slug].ts` exporta `proposal` (formato em `data/proposals/types.ts`). As páginas são geradas a partir dos arquivos dessa pasta, então basta duplicar `gampi.ts` e trocar o `slug`.
+- Assets em `public/proposals/[slug]/` (logo.svg, psi-mobile.png, psi-desktop.png). Se faltar algum, a página mostra um placeholder no lugar.
+- A cor primária do cliente vira acento; `lib/proposal-color.ts` ajusta os tons para manter contraste AA.
+- Pendências da Gampi: logo e prints do PSI, laranja exato, número real do WhatsApp, nome do contato, métricas LCP/CLS/TBT/FCP.

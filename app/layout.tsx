@@ -1,7 +1,5 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
-import Nav from "@/components/Nav";
-import Footer from "@/components/Footer";
 
 const SITE = "https://www.lowastudio.com";
 
@@ -50,11 +48,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
       </head>
       <body>
-        <div className="wrap">
-          <Nav />
-          {children}
-          <Footer />
-        </div>
+        {children}
       </body>
     </html>
   );
