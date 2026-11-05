@@ -60,3 +60,4 @@ Static marketing site for LoWa Studio, a US-only production studio that sells AI
 - Marca: tudo é LoWa Studio (não usar Walter Web Works nem WWW).
 - Os prints do PSI não aparecem na página: no lugar, um aviso com a data da medição.
 - Pendências da Gampi: logo, laranja exato, nome do contato, métricas LCP/CLS/TBT/FCP.
+- Hero das propostas: cena do Walter brincando com a bolinha (`components/proposal/WalterScene.tsx`, CSS "Walter scene" em `proposal.css`). Quadros em `public/walter/scene/`: watch = pose 03 do pacote, run e mouth = poses novas enviadas pela Sarah em 05/11/2026, todas espelhadas para olhar para a esquerda.
