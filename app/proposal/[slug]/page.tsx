@@ -133,8 +133,18 @@ export default async function ProposalPage({ params }: Params) {
         <p className="pp-brand" aria-label="LoWa Studio">
           LoWa <em>Studio</em>
         </p>
-        <div className="pp-hero-dog">
-          <Walter />
+        <div className="pp-hero-dog" aria-hidden="true">
+          <span className="pp-ball-shadow" />
+          <span className="pp-ball">
+            <svg viewBox="0 0 40 40" focusable="false">
+              <circle cx="20" cy="20" r="19" fill="#2F6F86" />
+              <path d="M3.5 13.5C12 17 14 26 9.5 35.5M36.5 26.5C28 23 26 14 30.5 4.5" fill="none" stroke="#F4DFA4" strokeWidth="3.2" strokeLinecap="round" />
+              <ellipse cx="13" cy="11" rx="5" ry="3" fill="#FFFFFF" opacity=".28" transform="rotate(-30 13 11)" />
+            </svg>
+          </span>
+          <div className="pp-dog">
+            <Walter />
+          </div>
         </div>
         <div className="pp-hero-inner">
           <div className="pp-logo">
