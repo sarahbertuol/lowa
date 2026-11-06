@@ -1,0 +1,39 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Familjen+Grotesk:wght@400;500;600&family=Space+Mono:wght@400;700&display=block" rel="stylesheet">
+<style>
+:root{--sunset:#EDB08A;--cream:#F7F0E6;--paper:#FFFFFF;--butter:#F4DFA4;--brown:#4A2415;--sky:#B5D6DF;--ink:#3A1E12;--muted:#7A5A4C;--blue:#2F6F86;--line:#E7D6C6}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:transparent}
+.slide{width:1080px;height:1350px;position:relative;overflow:hidden;background:var(--bg,var(--cream));color:var(--fg,var(--ink));font-family:'Familjen Grotesk',sans-serif}
+.serif{font-family:'Instrument Serif',serif;font-weight:400;letter-spacing:-.03em;line-height:.86}
+.it{font-style:italic}
+.mono{font-family:'Space Mono',monospace;text-transform:uppercase;letter-spacing:.14em;font-size:20px}
+.abs{position:absolute}
+.hole{position:absolute}
+.phone{border:13px solid #1B110C;border-radius:56px;box-shadow:0 60px 100px -50px rgba(20,8,3,.6)}
+.browser{border-radius:20px;overflow:hidden;box-shadow:0 60px 100px -50px rgba(20,8,3,.55)}
+.browser .bar{height:44px;display:flex;align-items:center;gap:9px;padding:0 18px;background:#F1E8DD}
+.browser .bar i{width:12px;height:12px;border-radius:50%;background:#D9C6B5}
+.browser .bar span{margin-left:12px;flex:1;height:26px;border-radius:13px;background:#fff;font:15px 'Space Mono',monospace;color:#7A5A4C;display:flex;align-items:center;justify-content:center}
+.browser .screen{width:100%;background:#eee}
+.card{position:absolute;border-radius:16px;overflow:hidden;box-shadow:0 40px 70px -40px rgba(10,4,1,.7)}
+.card img{display:block;width:100%}
+.walter{position:absolute;pointer-events:none}
+.ul{background:linear-gradient(transparent 62%,var(--butter) 62%,var(--butter) 90%,transparent 90%)}
+/* top layer mode: only frames and .top elements are painted */
+.mode-top .slide{background:transparent!important}
+.mode-top .slide *{visibility:hidden}
+.mode-top .slide .top,.mode-top .slide .top *{visibility:visible}
+.mode-top .screen{background:transparent!important}
+</style></head><body>
+<div id="root"></div>
+<script src="posts.js"></script>
+<script>
+const q=new URLSearchParams(location.search);const P=POSTS.find(p=>p.id===q.get('p'));const si=+(q.get('s')||0);
+if(q.get('mode')==='top')document.body.classList.add('mode-top');
+const s=P.slides[si];
+document.getElementById('root').innerHTML=`<div class="slide" style="--bg:${s.bg||'var(--cream)'};--fg:${s.fg||'var(--ink)'};width:${s.w||1080}px">${s.html}</div>`;
+window.holes=()=>[...document.querySelectorAll('[data-src]')].map(el=>{const r=el.getBoundingClientRect();return{src:el.dataset.src,crop:+(el.dataset.crop||0),x:Math.round(r.left),y:Math.round(r.top),w:Math.round(r.width),h:Math.round(r.height)}});
+Promise.all([document.fonts.ready,...[...document.images].map(i=>i.complete?1:new Promise(r=>{i.onload=i.onerror=r}))]).then(()=>setTimeout(()=>window.done=1,200));
+</script></body></html>
