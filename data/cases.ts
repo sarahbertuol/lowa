@@ -3,7 +3,7 @@
  *
  * To add a case: add an object below with one of the categories, a colour for the block
  * (`tone`) and, for a live site, a 1120x700 screenshot in /public/work/ (WebP).
- * The order here is the order on the page. Tabs with no cases show a short empty note.
+ * On the page, cards are sorted by tag (A to Z), then by name. Tabs with no cases show a short empty note.
  */
 
 export const categories = [

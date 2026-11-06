@@ -4,12 +4,15 @@ import { useState } from "react";
 import Reveal from "@/components/Reveal";
 import { cases, categories, type CategoryId } from "@/data/cases";
 
+// Cards follow the alphabetical order of their tag (Baby shower, Consulting, Event...), then the name.
+const sorted = [...cases].sort((x, y) => x.tag.localeCompare(y.tag, "en") || x.name.localeCompare(y.name, "pt"));
+
 const toneClass = { brown: "", sky: " b", butter: " c", sunset: " d" } as const;
 
 /** "Built to convert": filter buttons by type of delivery, then the case cards. */
 export default function WorkGrid() {
   const [active, setActive] = useState<CategoryId | "all">("all");
-  const list = active === "all" ? cases : cases.filter((c) => c.category === active);
+  const list = active === "all" ? sorted : sorted.filter((c) => c.category === active);
   const count = (id: CategoryId | "all") =>
     id === "all" ? cases.length : cases.filter((c) => c.category === id).length;
   const label = categories.find((c) => c.id === active)?.label ?? "All";
