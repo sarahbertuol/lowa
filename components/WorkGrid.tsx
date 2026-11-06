@@ -46,7 +46,7 @@ export default function WorkGrid() {
             const wide = n === 1 || (n % 3 === 2 && i >= n - 2);
             return (
               <Reveal
-                key={c.name}
+                key={c.site?.url ?? c.name}
                 delay={((i % 3) + 1) as 1 | 2 | 3}
                 as="article"
                 className={`case${wide ? " wide" : ""}`}
@@ -64,7 +64,7 @@ export default function WorkGrid() {
                       {/* eslint-disable-next-line @next/next/no-img-element -- static screenshot, sized by CSS */}
                       <img
                         src={c.site.img}
-                        alt={`Home page of ${c.site.host}`}
+                        alt={`Screenshot of ${c.site.host}`}
                         width={1120}
                         height={700}
                         loading="lazy"

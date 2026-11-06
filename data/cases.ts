@@ -28,13 +28,14 @@ export type Case = {
   site?: { url: string; host: string; img: string };
 };
 
-// Wottrich is still a placeholder (no live site yet). Card texts need the clients' OK before launch.
+// Card texts need the clients' OK before launch.
 export const cases: Case[] = [
   {
     name: "Wottrich Advocacia",
     category: "institutional",
     tag: "Legal",
-    text: "A calm, credible site that puts the practice's expertise first.",
+    text: "A sober site for a law practice in Ivoti, with its practice areas and direct links to follow a case in court.",
+    site: { url: "https://www.wottrichadvocacia.com.br/", host: "wottrichadvocacia.com.br", img: "/work/wottrichadvocacia.webp" },
   },
   {
     name: "Simplifique Capital",
@@ -67,5 +68,53 @@ export const cases: Case[] = [
     tone: "sky",
     text: "A hand-illustrated invitation site for a law graduation, with RSVP and gift list in one place.",
     site: { url: "https://www.brunafagundes.com.br/", host: "brunafagundes.com.br", img: "/work/brunafagundes.webp" },
+  },
+  {
+    name: "Eduardo Kayser",
+    category: "institutional",
+    tag: "Consulting",
+    tone: "sky",
+    text: "A site for a management consulting ecosystem, with separate paths for companies and for professionals.",
+    site: { url: "https://www.eduardokayser.com.br/", host: "eduardokayser.com.br", img: "/work/eduardokayser.webp" },
+  },
+  {
+    name: "Envvi",
+    category: "institutional",
+    tag: "Sustainability",
+    tone: "butter",
+    text: "A technical site for an environmental consultancy that organises a long list of climate and risk services.",
+    site: { url: "https://envvi.com.br/", host: "envvi.com.br", img: "/work/envvi.webp" },
+  },
+  {
+    name: "Fernando Kayser",
+    category: "institutional",
+    tag: "Insurance",
+    tone: "sunset",
+    text: "A warm site for a life insurance and estate planning advisor, built around protecting the family.",
+    site: { url: "https://www.fernandokayser.com.br/", host: "fernandokayser.com.br", img: "/work/fernandokayser.webp" },
+  },
+  {
+    name: "Brunch de Fraldas da Lorena",
+    category: "invitations",
+    tag: "Baby shower",
+    tone: "butter",
+    text: "An illustrated save-the-date for a baby shower held in two cities, with the details of each event.",
+    site: { url: "https://convitelorena.vercel.app/", host: "convitelorena.vercel.app", img: "/work/convitelorena.webp" },
+  },
+  {
+    name: "Geraldo Búrigo, links",
+    category: "link-pages",
+    tag: "Finance",
+    tone: "brown",
+    text: "A link page for social bios that sends followers to the consultancy, the e-book and the community.",
+    site: { url: "https://geraldoburigo.com/links", host: "geraldoburigo.com/links", img: "/work/geraldoburigo-links.webp" },
+  },
+  {
+    name: "Simplifique Capital, links",
+    category: "link-pages",
+    tag: "Finance",
+    tone: "sky",
+    text: "A link page that puts WhatsApp, the site and e-mail one tap away.",
+    site: { url: "https://www.simplifiquecapital.com.br/links", host: "simplifiquecapital.com.br/links", img: "/work/simplifiquecapital-links.webp" },
   },
 ];
