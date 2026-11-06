@@ -4,8 +4,13 @@ import { useState } from "react";
 import Reveal from "@/components/Reveal";
 import { cases, categories, type CategoryId } from "@/data/cases";
 
-// Cards follow the alphabetical order of their tag (Baby shower, Consulting, Event...), then the name.
-const sorted = [...cases].sort((x, y) => x.tag.localeCompare(y.tag, "en") || x.name.localeCompare(y.name, "pt"));
+// Featured first; then the alphabetical order of the tag (Baby shower, Consulting, Event...), then the name.
+const sorted = [...cases].sort(
+  (x, y) =>
+    Number(!!y.featured) - Number(!!x.featured) ||
+    x.tag.localeCompare(y.tag, "en") ||
+    x.name.localeCompare(y.name, "pt"),
+);
 
 const toneClass = { brown: "", sky: " b", butter: " c", sunset: " d" } as const;
 
@@ -17,6 +22,8 @@ export default function WorkGrid() {
     id === "all" ? cases.length : cases.filter((c) => c.category === id).length;
   const label = categories.find((c) => c.id === active)?.label ?? "All";
   const n = list.length;
+  const lead = list.filter((c) => c.featured).length; // full-width cards on top
+  const rest = n - lead;
 
   return (
     <>
@@ -46,13 +53,14 @@ export default function WorkGrid() {
         <div className="cases">
           {list.map((c, i) => {
             // Rows of three; a last row of two (or a single card) gets wider cards.
-            const wide = n === 1 || (n % 3 === 2 && i >= n - 2);
+            const j = i - lead; // position among the regular cards
+            const wide = !c.featured && (rest === 1 || (rest % 3 === 2 && j >= rest - 2));
             return (
               <Reveal
                 key={c.site?.url ?? c.name}
                 delay={((i % 3) + 1) as 1 | 2 | 3}
                 as="article"
-                className={`case${wide ? " wide" : ""}`}
+                className={`case${c.featured ? " featured" : wide ? " wide" : ""}`}
               >
                 <div className={`shot${toneClass[c.tone ?? "brown"]}${c.site ? " has-site" : ""}`}>
                   <span className="mono">{c.tag}</span>

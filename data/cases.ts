@@ -3,7 +3,7 @@
  *
  * To add a case: add an object below with one of the categories, a colour for the block
  * (`tone`) and, for a live site, a 1120x700 screenshot in /public/work/ (WebP).
- * On the page, cards are sorted by tag (A to Z), then by name. Tabs with no cases show a short empty note.
+ * On the page, featured cases come first; the rest are sorted by tag (A to Z), then by name. Tabs with no cases show a short empty note.
  */
 
 export const categories = [
@@ -24,12 +24,22 @@ export type Case = {
   /** Block colour behind the screenshot: brown (default), sky, butter or sunset. */
   tone?: "brown" | "sky" | "butter" | "sunset";
   text: string;
+  /** Shown first, across the full width, in All and in its own tab. */
+  featured?: boolean;
   /** Live site. Without it the card shows the name on the coloured block. */
   site?: { url: string; host: string; img: string };
 };
 
 // Card texts need the clients' OK before launch.
 export const cases: Case[] = [
+  {
+    name: "Gampi Casa Criativa",
+    category: "institutional",
+    tag: "Concept",
+    featured: true,
+    text: "A concept we created for Gampi, an advertising and design agency: a bold, story-led site that shows the agency what its own brand could look like online.",
+    site: { url: "https://gampi-site.vercel.app/", host: "gampi-site.vercel.app", img: "/work/gampi.webp" },
+  },
   {
     name: "Wottrich Advocacia",
     category: "institutional",
