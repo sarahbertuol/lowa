@@ -61,3 +61,13 @@ Static marketing site for LoWa Studio, a US-only production studio that sells AI
 - Os prints do PSI não aparecem na página: no lugar, um aviso com a data da medição.
 - Pendências da Gampi: logo, laranja exato, nome do contato, métricas LCP/CLS/TBT/FCP.
 - Hero das propostas: cena do Walter brincando com a bolinha (`components/proposal/WalterScene.tsx`, CSS "Walter scene" em `proposal.css`). Quadros em `public/walter/scene/`: watch = pose 03 do pacote, run e mouth = poses novas enviadas pela Sarah em 05/11/2026, todas espelhadas para olhar para a esquerda.
+
+## Painel privado de rotina (/rotina-k7r2q9)
+
+- Painel pessoal da Sarah (tarefas, pendentes, semana, projetos). Handoff e protótipo em `reference/rotina/` (fonte da verdade para regras e textos).
+- Arquivos: `app/rotina-k7r2q9/page.tsx` (login ou painel), `entrar/route.ts` e `sair/route.ts`, `rotina.css`; lógica em `components/rotina/` (`data.ts` regras e seed, `Tracker.tsx` interface); sessão em `lib/rotina-auth.ts`.
+- Senha só no servidor: variável `PANEL_PASSWORD` (na Vercel e no `.env.local`). Cookie `rt_sess` httpOnly, secure, sameSite strict, 30 dias, assinado com a própria senha (trocar a senha encerra as sessões). Limite de 5 tentativas erradas por IP em 15 min, guardado na memória da função (freio de melhor esforço, não global).
+- Nunca linkar em menu, footer ou sitemap. Noindex por meta e por header `X-Robots-Tag` (next.config). Não colocar no robots.txt (exporia a rota).
+- Dados ficam no localStorage do navegador (`tracker-rotina-v1`), com exportar/importar JSON. Sincronizar celular e desktop exige um banco no servidor: ainda não decidido.
+- E-mails são exemplos. Integração com Gmail (OAuth `gmail.readonly` no servidor) é a próxima etapa.
+- Contraste: alguns tons do handoff não passavam AA. Ajustados: texto secundário #8C7F82 para #706668, terciário informativo para #776C6F, botão #C4525C para #C04F59, chips de status escurecidos. Itens concluídos (riscados) seguem #B4A8AB.

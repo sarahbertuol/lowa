@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#FBF7F5;-webkit-font-smoothing:antialiased}
+a{color:#C4525C;text-decoration:none}a:hover{color:#A8434C}
+*{box-sizing:border-box}
+input,select,button,textarea{font-family:inherit}
+</style>
+</helmet>
+<div style="min-height:100vh;background:#FBF7F5;font-family:'Manrope',system-ui,sans-serif;color:#2B2326;font-size:15px;line-height:1.45">
+<div style="max-width:1180px;margin:0 auto;padding:clamp(22px,4vw,52px) clamp(16px,4vw,48px) 40px;display:flex;flex-direction:column;gap:28px">
+
+<sc-if value="{{ showDash }}" hint-placeholder-val="{{ true }}">
+<div style="display:flex;flex-direction:column;gap:28px">
+<header style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:20px">
+  <div style="display:flex;flex-direction:column;gap:6px;min-width:0">
+    <div style="font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#8C7F82;font-weight:600">{{ dateLabel }}</div>
+    <h1 style="margin:0;font-family:'Instrument Serif',serif;font-weight:400;font-size:clamp(36px,5.4vw,54px);line-height:1.05;letter-spacing:-.01em">{{ greeting }}</h1>
+    <div style="font-family:'Instrument Serif',serif;font-style:italic;font-size:20px;color:#8C7F82">{{ phrase }}</div>
+    <div style="display:flex;align-items:center;gap:10px;margin-top:8px;font-size:14px;font-weight:600">
+      <span style="display:flex;align-items:center;gap:7px"><span style="width:8px;height:8px;border-radius:50%;background:#C4525C"></span>{{ todayCountLabel }}</span>
+      <span style="color:#D6CACC">·</span>
+      <span style="display:flex;align-items:center;gap:7px;color:#8C7F82"><span style="width:8px;height:8px;border-radius:50%;background:#D98E99"></span>{{ pendCountLabel }}</span>
+    </div>
+  </div>
+  <button onClick="{{ openNew }}" style="display:flex;align-items:center;gap:10px;background:#C4525C;color:#fff;border:none;border-radius:999px;padding:14px 24px;font-size:15px;font-weight:600;cursor:pointer;box-shadow:0 10px 24px -10px rgba(196,82,92,.6);min-height:48px" style-hover="background:#B3474F">
+    <span style="font-size:20px;line-height:1;font-weight:400">+</span>Nova tarefa
+  </button>
+</header>
+
+<nav style="display:flex;flex-direction:column;gap:14px">
+  <div style="display:flex;gap:4px;background:#F3E9E7;border-radius:999px;padding:4px;width:fit-content">
+    <sc-for list="{{ tabs }}" as="tb" hint-placeholder-count="2">
+      <button onClick="{{ tb.select }}" style="border:none;border-radius:999px;padding:10px 22px;font-size:14px;font-weight:600;cursor:pointer;min-height:42px;background:{{ tb.bg }};color:{{ tb.color }};box-shadow:{{ tb.shadow }}">{{ tb.label }}</button>
+    </sc-for>
+  </div>
+  <div style="display:flex;gap:22px;border-bottom:1px solid #EFE4E1;min-height:34px;align-items:flex-end">
+    <span style="font-size:13px;font-weight:600;color:#2B2326;padding-bottom:9px;border-bottom:2px solid #D98E99;margin-bottom:-1px">Visão geral</span>
+  </div>
+</nav>
+
+<div style="display:flex;flex-wrap:wrap;gap:24px;align-items:flex-start">
+  <div style="flex:1.6 1 440px;min-width:0;display:flex;flex-direction:column;gap:24px">
+
+    <section style="background:#FFFFFF;border-radius:26px;padding:clamp(18px,3vw,30px);box-shadow:0 1px 2px rgba(43,35,38,.04),0 14px 34px -18px rgba(43,35,38,.12);display:flex;flex-direction:column;gap:10px">
+      <div style="display:flex;align-items:baseline;justify-content:space-between;gap:12px;padding:0 10px 6px">
+        <h2 style="margin:0;font-family:'Instrument Serif',serif;font-weight:400;font-size:32px">Hoje</h2>
+        <span style="font-size:13px;color:#8C7F82;font-weight:500">{{ todayProgress }}</span>
+      </div>
+      <sc-if value="{{ hasToday }}" hint-placeholder-val="{{ true }}">
+        <div style="display:flex;flex-direction:column;gap:2px">
+          <sc-for list="{{ todayList }}" as="t" hint-placeholder-count="3">
+            <div onClick="{{ t.open }}" style="display:flex;align-items:center;gap:14px;padding:12px 10px;border-radius:16px;cursor:pointer;min-height:56px" style-hover="background:#FBF4F3">
+              <button onClick="{{ t.toggle }}" aria-label="Concluir" style="flex:none;width:26px;height:26px;border-radius:9px;border:1.5px solid {{ t.checkBorder }};background:{{ t.checkBg }};display:grid;place-items:center;cursor:pointer;padding:0;color:#fff;font-size:13px;font-weight:700">
+                <sc-if value="{{ t.done }}">✓</sc-if>
+              </button>
+              <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:2px">
+                <div style="font-size:15px;font-weight:500;color:{{ t.titleColor }};text-decoration:{{ t.deco }};overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ t.title }}</div>
+                <sc-if value="{{ t.hasMeta }}"><div style="font-size:13px;color:#8C7F82">{{ t.meta }}</div></sc-if>
+              </div>
+              <span style="flex:none;display:flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:{{ t.prioText }}"><span style="width:7px;height:7px;border-radius:50%;background:{{ t.prioColor }}"></span>{{ t.prioLabel }}</span>
+              <sc-if value="{{ t.isEmail }}"><button onClick="{{ t.toggleEmails }}" aria-label="Mostrar e-mails" style="flex:none;width:32px;height:32px;border-radius:50%;border:1px solid #EFE4E1;background:#FFFFFF;color:#8C7F82;cursor:pointer;font-size:11px;padding:0">{{ t.chevron }}</button></sc-if>
+            </div>
+            <sc-if value="{{ t.showEmails }}">
+              <div style="margin:0 6px 12px 50px;display:flex;flex-direction:column;gap:8px">
+                <sc-for list="{{ t.emails }}" as="em" hint-placeholder-count="3">
+                  <div style="border:1px solid #F1E7E5;border-radius:16px;padding:12px 14px;display:flex;flex-direction:column;gap:10px;background:{{ em.bg }}">
+                    <div style="display:flex;align-items:flex-start;gap:12px">
+                      <button onClick="{{ em.toggle }}" aria-label="Marcar como respondido" style="flex:none;margin-top:2px;width:22px;height:22px;border-radius:7px;border:1.5px solid {{ em.checkBorder }};background:{{ em.checkBg }};display:grid;place-items:center;cursor:pointer;padding:0;color:#fff;font-size:11px;font-weight:700"><sc-if value="{{ em.answered }}">✓</sc-if></button>
+                      <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:2px">
+                        <div style="display:flex;align-items:baseline;gap:8px;min-width:0">
+                          <span style="font-size:13px;font-weight:600;color:#6F6366;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ em.from }}</span>
+                          <span style="flex:none;font-size:12px;color:#B4A8AB">{{ em.received }}</span>
+                        </div>
+                        <div style="font-size:14px;font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:{{ em.subjectColor }};text-decoration:{{ em.deco }}">{{ em.subject }}</div>
+                      </div>
+                      <span style="flex:none;font-size:11px;font-weight:700;padding:4px 9px;border-radius:999px;color:{{ em.urgColor }};background:{{ em.urgBg }}">{{ em.urgLabel }}</span>
+                    </div>
+                    <sc-if value="{{ em.hideSuggestion }}">
+                      <button onClick="{{ em.expand }}" style="align-self:flex-start;margin-left:34px;border:none;background:none;color:#A8434C;font-size:12.5px;font-weight:600;cursor:pointer;padding:2px 0">Ver sugestão de resposta</button>
+                    </sc-if>
+                    <sc-if value="{{ em.showSuggestion }}">
+                      <div style="margin-left:34px;display:flex;flex-direction:column;gap:10px">
+                        <div style="display:flex;flex-direction:column;gap:4px;background:#FBF7F5;border-radius:12px;padding:12px 14px">
+                          <span style="font-size:11px;font-weight:700;letter-spacing:.1em;color:#B4A8AB">SUGESTÃO</span>
+                          <div style="font-size:13.5px;color:#4A3F42;white-space:pre-wrap;text-wrap:pretty">{{ em.suggestion }}</div>
+                        </div>
+                        <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center">
+                          <button onClick="{{ em.copy }}" style="border:1px solid #EBCFD2;background:#FFFFFF;color:#A8434C;border-radius:999px;padding:7px 14px;font-size:12.5px;font-weight:600;cursor:pointer;min-height:36px" style-hover="background:#FFF7F7">Copiar resposta</button>
+                          <a href="{{ em.gmailUrl }}" target="_blank" rel="noopener" style="font-size:12.5px;font-weight:600;padding:7px 4px">Abrir no Gmail ↗</a>
+                          <div style="flex:1"></div>
+                          <button onClick="{{ em.collapse }}" style="border:none;background:none;color:#B4A8AB;font-size:12.5px;cursor:pointer;padding:4px 0">Fechar</button>
+                        </div>
+                      </div>
+                    </sc-if>
+                  </div>
+                </sc-for>
+                <sc-if value="{{ t.hasExamples }}"><div style="font-size:12px;color:#B4A8AB;padding:2px 4px">E-mails de exemplo. Serão substituídos pelos do Gmail quando a conta for conectada.</div></sc-if>
+              </div>
+            </sc-if>
+          </sc-for>
+        </div>
+      </sc-if>
+      <sc-if value="{{ noToday }}" hint-placeholder-val="{{ false }}">
+        <div style="padding:22px 10px 14px;color:#8C7F82;font-size:15px">Nada agendado para hoje. Aproveite o respiro.</div>
+      </sc-if>
+    </section>
+
+    <sc-if value="{{ hasPend }}" hint-placeholder-val="{{ true }}">
+      <section style="background:#FCF2F1;border-radius:26px;padding:clamp(18px,3vw,30px);display:flex;flex-direction:column;gap:10px">
+        <div style="display:flex;flex-direction:column;gap:4px;padding:0 10px 6px">
+          <h2 style="margin:0;font-family:'Instrument Serif',serif;font-weight:400;font-size:28px">Pendentes</h2>
+          <p style="margin:0;font-size:13.5px;color:#8C7F82;text-wrap:pretty">Ficaram de dias anteriores e já seguem com você hoje. Conclua quando puder ou escolha outro dia.</p>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:2px">
+          <sc-for list="{{ pendList }}" as="t" hint-placeholder-count="2">
+            <div onClick="{{ t.open }}" style="display:flex;align-items:center;gap:14px;padding:12px 10px;border-radius:16px;cursor:pointer;min-height:56px" style-hover="background:#F9E8E7">
+              <button onClick="{{ t.toggle }}" aria-label="Concluir" style="flex:none;width:26px;height:26px;border-radius:9px;border:1.5px solid #E2B3B9;background:#FFFFFF;cursor:pointer;padding:0"></button>
+              <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:2px">
+                <div style="font-size:15px;font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ t.title }}</div>
+                <div style="font-size:13px;color:#8C7F82">{{ t.pendMeta }}</div>
+              </div>
+              <button onClick="{{ t.resched }}" style="flex:none;border:1px solid #EBCFD2;background:#FFFFFF;color:#A8434C;border-radius:999px;padding:8px 14px;font-size:13px;font-weight:600;cursor:pointer;min-height:38px" style-hover="background:#FFF7F7">Reagendar</button>
+            </div>
+          </sc-for>
+        </div>
+      </section>
+    </sc-if>
+  </div>
+
+  <section style="flex:1 1 300px;min-width:0;background:#FFFFFF;border-radius:26px;padding:clamp(18px,3vw,30px);box-shadow:0 1px 2px rgba(43,35,38,.04),0 14px 34px -18px rgba(43,35,38,.12);display:flex;flex-direction:column;gap:8px">
+    <div style="display:flex;align-items:baseline;justify-content:space-between;gap:12px;padding-bottom:6px">
+      <h2 style="margin:0;font-family:'Instrument Serif',serif;font-weight:400;font-size:28px">Projetos</h2>
+      <button onClick="{{ newProject }}" style="border:none;background:none;color:#A8434C;font-size:13px;font-weight:600;cursor:pointer;padding:6px 0">+ Projeto</button>
+    </div>
+    <div style="display:flex;flex-direction:column">
+      <sc-for list="{{ projectList }}" as="p" hint-placeholder-count="6">
+        <div onClick="{{ p.open }}" style="display:flex;align-items:center;gap:12px;padding:13px 10px;margin:0 -10px;border-radius:14px;cursor:pointer;border-top:1px solid #F5EDEB" style-hover="background:#FBF4F3">
+          <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:2px">
+            <div style="font-size:15px;font-weight:600">{{ p.name }}</div>
+            <div style="font-size:12.5px;color:{{ p.nextColor }};overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ p.nextText }}</div>
+          </div>
+          <span style="flex:none;font-size:11.5px;font-weight:700;letter-spacing:.02em;padding:5px 10px;border-radius:999px;color:{{ p.statusColor }};background:{{ p.statusBg }}">{{ p.statusLabel }}</span>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+</div>
+
+<section style="background:#FFFFFF;border-radius:26px;padding:clamp(18px,3vw,30px);box-shadow:0 1px 2px rgba(43,35,38,.04),0 14px 34px -18px rgba(43,35,38,.12);display:flex;flex-direction:column;gap:18px">
+  <div style="display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:12px">
+    <div style="display:flex;align-items:baseline;gap:14px;flex-wrap:wrap">
+      <h2 style="margin:0;font-family:'Instrument Serif',serif;font-weight:400;font-size:28px">Semana</h2>
+      <span style="font-size:13px;color:#8C7F82;font-weight:500">{{ weekLabel }}</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:6px">
+      <button onClick="{{ prevWeek }}" aria-label="Semana anterior" style="width:38px;height:38px;border-radius:50%;border:1px solid #EFE4E1;background:#FFFFFF;cursor:pointer;color:#2B2326;font-size:16px" style-hover="background:#FBF4F3">‹</button>
+      <sc-if value="{{ notThisWeek }}"><button onClick="{{ thisWeek }}" style="border:none;background:none;color:#A8434C;font-size:13px;font-weight:600;cursor:pointer;padding:6px 8px">Esta semana</button></sc-if>
+      <button onClick="{{ nextWeek }}" aria-label="Próxima semana" style="width:38px;height:38px;border-radius:50%;border:1px solid #EFE4E1;background:#FFFFFF;cursor:pointer;color:#2B2326;font-size:16px" style-hover="background:#FBF4F3">›</button>
+    </div>
+  </div>
+  <div style="overflow-x:auto;margin:0 -6px;padding:2px 6px 6px">
+    <div style="display:grid;grid-template-columns:repeat(7,minmax(128px,1fr));gap:10px">
+      <sc-for list="{{ week }}" as="d" hint-placeholder-count="7">
+        <div style="border-radius:18px;padding:14px;display:flex;flex-direction:column;gap:10px;min-height:170px;background:{{ d.bg }};border:1px solid {{ d.border }}">
+          <div style="display:flex;align-items:baseline;justify-content:space-between">
+            <span style="font-size:11px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:{{ d.labelColor }}">{{ d.label }}</span>
+            <span style="font-family:'Instrument Serif',serif;font-size:24px;line-height:1">{{ d.num }}</span>
+          </div>
+          <div style="height:4px;border-radius:4px;background:#F1E7E5;overflow:hidden"><div style="height:100%;border-radius:4px;width:{{ d.pctW }};background:{{ d.barColor }}"></div></div>
+          <div style="font-size:11.5px;color:#8C7F82;font-weight:600">{{ d.summary }}</div>
+          <div style="display:flex;flex-direction:column;gap:6px">
+            <sc-for list="{{ d.items }}" as="it">
+              <div onClick="{{ it.open }}" style="font-size:12.5px;cursor:pointer;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:flex;align-items:center;gap:6px;color:{{ it.color }};text-decoration:{{ it.deco }}"><span style="flex:none;width:5px;height:5px;border-radius:50%;background:{{ it.dot }}"></span>{{ it.title }}</div>
+            </sc-for>
+            <sc-if value="{{ d.hasMore }}"><div style="font-size:12px;color:#8C7F82">{{ d.moreLabel }}</div></sc-if>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+</section>
+
+</div>
+</sc-if>
+
+<sc-if value="{{ showProject }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;gap:24px">
+  <button onClick="{{ backToDash }}" style="align-self:flex-start;border:none;background:none;color:#8C7F82;font-size:13px;font-weight:600;cursor:pointer;padding:8px 0;display:flex;align-items:center;gap:8px" style-hover="color:#A8434C">← Visão geral</button>
+  <header style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:20px">
+    <div style="display:flex;flex-direction:column;gap:8px;min-width:0">
+      <div style="font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#8C7F82;font-weight:600">{{ proj.areaLabel }}</div>
+      <h1 style="margin:0;font-family:'Instrument Serif',serif;font-weight:400;font-size:clamp(36px,5.4vw,54px);line-height:1.05;letter-spacing:-.01em">{{ proj.name }}</h1>
+      <div style="display:flex;flex-wrap:wrap;align-items:center;gap:12px;margin-top:4px">
+        <span style="font-size:11.5px;font-weight:700;padding:5px 10px;border-radius:999px;color:{{ proj.statusColor }};background:{{ proj.statusBg }}">{{ proj.statusLabel }}</span>
+        <span style="font-size:14px;color:#6F6366">{{ proj.nextText }}</span>
+        <button onClick="{{ proj.edit }}" style="border:none;background:none;color:#A8434C;font-size:13px;font-weight:600;cursor:pointer;padding:4px 0">Editar projeto</button>
+      </div>
+    </div>
+    <button onClick="{{ proj.addTask }}" style="display:flex;align-items:center;gap:10px;background:#C4525C;color:#fff;border:none;border-radius:999px;padding:14px 24px;font-size:15px;font-weight:600;cursor:pointer;box-shadow:0 10px 24px -10px rgba(196,82,92,.6);min-height:48px" style-hover="background:#B3474F"><span style="font-size:20px;line-height:1;font-weight:400">+</span>Nova tarefa</button>
+  </header>
+
+  <section style="background:#FFFFFF;border-radius:26px;padding:clamp(18px,3vw,30px);box-shadow:0 1px 2px rgba(43,35,38,.04),0 14px 34px -18px rgba(43,35,38,.12);display:flex;flex-direction:column;gap:14px">
+    <div style="display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap">
+      <span style="font-family:'Instrument Serif',serif;font-size:44px;line-height:1">{{ proj.pctLabel }}</span>
+      <span style="font-size:14px;color:#8C7F82;font-weight:500">{{ proj.progressText }}</span>
+    </div>
+    <div style="height:6px;border-radius:6px;background:#F1E7E5;overflow:hidden"><div style="height:100%;border-radius:6px;width:{{ proj.pctW }};background:{{ proj.barColor }}"></div></div>
+  </section>
+
+  <div style="display:flex;flex-wrap:wrap;gap:24px;align-items:flex-start">
+    <section style="flex:1 1 360px;min-width:0;background:#FFFFFF;border-radius:26px;padding:clamp(18px,3vw,30px);box-shadow:0 1px 2px rgba(43,35,38,.04),0 14px 34px -18px rgba(43,35,38,.12);display:flex;flex-direction:column;gap:8px">
+      <h2 style="margin:0 10px 6px;font-family:'Instrument Serif',serif;font-weight:400;font-size:28px">Para hoje</h2>
+      <sc-for list="{{ proj.today }}" as="t">
+        <div onClick="{{ t.open }}" style="display:flex;align-items:center;gap:14px;padding:12px 10px;border-radius:16px;cursor:pointer;min-height:56px" style-hover="background:#FBF4F3">
+          <button onClick="{{ t.toggle }}" aria-label="Concluir" style="flex:none;width:26px;height:26px;border-radius:9px;border:1.5px solid #E2CFD2;background:#FFFFFF;cursor:pointer;padding:0"></button>
+          <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:2px">
+            <div style="font-size:15px;font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ t.title }}</div>
+            <div style="font-size:13px;color:#8C7F82">{{ t.pMeta }}</div>
+          </div>
+          <span style="flex:none;display:flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:{{ t.prioText }}"><span style="width:7px;height:7px;border-radius:50%;background:{{ t.prioColor }}"></span>{{ t.prioLabel }}</span>
+        </div>
+      </sc-for>
+      <sc-if value="{{ proj.noToday }}"><div style="padding:8px 10px 10px;color:#8C7F82;font-size:14.5px">Nada deste projeto para hoje.</div></sc-if>
+    </section>
+
+    <section style="flex:1 1 360px;min-width:0;background:#FFFFFF;border-radius:26px;padding:clamp(18px,3vw,30px);box-shadow:0 1px 2px rgba(43,35,38,.04),0 14px 34px -18px rgba(43,35,38,.12);display:flex;flex-direction:column;gap:8px">
+      <h2 style="margin:0 10px 6px;font-family:'Instrument Serif',serif;font-weight:400;font-size:28px">Agendado</h2>
+      <sc-for list="{{ proj.next }}" as="t">
+        <div onClick="{{ t.open }}" style="display:flex;align-items:center;gap:14px;padding:12px 10px;border-radius:16px;cursor:pointer;min-height:56px" style-hover="background:#FBF4F3">
+          <button onClick="{{ t.toggle }}" aria-label="Concluir" style="flex:none;width:26px;height:26px;border-radius:9px;border:1.5px solid #E2CFD2;background:#FFFFFF;cursor:pointer;padding:0"></button>
+          <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:2px">
+            <div style="font-size:15px;font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ t.title }}</div>
+            <div style="font-size:13px;color:#8C7F82">{{ t.pMeta }}</div>
+          </div>
+          <span style="flex:none;display:flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:{{ t.prioText }}"><span style="width:7px;height:7px;border-radius:50%;background:{{ t.prioColor }}"></span>{{ t.prioLabel }}</span>
+        </div>
+      </sc-for>
+      <sc-if value="{{ proj.hasUndated }}">
+        <div style="display:flex;flex-direction:column;gap:2px;margin-top:6px">
+          <div style="font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:#B4A8AB;padding:8px 10px 4px">Pendentes · sem data</div>
+          <sc-for list="{{ proj.undated }}" as="t">
+            <div onClick="{{ t.open }}" style="display:flex;align-items:center;gap:14px;padding:10px;border-radius:16px;cursor:pointer;min-height:54px" style-hover="background:#FBF4F3">
+              <button onClick="{{ t.toggle }}" aria-label="Concluir" style="flex:none;width:26px;height:26px;border-radius:9px;border:1.5px dashed #E2CFD2;background:#FFFFFF;cursor:pointer;padding:0"></button>
+              <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:4px;align-items:flex-start">
+                <div style="font-size:15px;font-weight:500;text-wrap:pretty">{{ t.title }}</div>
+                <sc-if value="{{ t.hasOwner }}"><span style="font-size:11px;font-weight:700;padding:3px 8px;border-radius:999px;color:{{ t.ownerColor }};background:{{ t.ownerBg }}">{{ t.owner }}</span></sc-if>
+              </div>
+              <button onClick="{{ t.resched }}" style="flex:none;border:none;background:none;color:#A8434C;font-size:13px;font-weight:600;cursor:pointer;padding:8px 4px;min-height:36px" style-hover="color:#8E3840">Agendar</button>
+            </div>
+          </sc-for>
+        </div>
+      </sc-if>
+      <sc-if value="{{ proj.noScheduled }}"><div style="padding:8px 10px 10px;color:#8C7F82;font-size:14.5px">Nenhuma tarefa futura.</div></sc-if>
+    </section>
+  </div>
+
+  <sc-if value="{{ proj.hasDone }}">
+    <section style="background:#FFFFFF;border-radius:26px;padding:clamp(18px,3vw,30px);box-shadow:0 1px 2px rgba(43,35,38,.04),0 14px 34px -18px rgba(43,35,38,.12);display:flex;flex-direction:column;gap:4px">
+      <div style="font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:#B4A8AB;padding:0 10px 6px">{{ proj.doneLabel }}</div>
+      <sc-for list="{{ proj.done }}" as="t">
+        <div onClick="{{ t.open }}" style="display:flex;align-items:center;gap:14px;padding:10px;border-radius:16px;cursor:pointer;min-height:50px" style-hover="background:#FBF4F3">
+          <button onClick="{{ t.toggle }}" aria-label="Desmarcar" style="flex:none;width:26px;height:26px;border-radius:9px;border:1.5px solid #D98E99;background:#D98E99;display:grid;place-items:center;cursor:pointer;padding:0;color:#fff;font-size:13px;font-weight:700">✓</button>
+          <div style="flex:1;min-width:0;font-size:15px;color:#B4A8AB;text-decoration:line-through;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ t.title }}</div>
+        </div>
+      </sc-for>
+    </section>
+  </sc-if>
+</div>
+</sc-if>
+
+<footer style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;font-size:12.5px;color:#A79A9D;padding:0 4px">
+  <span>Salvo neste navegador. O Google Calendar segue com suas reuniões.</span>
+  <div style="display:flex;gap:18px">
+    <button onClick="{{ exportJson }}" style="border:none;background:none;color:#8C7F82;cursor:pointer;font-size:12.5px;padding:4px 0;font-weight:600" style-hover="color:#A8434C">Exportar JSON</button>
+    <button onClick="{{ importJson }}" style="border:none;background:none;color:#8C7F82;cursor:pointer;font-size:12.5px;padding:4px 0;font-weight:600" style-hover="color:#A8434C">Importar JSON</button>
+    <input type="file" accept="application/json,.json" ref="{{ fileRef }}" onChange="{{ onFile }}" style="display:none">
+  </div>
+</footer>
+</div>
+
+<sc-if value="{{ hasModal }}" hint-placeholder-val="{{ false }}">
+  <div onClick="{{ closeModal }}" style="position:fixed;inset:0;background:rgba(43,35,38,.28);backdrop-filter:blur(3px);display:flex;align-items:center;justify-content:center;padding:16px;z-index:50">
+    <div onClick="{{ stop }}" style="width:100%;max-width:460px;max-height:calc(100vh - 32px);overflow:auto;background:#FFFFFF;border-radius:26px;padding:28px;box-shadow:0 30px 80px -20px rgba(43,35,38,.35);display:flex;flex-direction:column;gap:18px">
+
+      <sc-if value="{{ isTaskModal }}">
+        <div style="display:flex;flex-direction:column;gap:18px">
+          <h3 style="margin:0;font-family:'Instrument Serif',serif;font-weight:400;font-size:30px">{{ taskModalTitle }}</h3>
+          <label style="display:flex;flex-direction:column;gap:6px;font-size:12px;font-weight:600;color:#8C7F82;letter-spacing:.04em">TAREFA
+            <input value="{{ form.title }}" onChange="{{ onTitle }}" onKeyDown="{{ onEnter }}" placeholder="O que precisa ser feito?" autofocus style="width:100%;padding:13px 14px;border:1px solid #EADFDC;border-radius:14px;font-size:15px;color:#2B2326;background:#FDFBFA;outline:none;letter-spacing:0" style-focus="border-color:#D98E99">
+          </label>
+          <sc-if value="{{ form.err }}"><div style="font-size:13px;color:#C4525C;margin-top:-10px">{{ form.err }}</div></sc-if>
+          <label style="display:flex;flex-direction:column;gap:6px;font-size:12px;font-weight:600;color:#8C7F82;letter-spacing:.04em">PROJETO / CLIENTE
+            <select value="{{ form.project }}" onChange="{{ onProject }}" style="width:100%;padding:13px 14px;border:1px solid #EADFDC;border-radius:14px;font-size:15px;color:#2B2326;background:#FDFBFA;outline:none;letter-spacing:0">
+              <sc-for list="{{ projectOptions }}" as="o"><option value="{{ o.value }}">{{ o.label }}</option></sc-for>
+            </select>
+          </label>
+          <div style="display:flex;gap:12px;flex-wrap:wrap">
+            <label style="flex:1 1 160px;display:flex;flex-direction:column;gap:6px;font-size:12px;font-weight:600;color:#8C7F82;letter-spacing:.04em">DIA
+              <input type="date" value="{{ form.date }}" onChange="{{ onDate }}" style="width:100%;padding:12px 14px;border:1px solid #EADFDC;border-radius:14px;font-size:15px;color:#2B2326;background:#FDFBFA;outline:none">
+            </label>
+            <label style="flex:1 1 120px;display:flex;flex-direction:column;gap:6px;font-size:12px;font-weight:600;color:#8C7F82;letter-spacing:.04em">HORÁRIO (OPCIONAL)
+              <input type="time" value="{{ form.time }}" onChange="{{ onTime }}" style="width:100%;padding:12px 14px;border:1px solid #EADFDC;border-radius:14px;font-size:15px;color:#2B2326;background:#FDFBFA;outline:none">
+            </label>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <span style="font-size:12px;font-weight:600;color:#8C7F82;letter-spacing:.04em">PRIORIDADE</span>
+            <div style="display:flex;gap:8px">
+              <sc-for list="{{ prioOpts }}" as="o">
+                <button onClick="{{ o.pick }}" style="flex:1;display:flex;align-items:center;justify-content:center;gap:7px;padding:11px 8px;border-radius:12px;font-size:14px;font-weight:600;cursor:pointer;min-height:44px;border:1px solid {{ o.border }};background:{{ o.bg }};color:#2B2326"><span style="width:7px;height:7px;border-radius:50%;background:{{ o.color }}"></span>{{ o.label }}</button>
+              </sc-for>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;margin-top:6px">
+            <sc-if value="{{ canDeleteTask }}"><button onClick="{{ deleteTask }}" style="border:none;background:none;color:#A79A9D;font-size:13px;font-weight:600;cursor:pointer;padding:8px 0" style-hover="color:#C4525C">Excluir</button></sc-if>
+            <div style="flex:1"></div>
+            <button onClick="{{ closeModal }}" style="border:none;background:none;color:#8C7F82;font-size:14px;font-weight:600;cursor:pointer;padding:12px 14px">Cancelar</button>
+            <button onClick="{{ saveTask }}" style="border:none;background:#C4525C;color:#fff;border-radius:999px;padding:13px 24px;font-size:14px;font-weight:600;cursor:pointer;min-height:46px" style-hover="background:#B3474F">Salvar</button>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isReschedModal }}">
+        <div style="display:flex;flex-direction:column;gap:18px">
+          <div style="display:flex;flex-direction:column;gap:4px">
+            <h3 style="margin:0;font-family:'Instrument Serif',serif;font-weight:400;font-size:30px">{{ reschedHeading }}</h3>
+            <div style="font-size:14px;color:#8C7F82">{{ reschedTitle }}</div>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;gap:8px">
+            <sc-for list="{{ reschedQuick }}" as="q">
+              <button onClick="{{ q.pick }}" style="flex:1 1 120px;padding:12px;border-radius:14px;border:1px solid #EADFDC;background:#FDFBFA;cursor:pointer;display:flex;flex-direction:column;gap:2px;align-items:flex-start;min-height:56px" style-hover="border-color:#D98E99;background:#FCF2F1"><span style="font-size:14px;font-weight:600;color:#2B2326">{{ q.label }}</span><span style="font-size:12px;color:#8C7F82">{{ q.sub }}</span></button>
+            </sc-for>
+          </div>
+          <div style="display:flex;gap:10px;align-items:flex-end">
+            <label style="flex:1;display:flex;flex-direction:column;gap:6px;font-size:12px;font-weight:600;color:#8C7F82;letter-spacing:.04em">OUTRO DIA
+              <input type="date" value="{{ form.date }}" onChange="{{ onDate }}" style="width:100%;padding:12px 14px;border:1px solid #EADFDC;border-radius:14px;font-size:15px;color:#2B2326;background:#FDFBFA;outline:none">
+            </label>
+            <button onClick="{{ reschedCustom }}" style="border:none;background:#C4525C;color:#fff;border-radius:999px;padding:13px 22px;font-size:14px;font-weight:600;cursor:pointer;min-height:46px" style-hover="background:#B3474F">Mover</button>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isProjectModal }}">
+        <div style="display:flex;flex-direction:column;gap:18px">
+          <h3 style="margin:0;font-family:'Instrument Serif',serif;font-weight:400;font-size:30px">{{ projectModalTitle }}</h3>
+          <label style="display:flex;flex-direction:column;gap:6px;font-size:12px;font-weight:600;color:#8C7F82;letter-spacing:.04em">NOME
+            <input value="{{ form.name }}" onChange="{{ onName }}" placeholder="Nome do projeto" style="width:100%;padding:13px 14px;border:1px solid #EADFDC;border-radius:14px;font-size:15px;color:#2B2326;background:#FDFBFA;outline:none;letter-spacing:0" style-focus="border-color:#D98E99">
+          </label>
+          <sc-if value="{{ form.err }}"><div style="font-size:13px;color:#C4525C;margin-top:-10px">{{ form.err }}</div></sc-if>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <span style="font-size:12px;font-weight:600;color:#8C7F82;letter-spacing:.04em">STATUS</span>
+            <div style="display:flex;gap:8px">
+              <sc-for list="{{ statusOpts }}" as="o">
+                <button onClick="{{ o.pick }}" style="flex:1;padding:11px 6px;border-radius:12px;font-size:13.5px;font-weight:600;cursor:pointer;min-height:44px;border:1px solid {{ o.border }};background:{{ o.bg }};color:{{ o.color }}">{{ o.label }}</button>
+              </sc-for>
+            </div>
+          </div>
+          <label style="display:flex;flex-direction:column;gap:6px;font-size:12px;font-weight:600;color:#8C7F82;letter-spacing:.04em">PRÓXIMA ENTREGA
+            <input value="{{ form.next }}" onChange="{{ onNext }}" placeholder="Ex.: apresentação do layout" style="width:100%;padding:13px 14px;border:1px solid #EADFDC;border-radius:14px;font-size:15px;color:#2B2326;background:#FDFBFA;outline:none;letter-spacing:0" style-focus="border-color:#D98E99">
+          </label>
+          <label style="display:flex;flex-direction:column;gap:6px;font-size:12px;font-weight:600;color:#8C7F82;letter-spacing:.04em">DATA DA ENTREGA
+            <input type="date" value="{{ form.nextDate }}" onChange="{{ onNextDate }}" style="width:100%;padding:12px 14px;border:1px solid #EADFDC;border-radius:14px;font-size:15px;color:#2B2326;background:#FDFBFA;outline:none">
+          </label>
+          <div style="display:flex;align-items:center;gap:10px;margin-top:6px">
+            <sc-if value="{{ canDeleteProject }}"><button onClick="{{ deleteProject }}" style="border:none;background:none;color:#A79A9D;font-size:13px;font-weight:600;cursor:pointer;padding:8px 0" style-hover="color:#C4525C">Arquivar</button></sc-if>
+            <div style="flex:1"></div>
+            <button onClick="{{ closeModal }}" style="border:none;background:none;color:#8C7F82;font-size:14px;font-weight:600;cursor:pointer;padding:12px 14px">Cancelar</button>
+            <button onClick="{{ saveProject }}" style="border:none;background:#C4525C;color:#fff;border-radius:999px;padding:13px 24px;font-size:14px;font-weight:600;cursor:pointer;min-height:46px" style-hover="background:#B3474F">Salvar</button>
+          </div>
+        </div>
+      </sc-if>
+    </div>
+  </div>
+</sc-if>
+
+<sc-if value="{{ hasToast }}" hint-placeholder-val="{{ false }}">
+  <div style="position:fixed;left:50%;bottom:28px;transform:translateX(-50%);background:#2B2326;color:#fff;padding:12px 20px;border-radius:999px;font-size:14px;font-weight:500;z-index:60;box-shadow:0 12px 30px -10px rgba(43,35,38,.4)">{{ toast }}</div>
+</sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;name&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Sarah&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;hideDone&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;}}">
+const KEY = 'tracker-rotina-v1';
+const pad = n => String(n).padStart(2, '0');
+const ymd = d => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+const parse = s => { const [y, m, d] = s.split('-').map(Number); return new Date(y, m - 1, d); };
+const addDays = (s, n) => { const d = parse(s); d.setDate(d.getDate() + n); return ymd(d); };
+const uid = () => Math.random().toString(36).slice(2, 10);
+const fmt = (s, o) => parse(s).toLocaleDateString('pt-BR', o).replace(/\./g, '');
+const fmtShort = s => fmt(s, { weekday: 'short', day: 'numeric', month: 'short' });
+const fmtDM = s => fmt(s, { day: 'numeric', month: 'short' });
+const PRO = ['Oclusal', 'Suzano SEO', 'VAIRIX', 'Topiaris', 'Fabiana Campos', 'Documentall', 'Preto Kayser', 'Seatru', 'Edu Kayser', 'DP6'];
+const PES = ['Lorena', 'Viagem Florida'];
+const PRI = { alta: { label: 'Alta', color: '#C4525C', text: '#A8434C' }, media: { label: 'Média', color: '#D98E99', text: '#8C7F82' }, baixa: { label: 'Baixa', color: '#D6CACC', text: '#A79A9D' } };
+const PRI_ORDER = { alta: 0, media: 1, baixa: 2 };
+const STATUS = { prazo: { label: 'No prazo', color: '#5E8269', bg: '#E8F0EA' }, atencao: { label: 'Atenção', color: '#A0606B', bg: '#F8E7E9' }, atrasado: { label: 'Atrasado', color: '#B0444E', bg: '#F6DEDF' } };
+const PHRASES = ['Um passo de cada vez.', 'Foco no que importa hoje.', 'Leveza também é produtividade.', 'Menos lista, mais presença.', 'Feito é melhor que perfeito.', 'O resto pode esperar.', 'Comece pelo que destrava o dia.'];
+
+function seed() {
+  const t = ymd(new Date());
+  const projects = [...PRO.map(n => ({ id: uid(), name: n, area: 'pro', status: 'prazo', next: '', nextDate: '' })),
+    ...PES.map(n => ({ id: uid(), name: n, area: 'pes', status: 'prazo', next: '', nextDate: '' }))];
+  const mk = (title, project, area, date, time, priority, done) => ({ id: uid(), title, project, area, date, time, priority, done: !!done });
+  const tasks = [
+    mk('Revisar cronograma da semana', 'Oclusal', 'pro', t, '10:00', 'alta'),
+    mk('Alinhamento com o time', 'VAIRIX', 'pro', t, '14:30', 'media'),
+    { ...mk('Responder e-mails pendentes', '', 'pro', t, '', 'media'), kind: 'email' },
+    mk('Enviar relatório mensal', 'Suzano SEO', 'pro', addDays(t, -1), '', 'alta'),
+    mk('Planejamento da sprint', 'DP6', 'pro', addDays(t, 1), '09:30', 'media'),
+    mk('Reservar hotel', 'Viagem Florida', 'pes', t, '', 'media'),
+    mk('Checklist de documentos da viagem', 'Viagem Florida', 'pes', addDays(t, -2), '', 'baixa'),
+  ];
+  return withDefaults({ tasks, projects, emails: seedEmails() });
+}
+const DEFAULTS_V = 2;
+const DEFAULT_TASKS = [
+  { title: 'Pagamento entrada', owner: 'Cliente' },
+  { title: 'Pagamento entrega', owner: 'Cliente' },
+  { title: 'Entrega design', owner: 'LoWa' },
+  { title: 'Entrega desenvolvimento', owner: 'LoWa' },
+  { title: 'Entrega conteúdo', owner: 'Cliente' },
+  { title: 'Entrega assets', owner: 'Cliente' },
+];
+function withDefaults(d) {
+  let tasks = d.tasks.slice();
+  const titles = DEFAULT_TASKS.map(x => x.title);
+  const projects = d.projects.map(p => {
+    if (p.area !== 'pro' || p.defaults === DEFAULTS_V) return p;
+    const mine = t => t.project === p.name && t.area === p.area;
+    tasks = tasks.filter(t => !(mine(t) && t.kind === 'milestone' && !t.done && !t.date && !titles.includes(t.title)));
+    DEFAULT_TASKS.forEach(({ title, owner }) => {
+      const ex = tasks.find(t => mine(t) && t.title === title);
+      if (ex) tasks = tasks.map(t => t === ex ? { ...t, owner, kind: 'milestone' } : t);
+      else tasks.push({ id: uid(), title, owner, project: p.name, area: p.area, date: '', time: '', priority: 'media', done: false, kind: 'milestone' });
+    });
+    return { ...p, defaults: DEFAULTS_V };
+  });
+  return { ...d, projects, tasks };
+}
+function seedEmails() {
+  const e = (from, address, subject, urgency, received, suggestion) => ({ id: uid(), threadId: '', from, address, subject, urgency, received, suggestion, answered: false, example: true });
+  return [
+    e('Cliente Suzano', 'contato@exemplo.com', 'Aprovação do relatório de SEO', 'alta', '08:12', 'Olá! Obrigada pelo retorno. Vou revisar os pontos levantados e envio a versão final até o fim do dia de hoje. Qualquer dúvida, estou à disposição.'),
+    e('Equipe VAIRIX', 'time@exemplo.com', 'Ajuste no escopo da sprint', 'media', 'ontem', 'Oi, pessoal! Recebi a proposta de ajuste. Podemos conversar sobre isso no alinhamento de hoje às 14h30? Assim fechamos o escopo juntos.'),
+    e('Fabiana Campos', 'fabiana@exemplo.com', 'Dúvida sobre o cronograma', 'media', '09:40', 'Oi, Fabiana! O cronograma segue como combinado. Te envio amanhã a atualização com as próximas entregas.'),
+    e('Newsletter Documentall', 'news@exemplo.com', 'Novidades do mês', 'baixa', 'seg', 'Sem necessidade de resposta. Arquivar.'),
+  ];
+}
+function loadData() {
+  try {
+    const d = JSON.parse(localStorage.getItem(KEY));
+    if (d && Array.isArray(d.tasks) && Array.isArray(d.projects)) {
+      if (!Array.isArray(d.emails)) d.emails = seedEmails();
+      d.tasks = d.tasks.map(t => !t.kind && /e-?mails?/i.test(t.title) && /respond/i.test(t.title) ? { ...t, kind: 'email' } : t);
+      return withDefaults(d);
+    }
+  } catch (e) {}
+  return seed();
+}
+const URG = { alta: { label: 'Urgente', color: '#B0444E', bg: '#F6DEDF', order: 0 }, media: { label: 'Hoje', color: '#A0606B', bg: '#F8E7E9', order: 1 }, baixa: { label: 'Pode esperar', color: '#8C7F82', bg: '#F3EEED', order: 2 } };
+const sortTasks = (a, b) => (a.done - b.done) || ((a.time || '99') < (b.time || '99') ? -1 : (a.time || '99') > (b.time || '99') ? 1 : 0) || (PRI_ORDER[a.priority] - PRI_ORDER[b.priority]);
+
+class Component extends DCLogic {
+  fileRef = React.createRef();
+  state = { data: loadData(), tab: 'pro', modal: null, form: {}, weekOffset: 0, toast: '', emailsCollapsed: false, openEmail: null, projectId: null };
+
+  toggleEmail = em => {
+    this.setData(d => {
+      const emails = (d.emails || []).map(x => x.id === em.id ? { ...x, answered: !x.answered } : x);
+      const allDone = emails.every(x => x.answered);
+      const today = this.today();
+      return { ...d, emails, tasks: d.tasks.map(t => t.kind === 'email' && t.date <= today ? { ...t, done: allDone, doneAt: allDone ? today : undefined } : t) };
+    });
+  };
+  copyReply = em => {
+    const done = () => this.flash('Resposta copiada');
+    if (navigator.clipboard) navigator.clipboard.writeText(em.suggestion).then(done, () => this.flash('Não foi possível copiar'));
+  };
+
+  componentDidMount() {
+    this.tick = setInterval(() => this.forceUpdate(), 60000);
+    this.onKey = e => { if (e.key === 'Escape' && this.state.modal) this.close(); };
+    document.addEventListener('keydown', this.onKey);
+  }
+  componentWillUnmount() { clearInterval(this.tick); document.removeEventListener('keydown', this.onKey); }
+  componentDidUpdate(_, prev) { if (prev.data !== this.state.data) { try { localStorage.setItem(KEY, JSON.stringify(this.state.data)); } catch (e) {} } }
+
+  today() { return ymd(new Date()); }
+  setData(fn) { this.setState(s => ({ data: fn(s.data) })); }
+  updTask(id, patch) { this.setData(d => ({ ...d, tasks: d.tasks.map(t => t.id === id ? { ...t, ...patch } : t) })); }
+  flash(msg) { clearTimeout(this.tt); this.setState({ toast: msg }); this.tt = setTimeout(() => this.setState({ toast: '' }), 2400); }
+  close() { this.setState({ modal: null, form: {} }); }
+  setF = k => e => { const v = e.target.value; this.setState(s => ({ form: { ...s.form, [k]: v, err: '' } })); };
+
+  openNew = () => this.setState({ modal: 'task', form: { title: '', project: '', date: this.today(), time: '', priority: 'media' } });
+  openTask = t => this.setState({ modal: 'task', form: { ...t } });
+  saveTask = () => {
+    const f = this.state.form;
+    if (!f.title || !f.title.trim()) return this.setState({ form: { ...f, err: 'Dê um nome para a tarefa.' } });
+    const clean = { title: f.title.trim(), project: f.project || '', date: f.date || '', time: f.time || '', priority: f.priority || 'media' };
+    if (f.id) this.updTask(f.id, clean);
+    else this.setData(d => ({ ...d, tasks: [...d.tasks, { id: uid(), area: this.state.tab, done: false, ...clean }] }));
+    this.close();
+    if (!f.id) this.flash('Tarefa adicionada');
+  };
+  deleteTask = () => { const id = this.state.form.id; this.setData(d => ({ ...d, tasks: d.tasks.filter(t => t.id !== id) })); this.close(); this.flash('Tarefa excluída'); };
+  toggle = (t, e) => { e && e.stopPropagation(); this.updTask(t.id, t.done ? { done: false } : { done: true, doneAt: this.today() }); };
+  openResched = (t, e) => { e && e.stopPropagation(); this.setState({ modal: 'resched', form: { id: t.id, title: t.title, wasUndated: !t.date, date: addDays(this.today(), 1) } }); };
+  resched = date => {
+    if (!date) return;
+    this.updTask(this.state.form.id, { date });
+    this.close();
+    this.flash(date === this.today() ? 'Mantida para hoje' : 'Movida para ' + fmtShort(date));
+  };
+
+  openProject = p => { this.setState({ projectId: p.id }); window.scrollTo(0, 0); };
+  editProject = p => this.setState({ modal: 'project', form: { ...p } });
+  backToDash = () => this.setState({ projectId: null });
+  addProjectTask = p => this.setState({ modal: 'task', form: { title: '', project: p.name, date: this.today(), time: '', priority: 'media' } });
+  newProject = () => this.setState({ modal: 'project', form: { name: '', status: 'prazo', next: '', nextDate: '' } });
+  saveProject = () => {
+    const f = this.state.form, name = (f.name || '').trim();
+    if (!name) return this.setState({ form: { ...f, err: 'Dê um nome para o projeto.' } });
+    const clean = { name, status: f.status, next: (f.next || '').trim(), nextDate: f.nextDate || '' };
+    this.setData(d => {
+      if (!f.id) return withDefaults({ ...d, projects: [...d.projects, { id: uid(), area: this.state.tab, ...clean }] });
+      const old = d.projects.find(p => p.id === f.id);
+      return {
+        projects: d.projects.map(p => p.id === f.id ? { ...p, ...clean } : p),
+        tasks: old && old.name !== name ? d.tasks.map(t => t.project === old.name && t.area === old.area ? { ...t, project: name } : t) : d.tasks,
+      };
+    });
+    this.close();
+  };
+  deleteProject = () => { const id = this.state.form.id; this.setData(d => ({ ...d, projects: d.projects.filter(p => p.id !== id) })); this.close(); this.setState({ projectId: null }); this.flash('Projeto arquivado'); };
+
+  exportJson = () => {
+    const blob = new Blob([JSON.stringify({ version: 1, exportedAt: new Date().toISOString(), ...this.state.data }, null, 2)], { type: 'application/json' });
+    const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `tracker-${this.today()}.json`;
+    document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 1500);
+    this.flash('Backup exportado');
+  };
+  importJson = () => this.fileRef.current && this.fileRef.current.click();
+  onFile = e => {
+    const f = e.target.files && e.target.files[0]; if (!f) return;
+    const r = new FileReader();
+    r.onload = () => {
+      try {
+        const d = JSON.parse(r.result);
+        if (!Array.isArray(d.tasks) || !Array.isArray(d.projects)) throw new Error();
+        this.setState({ data: { tasks: d.tasks, projects: d.projects, emails: Array.isArray(d.emails) ? d.emails : [] } }); this.flash('Dados importados');
+      } catch (_) { this.flash('Arquivo inválido'); }
+    };
+    r.readAsText(f); e.target.value = '';
+  };
+
+  renderVals() {
+    const { data, tab, modal, form, weekOffset, toast } = this.state;
+    const hideDone = this.props.hideDone ?? false;
+    const name = (this.props.name ?? 'Sarah').trim();
+    const today = this.today(), now = new Date(), h = now.getHours();
+    const tasks = data.tasks.filter(t => t.area === tab);
+    const projects = data.projects.filter(p => p.area === tab);
+
+    const allEmails = (data.emails || []).slice().sort((a, b) => (a.answered - b.answered) || ((URG[a.urgency] || URG.media).order - (URG[b.urgency] || URG.media).order));
+    const answeredN = allEmails.filter(e => e.answered).length;
+    const urgentN = allEmails.filter(e => !e.answered && e.urgency === 'alta').length;
+    const emailVm = allEmails.map(em => {
+      const u = URG[em.urgency] || URG.media, open = this.state.openEmail === em.id;
+      const q = em.threadId ? '#inbox/' + em.threadId : '#search/' + encodeURIComponent(`from:${em.address} subject:"${em.subject}"`);
+      return {
+        ...em, urgLabel: u.label, urgColor: em.answered ? '#B4A8AB' : u.color, urgBg: em.answered ? '#F6F1F0' : u.bg,
+        bg: em.answered ? '#FCFAF9' : '#FFFFFF', subjectColor: em.answered ? '#B4A8AB' : '#2B2326', deco: em.answered ? 'line-through' : 'none',
+        checkBg: em.answered ? '#D98E99' : '#FFFFFF', checkBorder: em.answered ? '#D98E99' : '#E2CFD2',
+        showSuggestion: open, hideSuggestion: !open && !em.answered,
+        expand: () => this.setState({ openEmail: em.id }), collapse: () => this.setState({ openEmail: null }),
+        toggle: () => this.toggleEmail(em), copy: () => this.copyReply(em),
+        gmailUrl: 'https://mail.google.com/mail/u/0/' + q,
+      };
+    });
+    const hasExamples = allEmails.some(e => e.example);
+
+    const vm = t => {
+      const p = PRI[t.priority] || PRI.media;
+      const isEmail = t.kind === 'email';
+      const emailMeta = allEmails.length ? `${answeredN} de ${allEmails.length} respondidos` + (urgentN ? ` · ${urgentN} ${urgentN === 1 ? 'urgente' : 'urgentes'}` : '') : 'Caixa em dia';
+      const meta = [t.time, isEmail ? emailMeta : t.project].filter(Boolean).join(' · ');
+      const showEmails = isEmail && !this.state.emailsCollapsed && allEmails.length > 0;
+      return {
+        ...t, meta, hasMeta: !!meta, isEmail, showEmails, emails: emailVm, hasExamples,
+        chevron: this.state.emailsCollapsed ? '▾' : '▴',
+        toggleEmails: e => { e.stopPropagation(); this.setState(s => ({ emailsCollapsed: !s.emailsCollapsed })); }, prioLabel: p.label, prioColor: p.color, prioText: t.done ? '#C9BEC0' : p.text,
+        checkBg: t.done ? '#D98E99' : '#FFFFFF', checkBorder: t.done ? '#D98E99' : '#E2CFD2',
+        titleColor: t.done ? '#B4A8AB' : '#2B2326', deco: t.done ? 'line-through' : 'none',
+        pendMeta: ['de ' + (t.date ? fmtShort(t.date) : ''), t.project].filter(Boolean).join(' · '),
+        pMeta: [t.date ? (t.date < today ? 'pendente de ' + fmtShort(t.date) : t.date === today ? 'hoje' : fmtShort(t.date)) : 'sem data', t.time, t.owner].filter(Boolean).join(' · '),
+        hasOwner: !!t.owner, owner: t.owner || '',
+        ownerColor: t.owner === 'LoWa' ? '#A8434C' : '#6F6366', ownerBg: t.owner === 'LoWa' ? '#F8E7E9' : '#F3EEED',
+        open: () => this.openTask(t), toggle: e => this.toggle(t, e), resched: e => this.openResched(t, e),
+      };
+    };
+
+    const todayAll = tasks.filter(t => t.date === today).sort(sortTasks);
+    const todayShown = hideDone ? todayAll.filter(t => !t.done) : todayAll;
+    const pend = tasks.filter(t => t.date && t.date < today && !t.done).sort((a, b) => a.date < b.date ? -1 : 1);
+    const openToday = todayAll.filter(t => !t.done).length;
+    const doneToday = todayAll.length - openToday;
+
+    const dow = (now.getDay() + 6) % 7;
+    const mon = addDays(today, -dow + weekOffset * 7);
+    const labels = ['seg', 'ter', 'qua', 'qui', 'sex', 'sáb', 'dom'];
+    const week = labels.map((label, i) => {
+      const date = addDays(mon, i);
+      const list = tasks.filter(t => t.date === date).sort(sortTasks);
+      const done = list.filter(t => t.done).length, total = list.length;
+      const pct = total ? Math.round(done / total * 100) : 0;
+      const isToday = date === today, past = date < today;
+      return {
+        label, num: parse(date).getDate(), pctW: pct + '%',
+        barColor: pct === 100 ? '#8FAE98' : '#D98E99',
+        summary: total ? `${done} de ${total}` : 'Livre',
+        bg: isToday ? '#FCF2F1' : '#FFFFFF', border: isToday ? '#EBC6CB' : '#F1E7E5',
+        labelColor: isToday ? '#A8434C' : '#8C7F82',
+        items: list.slice(0, 4).map(t => ({
+          title: t.title, open: () => this.openTask(t),
+          color: t.done ? '#B4A8AB' : '#2B2326', deco: t.done ? 'line-through' : 'none',
+          dot: t.done ? '#D6CACC' : past ? '#D98E99' : (PRI[t.priority] || PRI.media).color,
+        })),
+        hasMore: total > 4, moreLabel: `+${total - 4}`,
+      };
+    });
+
+    const projectList = projects.map(p => {
+      const st = STATUS[p.status] || STATUS.prazo;
+      const nextText = p.next ? p.next + (p.nextDate ? ' · até ' + fmtDM(p.nextDate) : '') : (p.nextDate ? 'Entrega em ' + fmtDM(p.nextDate) : 'Sem próxima entrega definida');
+      return { name: p.name, statusLabel: st.label, statusColor: st.color, statusBg: st.bg, nextText, nextColor: (p.next || p.nextDate) ? '#6F6366' : '#B4A8AB', open: () => this.openProject(p) };
+    });
+
+    const pr = this.state.projectId && data.projects.find(p => p.id === this.state.projectId);
+    let proj = null;
+    if (pr) {
+      const pt = data.tasks.filter(t => t.project === pr.name && t.area === pr.area);
+      const dn = pt.filter(t => t.done).length, pct = pt.length ? Math.round(dn / pt.length * 100) : 0;
+      const st = STATUS[pr.status] || STATUS.prazo;
+      const byDate = (a, b) => (a.date < b.date ? -1 : a.date > b.date ? 1 : 0) || sortTasks(a, b);
+      const pToday = pt.filter(t => !t.done && t.date && t.date <= today).sort(byDate).map(vm);
+      const pNext = pt.filter(t => !t.done && t.date > today).sort(byDate).map(vm);
+      const pUndated = pt.filter(t => !t.done && !t.date).map(vm);
+      const pDone = pt.filter(t => t.done).map(vm);
+      proj = {
+        name: pr.name, areaLabel: pr.area === 'pro' ? 'Projeto · Profissional' : 'Projeto · Pessoal',
+        statusLabel: st.label, statusColor: st.color, statusBg: st.bg,
+        nextText: pr.next ? pr.next + (pr.nextDate ? ' · até ' + fmtDM(pr.nextDate) : '') : (pr.nextDate ? 'Entrega em ' + fmtDM(pr.nextDate) : 'Sem próxima entrega definida'),
+        pctLabel: pct + '%', pctW: pct + '%', barColor: pct === 100 ? '#8FAE98' : '#D98E99',
+        progressText: pt.length ? `${dn} de ${pt.length} tarefas concluídas` : 'Nenhuma tarefa ainda',
+        today: pToday, hasToday: pToday.length > 0, noToday: pToday.length === 0,
+        next: pNext, hasNext: pNext.length > 0, undated: pUndated, hasUndated: pUndated.length > 0,
+        noScheduled: !pNext.length && !pUndated.length,
+        done: pDone, hasDone: pDone.length > 0, doneLabel: `Concluídas · ${pDone.length}`,
+        edit: () => this.editProject(pr), addTask: () => this.addProjectTask(pr),
+      };
+    }
+
+    const greet = h < 12 ? 'Bom dia' : h < 18 ? 'Boa tarde' : 'Boa noite';
+    const doy = Math.floor((now - new Date(now.getFullYear(), 0, 0)) / 864e5);
+    const nm = parse(today); const toMon = ((8 - nm.getDay()) % 7) || 7;
+
+    return {
+      dateLabel: now.toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' }),
+      greeting: name ? `${greet}, ${name}.` : `${greet}.`,
+      phrase: PHRASES[doy % PHRASES.length],
+      todayCountLabel: `${openToday} para hoje`,
+      pendCountLabel: `${pend.length} ${pend.length === 1 ? 'pendente' : 'pendentes'}`,
+      openNew: this.openNew,
+      tabs: [['pro', 'Profissional'], ['pes', 'Pessoal']].map(([k, label]) => ({
+        label, select: () => this.setState({ tab: k, projectId: null }),
+        bg: tab === k ? '#FFFFFF' : 'transparent', color: tab === k ? '#2B2326' : '#8C7F82',
+        shadow: tab === k ? '0 2px 8px -2px rgba(43,35,38,.12)' : 'none',
+      })),
+      todayList: todayShown.map(vm), hasToday: todayShown.length > 0, noToday: todayShown.length === 0,
+      todayProgress: todayAll.length ? `${doneToday} de ${todayAll.length} feitas` : '',
+      pendList: pend.map(vm), hasPend: pend.length > 0,
+      projectList, newProject: this.newProject,
+      week, weekLabel: `${fmtDM(mon)} – ${fmtDM(addDays(mon, 6))}`,
+      prevWeek: () => this.setState(s => ({ weekOffset: s.weekOffset - 1 })),
+      nextWeek: () => this.setState(s => ({ weekOffset: s.weekOffset + 1 })),
+      thisWeek: () => this.setState({ weekOffset: 0 }), notThisWeek: weekOffset !== 0,
+      exportJson: this.exportJson, importJson: this.importJson, onFile: this.onFile, fileRef: this.fileRef,
+
+      hasModal: !!modal, isTaskModal: modal === 'task', isReschedModal: modal === 'resched', isProjectModal: modal === 'project',
+      closeModal: () => this.close(), stop: e => e.stopPropagation(),
+      form: { title: '', project: '', date: '', time: '', name: '', next: '', nextDate: '', err: '', ...form },
+      taskModalTitle: form.id ? 'Editar tarefa' : 'Nova tarefa', canDeleteTask: !!form.id,
+      onTitle: this.setF('title'), onProject: this.setF('project'), onDate: this.setF('date'), onTime: this.setF('time'),
+      onName: this.setF('name'), onNext: this.setF('next'), onNextDate: this.setF('nextDate'),
+      onEnter: e => { if (e.key === 'Enter') this.saveTask(); },
+      projectOptions: [{ value: '', label: 'Sem projeto' }, ...projects.map(p => ({ value: p.name, label: p.name }))],
+      prioOpts: Object.keys(PRI).map(k => {
+        const on = (form.priority || 'media') === k;
+        return { label: PRI[k].label, color: PRI[k].color, bg: on ? '#FCF2F1' : '#FFFFFF', border: on ? '#D98E99' : '#EADFDC', pick: () => this.setState(s => ({ form: { ...s.form, priority: k } })) };
+      }),
+      saveTask: this.saveTask, deleteTask: this.deleteTask,
+      reschedTitle: form.title || '',
+      reschedQuick: [
+        { label: 'Hoje', sub: form.wasUndated ? fmtShort(today) : 'manter no dia', date: today },
+        { label: 'Amanhã', sub: fmtShort(addDays(today, 1)), date: addDays(today, 1) },
+        { label: 'Segunda', sub: fmtShort(addDays(today, toMon)), date: addDays(today, toMon) },
+      ].map(q => ({ ...q, pick: () => this.resched(q.date) })),
+      reschedCustom: () => this.resched(this.state.form.date),
+      projectModalTitle: form.id ? 'Projeto' : 'Novo projeto', canDeleteProject: !!form.id,
+      statusOpts: Object.keys(STATUS).map(k => {
+        const on = (form.status || 'prazo') === k, st = STATUS[k];
+        return { label: st.label, color: on ? st.color : '#8C7F82', bg: on ? st.bg : '#FFFFFF', border: on ? st.bg : '#EADFDC', pick: () => this.setState(s => ({ form: { ...s.form, status: k } })) };
+      }),
+      saveProject: this.saveProject, deleteProject: this.deleteProject,
+      hasToast: !!toast, toast,
+      proj: proj || {}, showProject: !!proj, showDash: !proj, backToDash: this.backToDash,
+      reschedHeading: form.wasUndated ? 'Agendar' : 'Reagendar',
+      reschedTodaySub: form.wasUndated ? fmtShort(today) : 'manter no dia',
+    };
+  }
+}
+</script>
+</body>
+</html>
