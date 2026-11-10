@@ -41,12 +41,10 @@ export default function HomePage() {
         </div>
         <div className="hero-photos" aria-hidden="true">
           <div className="hp hp1">
-            <small>Client site · Home</small>
             <LoopClip src="/fun/cat-typing" className="hp-media" />
             <small>24h to live</small>
           </div>
           <div className="hp hp2">
-            <small>Client site · About</small>
             <LoopClip src="/fun/finger-guns" className="hp-media" />
             <small>Fixed price</small>
           </div>

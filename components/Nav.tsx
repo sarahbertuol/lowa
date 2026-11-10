@@ -110,11 +110,11 @@ export default function Nav() {
       if (y <= top || openRef.current) {
         header.classList.remove("is-hidden");
         header.classList.toggle("is-solid", y > top);
-      } else if (dy > 4) {
-        header.classList.add("is-hidden");
-      } else if (dy < -4) {
-        header.classList.remove("is-hidden");
+      } else {
+        // Past the top it is always solid, so a page opened on an anchor (/#work) never shows a see-through header over the content.
         header.classList.add("is-solid");
+        if (dy > 4) header.classList.add("is-hidden");
+        else if (dy < -4) header.classList.remove("is-hidden");
       }
     };
     const onScroll = () => {

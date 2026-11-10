@@ -21,6 +21,8 @@
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+/* Anchor links land below the fixed header, at every screen size */
+main section[id]{scroll-margin-top:calc(var(--nav-h) + clamp(16px,3vw,40px))}
 body{
   margin:0;background:var(--cream);color:var(--ink);
   font-family:'Familjen Grotesk',system-ui,sans-serif;font-size:17px;line-height:1.6;
@@ -418,3 +420,4 @@ html.pl-lock{overflow:hidden}
 .proof-card :focus-visible,.plan.feat :focus-visible{outline-color:var(--butter)}
 /* Funny loop inside a frame: the coloured frame stays around it as a border, labels above and below */
 .hp-media{flex:1;min-height:0;width:100%;margin:12px 0;border-radius:16px;object-fit:cover;display:block;background:rgba(255,255,255,.18);box-shadow:inset 0 0 0 1px rgba(255,255,255,.2)}
+.hp-media:first-child{margin-top:0}

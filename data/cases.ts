@@ -64,6 +64,14 @@ export const cases: Case[] = [
     site: { url: "https://www.fabianacampos.com.br/", host: "fabianacampos.com.br", img: "/work/fabianacampos.webp" },
   },
   {
+    name: "Leti Pieruccini",
+    category: "portfolio",
+    tag: "Psychology",
+    tone: "sunset",
+    text: "A calm, editorial site for a Gestalt therapist, with sessions, workshops and reflections in one quiet space.",
+    site: { url: "https://leti-pieruccini.vercel.app/", host: "leti-pieruccini.vercel.app", img: "/work/letipieruccini.webp" },
+  },
+  {
     name: "Geraldo Búrigo",
     category: "institutional",
     tag: "Finance",
