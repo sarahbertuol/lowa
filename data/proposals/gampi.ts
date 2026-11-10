@@ -134,6 +134,39 @@ export const proposal = {
     },
   ],
 
+  // Valores definidos pela Sarah em 10/11/2026. Próxima agência: trocar valores e percentual.
+  investimento: [
+    {
+      titulo: "Site novo da Gampi",
+      valor: "R$ 1.800",
+      descricao: "",
+      nota: "",
+    },
+    {
+      titulo: "Projeto-piloto",
+      valor: "Cortesia",
+      descricao: "Primeiro site para um cliente da Gampi (até 4 páginas).",
+      nota: "",
+    },
+    {
+      titulo: "Sites para os clientes da Gampi",
+      valor: "20% para a Gampi",
+      descricao:
+        "A LoWa contrata e fatura direto com o cliente final; a Gampi recebe 20% do valor total do projeto.",
+      nota: "Referência: site de até 4 páginas a partir de R$ 2.500 para o cliente final.",
+    },
+  ],
+
+  parceria: {
+    passos: [
+      "A Gampi apresenta o cliente.",
+      "A LoWa faz o briefing com o cliente e apresenta a proposta.",
+      "A LoWa conduz o projeto até a entrega final.",
+      "Com o projeto pago pelo cliente, a LoWa repassa a comissão de 20% à Gampi.",
+    ],
+    nota: "A comissão é paga mediante nota fiscal de intermediação emitida pela Gampi.",
+  },
+
   fases: [
     // Opcional. Preencher quando houver escopo e prazo definidos.
     // { titulo: "Diagnóstico e plano", prazo: "Semana 1" },

@@ -52,5 +52,13 @@ export type Proposal = {
   readonly servicos: readonly Servico[];
   readonly mostrarNaoIndicados: boolean;
   readonly oportunidadeAgencia: readonly { readonly titulo: string; readonly texto: string }[];
+  /** Optional: each section renders only when filled in. Empty descricao/nota are skipped. */
+  readonly investimento?: readonly {
+    readonly titulo: string;
+    readonly valor: string;
+    readonly descricao?: string;
+    readonly nota?: string;
+  }[];
+  readonly parceria?: { readonly passos: readonly string[]; readonly nota?: string };
   readonly fases: readonly { readonly titulo: string; readonly prazo: string }[];
 };

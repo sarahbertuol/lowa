@@ -47,6 +47,11 @@ function publicAsset(src: string): string | null {
   return fs.existsSync(file) ? src : null;
 }
 
+/** Keeps "R$" glued to the amount so prices never break across lines. */
+function semQuebra(texto: string): string {
+  return texto.split("R$ ").join("R$" + String.fromCharCode(160));
+}
+
 function formatWhatsapp(digits: string): string {
   const d = digits.replace(/\D/g, "");
   if (d.startsWith("55") && (d.length === 12 || d.length === 13)) {
@@ -126,6 +131,11 @@ export default async function ProposalPage({ params }: Params) {
   const logo = publicAsset(p.cliente.logo);
   const whatsappHref = `https://wa.me/${p.autora.whatsapp.replace(/\D/g, "")}?text=${encodeURIComponent(p.autora.mensagemWhatsapp)}`;
   const agenda = (p.autora.linkAgenda ?? "").trim();
+  const investimento = p.investimento ?? [];
+  const passos = p.parceria?.passos ?? [];
+  // Section numbers follow the sections actually shown (optional ones may be missing).
+  let numeroSecao = 0;
+  const secao = () => String(++numeroSecao).padStart(2, "0");
 
   return (
     <div className="pp" lang="pt-BR" style={vars}>
@@ -159,7 +169,7 @@ export default async function ProposalPage({ params }: Params) {
       <main>
         <section className="pp-sec" aria-labelledby="sec-psi">
           <Reveal className="pp-head">
-            <Eyebrow n="01">Diagnóstico</Eyebrow>
+            <Eyebrow n={secao()}>Diagnóstico</Eyebrow>
             <h2 id="sec-psi">
               Diagnóstico <em>PageSpeed</em>
             </h2>
@@ -169,7 +179,7 @@ export default async function ProposalPage({ params }: Params) {
 
         <section className="pp-sec" aria-labelledby="sec-insights">
           <Reveal className="pp-head">
-            <Eyebrow n="02">Experiência atual</Eyebrow>
+            <Eyebrow n={secao()}>Experiência atual</Eyebrow>
             <h2 id="sec-insights">
               Insights da experiência <em>atual</em>
             </h2>
@@ -190,7 +200,7 @@ export default async function ProposalPage({ params }: Params) {
 
         <section className="pp-sec" aria-labelledby="sec-plano">
           <Reveal className="pp-head">
-            <Eyebrow n="03">Plano</Eyebrow>
+            <Eyebrow n={secao()}>Plano</Eyebrow>
             <h2 id="sec-plano">
               Plano de <em>melhorias</em>
             </h2>
@@ -218,7 +228,7 @@ export default async function ProposalPage({ params }: Params) {
 
         <section className="pp-sec" aria-labelledby="sec-servicos">
           <Reveal className="pp-head">
-            <Eyebrow n="04">Serviços</Eyebrow>
+            <Eyebrow n={secao()}>Serviços</Eyebrow>
             <h2 id="sec-servicos">
               Como trabalhamos <em>juntos</em>
             </h2>
@@ -255,7 +265,7 @@ export default async function ProposalPage({ params }: Params) {
 
         <section className="pp-sec pp-band" aria-labelledby="sec-vendas">
           <Reveal className="pp-head">
-            <Eyebrow n="05">Para a agência</Eyebrow>
+            <Eyebrow n={secao()}>Para a agência</Eyebrow>
             <h2 id="sec-vendas">
               Como isso vira vendas para os seus <em>clientes</em>
             </h2>
@@ -273,9 +283,52 @@ export default async function ProposalPage({ params }: Params) {
           </ol>
         </section>
 
+        {investimento.length > 0 && (
+          <section className="pp-sec" aria-labelledby="sec-investimento">
+            <Reveal className="pp-head">
+              <Eyebrow n={secao()}>Investimento</Eyebrow>
+              <h2 id="sec-investimento">
+                <em>Investimento</em>
+              </h2>
+            </Reveal>
+            <ul className="pp-invest" role="list">
+              {investimento.map((it, i) => (
+                <Reveal as="li" key={it.titulo} delay={((i % 3) + 1) as 1 | 2 | 3} className="pp-invest-card">
+                  <h3>{it.titulo}</h3>
+                  <p className="pp-invest-valor">{semQuebra(it.valor)}</p>
+                  {it.descricao?.trim() && <p className="pp-invest-desc">{semQuebra(it.descricao)}</p>}
+                  {it.nota?.trim() && <p className="pp-invest-nota">{semQuebra(it.nota)}</p>}
+                </Reveal>
+              ))}
+            </ul>
+          </section>
+        )}
+
+        {passos.length > 0 && (
+          <section className="pp-sec" aria-labelledby="sec-parceria">
+            <Reveal className="pp-head">
+              <Eyebrow n={secao()}>Parceria</Eyebrow>
+              <h2 id="sec-parceria">
+                Como funciona a <em>parceria</em>
+              </h2>
+            </Reveal>
+            <ol className="pp-flow" role="list">
+              {passos.map((passo, i) => (
+                <Reveal as="li" key={passo} delay={((i % 3) + 1) as 1 | 2 | 3} className="pp-flow-step">
+                  <span className="pp-flow-n" aria-hidden="true">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <p>{passo}</p>
+                </Reveal>
+              ))}
+            </ol>
+            {p.parceria?.nota?.trim() && <p className="pp-flow-nota">{p.parceria.nota}</p>}
+          </section>
+        )}
+
         <section className="pp-sec pp-next" aria-labelledby="sec-proximos">
           <Reveal className="pp-head">
-            <Eyebrow n="06">Próximos passos</Eyebrow>
+            <Eyebrow n={secao()}>Próximos passos</Eyebrow>
             <h2 id="sec-proximos">
               Próximos <em>passos</em>
             </h2>
