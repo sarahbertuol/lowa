@@ -153,7 +153,7 @@ export const proposal = {
       valor: "20% para a Gampi",
       descricao:
         "A LoWa contrata e fatura direto com o cliente final; a Gampi recebe 20% do valor total do projeto.",
-      nota: "Referência: site de até 4 páginas a partir de R$ 2.500 para o cliente final.",
+      nota: "",
     },
   ],
 
