@@ -421,3 +421,57 @@ html.pl-lock{overflow:hidden}
 /* Funny loop inside a frame: the coloured frame stays around it as a border, labels above and below */
 .hp-media{flex:1;min-height:0;width:100%;margin:12px 0;border-radius:16px;object-fit:cover;display:block;background:rgba(255,255,255,.18);box-shadow:inset 0 0 0 1px rgba(255,255,255,.2)}
 .hp-media:first-child{margin-top:0}
+
+/* About: founders with larger square photos, text and a short journey under each */
+.founders{display:grid;grid-template-columns:1fr 1fr;gap:clamp(28px,5vw,72px);align-items:start}
+.founder .person{height:auto;aspect-ratio:1/1;background-position:center 30%;padding:clamp(18px,2vw,26px)}
+.founder .person:hover{transform:none}
+.founder .person strong{font-size:clamp(30px,3vw,44px)}
+.founder.b{margin-top:clamp(0px,6vw,88px)}
+.founder-text{margin:24px 0 0;font-size:17px;font-weight:300;line-height:1.6;max-width:520px}
+.journey{list-style:none;margin:14px 0 0;padding:0;border-left:1px solid var(--line)}
+.journey li{position:relative;display:grid;grid-template-columns:76px 1fr;gap:12px;padding:10px 0 10px 20px;font-size:15px;line-height:1.5}
+.journey li::before{content:"";position:absolute;left:-5px;top:17px;width:9px;height:9px;border-radius:50%;background:var(--sunset)}
+.journey li:last-child::before{background:var(--blue)}
+.journey .when{font-family:'Instrument Serif',serif;font-style:italic;font-size:20px;line-height:1.1;color:var(--blue)}
+
+/* About: our story (Lorena + Walter = LoWa) */
+.story{overflow-x:clip;background:var(--sunset);border-radius:40px 40px 0 0;padding-block:clamp(72px,9vw,128px);color:var(--brown)}
+.story h2 em{color:var(--blue)}
+.story-lead{max-width:560px;margin-top:20px;font-size:18px;font-weight:300;line-height:1.6}
+.story .mono{color:var(--brown)}
+.story-chapters{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:clamp(40px,6vw,72px);align-items:start}
+.chapter{position:relative;background:var(--cream);border-radius:var(--radius-lg);padding:clamp(22px,2.4vw,32px);min-height:340px;display:flex;flex-direction:column;justify-content:flex-end;box-shadow:0 30px 60px -36px rgba(74,36,21,.5)}
+.chapter:nth-child(1){rotate:-1.5deg}
+.chapter:nth-child(2){rotate:1deg;margin-top:40px;background:var(--butter)}
+.chapter:nth-child(3){rotate:-.5deg;margin-top:12px;background:var(--sky)}
+.chapter .num{position:absolute;top:22px;left:26px;font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.06em}
+.chapter h3{font-family:'Instrument Serif',serif;font-size:clamp(30px,2.8vw,40px);line-height:1.05}
+.chapter h3 em{color:var(--blue)}
+.chapter p{margin:12px 0 0;font-size:15px;line-height:1.55;color:var(--ink)}
+.chapter.us::after{content:"♥" / "";position:absolute;top:14px;right:24px;font-size:72px;line-height:1;color:var(--sunset)}
+.chapter.walter img{position:absolute;right:-18px;top:-46px;width:min(62%,210px);height:auto;filter:drop-shadow(0 16px 18px rgba(74,36,21,.25))}
+.chapter.lorena .due{position:absolute;top:22px;right:22px;width:104px;height:104px;border-radius:50%;background:var(--cream);display:grid;place-content:center;text-align:center;font-family:'Instrument Serif',serif;line-height:.9;rotate:8deg}
+.chapter.lorena .due span:first-child{font-size:40px;font-style:italic;color:var(--blue)}
+.chapter.lorena .due span:last-child{font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.1em;margin-top:4px}
+.name-math{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:center;gap:clamp(10px,2.4vw,36px);margin-top:clamp(72px,10vw,140px);text-align:center}
+.name-math .part{display:flex;flex-direction:column;align-items:center;gap:10px}
+.name-math .big{font-family:'Instrument Serif',serif;font-size:clamp(72px,11vw,180px);line-height:.85;letter-spacing:-.03em;color:var(--brown)}
+.name-math .big em{color:var(--blue)}
+.name-math .op{font-family:'Instrument Serif',serif;font-style:italic;font-size:clamp(40px,6vw,96px);line-height:1;color:#FBF0E4;padding-bottom:clamp(26px,3vw,40px)}
+.name-math .result .big{color:var(--brown)}
+.story-close{max-width:620px;margin:clamp(56px,7vw,96px) auto 0;text-align:center}
+.story-close p{margin:0 0 28px;font-family:'Instrument Serif',serif;font-size:clamp(26px,2.6vw,36px);line-height:1.2}
+@media (prefers-reduced-motion:no-preference){
+  .chapter.walter img{animation:walter-hop 2.4s var(--ease) infinite}
+}
+@keyframes walter-hop{0%,100%{transform:translateY(0)}45%{transform:translateY(-10px)}}
+@media (max-width:860px){
+  .founders{grid-template-columns:1fr}
+  .founder.b{margin-top:0}
+  .story-chapters{grid-template-columns:1fr;gap:28px}
+  .chapter,.chapter:nth-child(2),.chapter:nth-child(3){margin-top:0;min-height:260px}
+  .chapter.walter{margin-top:36px}
+  .name-math{flex-direction:column;align-items:center}
+  .name-math .op{padding-bottom:0}
+}
