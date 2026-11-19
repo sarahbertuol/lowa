@@ -105,7 +105,7 @@ export default function BriefingForm() {
   );
 }
 
-function Field({
+export function Field({
   id,
   label,
   type = "text",

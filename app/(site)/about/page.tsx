@@ -9,29 +9,18 @@ export const metadata: Metadata = {
   alternates: { canonical: "/about" },
 };
 
-// Journeys are placeholders until Sarah sends the real milestones (see "Open items" in CLAUDE.md).
 const founders = [
   {
     key: "sarah",
     role: "Co-founder · Projects",
     name: "Sarah B.",
     text: "Sarah runs every project, from the first brief to the handoff. Your agency gets one clear point of contact and a fixed price from the start.",
-    journey: [
-      ["[Ano]", "[Primeiro marco da trajetória]"],
-      ["[Ano]", "[Segundo marco da trajetória]"],
-      ["Today", "Runs every LoWa Studio project"],
-    ],
   },
   {
     key: "marco",
     role: "Co-founder",
     name: "Marco K.",
     text: "Marco is the other half of the studio. Together we build for agencies that need their clients' sites to work as hard as they do.",
-    journey: [
-      ["[Ano]", "[Primeiro marco da trajetória]"],
-      ["[Ano]", "[Segundo marco da trajetória]"],
-      ["Today", "Co-founder of LoWa Studio"],
-    ],
   },
 ];
 
@@ -63,15 +52,6 @@ export default function AboutPage() {
               <strong>{f.name}</strong>
             </div>
             <p className="founder-text">{f.text}</p>
-            <div className="mono" style={{ marginTop: 28 }}>Journey</div>
-            <ol className="journey">
-              {f.journey.map(([when, what]) => (
-                <li key={what}>
-                  <span className="when">{when}</span>
-                  <span>{what}</span>
-                </li>
-              ))}
-            </ol>
           </Reveal>
         ))}
       </section>

@@ -37,7 +37,7 @@ Static marketing site for LoWa Studio, a US-only production studio that sells AI
 
 ## Open items for Sarah
 - Real photos (hero frames, intro frame, founders, case shots).
-- About: the short journey of Sarah B. and Marco K. (two milestones each, now [colchetes]). Copy of the "Our story" section to review (Walter, Lorena due March 2027, LoWa = Lorena + Walter).
+- About: the short journey of Sarah B. and Marco K. (two milestones each; the Journey list was removed from the page until they arrive). Copy of the "Our story" section to review (Walter, Lorena due March 2027, LoWa = Lorena + Walter).
 - Free hosting condition (for the footnote).
 - Briefing form destination (email, CRM or form service).
 - Domain: lowastudio.com availability (to check manually) and trademark search for LoWa Studio (US classes 35 and 42) before launch.
