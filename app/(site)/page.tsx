@@ -114,7 +114,7 @@ export default function HomePage() {
           <h2 style={{ marginTop: 14, maxWidth: 820 }}>
             Fixed prices.
             <br />
-            <em>One process behind all of them.</em>
+            <em>One process behind all of&nbsp;them.</em>
           </h2>
         </Reveal>
         <div className="cards" style={{ marginTop: 48 }}>
@@ -210,11 +210,11 @@ export default function HomePage() {
             </div>
             <div className="stat">
               <b>$920</b>
-              <span>fixed price to start, no hourly surprises</span>
+              <span>fixed price to start, no hourly&nbsp;surprises</span>
             </div>
             <div className="stat">
               <b>1 team</b>
-              <span>a senior designer and a project manager on every site</span>
+              <span>a senior designer and a project manager on every&nbsp;site</span>
             </div>
           </div>
         </Reveal>
@@ -225,7 +225,7 @@ export default function HomePage() {
           <Reveal className="side-frame">
             <div className="card">
               <span className="mono">Live</span>
-              <strong>Your site, on the domain.</strong>
+              <strong>Your site, on the&nbsp;domain.</strong>
               <span>With a short handoff for your client.</span>
             </div>
           </Reveal>

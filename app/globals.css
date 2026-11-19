@@ -33,6 +33,10 @@ a{color:inherit}
 .nav,main>section,footer.site{padding-inline:var(--gutter)}
 .mobile-menu{margin-inline:var(--gutter)}
 h1,h2,h3{margin:0;font-weight:400;text-wrap:balance;letter-spacing:-.015em}
+/* No widows: paragraphs and list items never end on a single word (headings are balanced above) */
+p,li,dd,figcaption,blockquote,label,.lead,.hint{text-wrap:pretty}
+/* Safety net: nothing that hangs off a frame can widen the page on phones (clip, never hidden) */
+main{overflow-x:clip}
 h1 em,h2 em,h3 em,.serif em{font-family:'Instrument Serif',Georgia,serif;font-style:italic;font-weight:400}
 h1{font-size:clamp(44px,6.4vw,112px);line-height:1.02}
 h2{font-size:clamp(38px,5vw,76px);line-height:1.04}
@@ -400,6 +404,7 @@ html.pl-lock{overflow:hidden}
   .person.b{margin-top:0}
   .person{height:260px}
   .stamp{width:100px;height:100px}
+  .frame .stamp{right:-2px}
   .stamp b{font-size:26px}
   .maint{grid-template-columns:1fr}
   .proof-card{border-radius:26px}

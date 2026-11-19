@@ -26,7 +26,7 @@ export default function ServicesPage() {
           <h1 style={{ marginTop: 14 }}>
             Fixed prices.
             <br />
-            <em>One process behind all of them.</em>
+            <em>One process behind all of&nbsp;them.</em>
           </h1>
         </Reveal>
         <Reveal delay={1}>

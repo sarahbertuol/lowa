@@ -75,7 +75,7 @@ export default function AboutPage() {
             <h3>
               The two <em>of us.</em>
             </h3>
-            <p>Sarah and Marco: seven years together in April 2026, partners at home and at work. LoWa Studio is the thing we build together.</p>
+            <p>Sarah and Marco: seven years together in April 2026, partners at home and at work. LoWa Studio is the thing we build&nbsp;together.</p>
           </Reveal>
           <Reveal as="article" delay={1} className="chapter walter">
             <span className="num">02</span>

@@ -89,7 +89,7 @@ export default function WorkGrid() {
                 <div className="body">
                   <span className="mono">{c.tag}</span>
                   <h3>{c.name}</h3>
-                  <p>{c.text}</p>
+                  <p>{c.text.replace(/ (\S+)$/, " $1") /* last two words stay together: no widows */}</p>
                   {c.site && (
                     <a className="case-link" href={c.site.url} target="_blank" rel="noopener noreferrer">
                       Visit {c.site.host} <span aria-hidden="true">↗</span>
