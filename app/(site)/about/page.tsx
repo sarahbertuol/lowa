@@ -90,11 +90,12 @@ export default function AboutPage() {
 
         <div className="story-chapters">
           <Reveal as="article" className="chapter us">
+            <img className="shot" src="/about/two-of-us.webp" alt="Sarah and Marco kissing in a black and white photo booth picture" width={800} height={640} loading="lazy" />
             <span className="num">01</span>
             <h3>
               The two <em>of us.</em>
             </h3>
-            <p>Sarah and Marco: partners at home and at work. LoWa Studio is the thing we build together.</p>
+            <p>Sarah and Marco: seven years together in April 2026, partners at home and at work. LoWa Studio is the thing we build together.</p>
           </Reveal>
           <Reveal as="article" delay={1} className="chapter walter">
             <span className="num">02</span>
@@ -105,6 +106,7 @@ export default function AboutPage() {
             <p>He was the first one to get a starring role. You will spot him around this site.</p>
           </Reveal>
           <Reveal as="article" delay={2} className="chapter lorena">
+            <img className="shot" src="/about/lorena.webp" alt="Marco and Sarah smiling at Lorena's baby shower brunch, hands on Sarah's belly" width={800} height={640} loading="lazy" />
             <span className="num">03</span>
             <div className="due" aria-hidden="true">
               <span>03</span>

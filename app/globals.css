@@ -446,12 +446,13 @@ html.pl-lock{overflow:hidden}
 .chapter:nth-child(2){rotate:1deg;margin-top:40px;background:var(--butter)}
 .chapter:nth-child(3){rotate:-.5deg;margin-top:12px;background:var(--sky)}
 .chapter .num{position:absolute;top:22px;left:26px;font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.06em}
+.chapter .shot{display:block;width:100%;height:auto;aspect-ratio:5/4;object-fit:cover;border-radius:18px;margin-bottom:20px}
+.chapter:has(.shot) .num{position:static;margin-bottom:8px}
 .chapter h3{font-family:'Instrument Serif',serif;font-size:clamp(30px,2.8vw,40px);line-height:1.05}
 .chapter h3 em{color:var(--blue)}
 .chapter p{margin:12px 0 0;font-size:15px;line-height:1.55;color:var(--ink)}
-.chapter.us::after{content:"♥" / "";position:absolute;top:14px;right:24px;font-size:72px;line-height:1;color:var(--sunset)}
 .chapter.walter img{position:absolute;right:-18px;top:-46px;width:min(62%,210px);height:auto;filter:drop-shadow(0 16px 18px rgba(74,36,21,.25))}
-.chapter.lorena .due{position:absolute;top:22px;right:22px;width:104px;height:104px;border-radius:50%;background:var(--cream);display:grid;place-content:center;text-align:center;font-family:'Instrument Serif',serif;line-height:.9;rotate:8deg}
+.chapter.lorena .due{position:absolute;top:-18px;right:-14px;box-shadow:0 14px 28px -14px rgba(74,36,21,.45);width:104px;height:104px;border-radius:50%;background:var(--cream);display:grid;place-content:center;text-align:center;font-family:'Instrument Serif',serif;line-height:.9;rotate:8deg}
 .chapter.lorena .due span:first-child{font-size:40px;font-style:italic;color:var(--blue)}
 .chapter.lorena .due span:last-child{font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.1em;margin-top:4px}
 .name-math{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:center;gap:clamp(10px,2.4vw,36px);margin-top:clamp(72px,10vw,140px);text-align:center}
@@ -465,6 +466,15 @@ html.pl-lock{overflow:hidden}
 @media (prefers-reduced-motion:no-preference){
   .chapter.walter img{animation:walter-hop 2.4s var(--ease) infinite}
 }
+/* Lo + Wa = LoWa Studio, solved one term at a time (the signs stay put) */
+.js .name-math.reveal{opacity:1;transform:none}
+.js .name-math .part{opacity:0;transform:translateY(28px);transition:opacity .8s var(--ease),transform .8s var(--ease)}
+.js .name-math .result{transform:translateY(28px) scale(.94)}
+.js .name-math.in .part{opacity:1;transform:none}
+.js .name-math.in .part:first-of-type{transition-delay:.25s}
+.js .name-math.in .part:nth-of-type(2){transition-delay:1.15s}
+.js .name-math.in .result{transition-duration:1s;transition-delay:2.2s}
+@media (prefers-reduced-motion:reduce){.js .name-math .part{opacity:1;transform:none;transition:none}}
 @keyframes walter-hop{0%,100%{transform:translateY(0)}45%{transform:translateY(-10px)}}
 @media (max-width:860px){
   .founders{grid-template-columns:1fr}
