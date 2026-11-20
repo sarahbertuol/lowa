@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>LoWa Discover · Sign in</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Familjen+Grotesk:wght@300..700&family=Space+Mono:wght@400;700&display=swap">
+<link rel="stylesheet" href="engine.css">
+<style>
+body{background:var(--sunset)}
+.wrap{min-height:100svh;display:grid;align-content:end;max-width:520px;margin:0 auto;padding:24px var(--pad) max(24px,env(safe-area-inset-bottom,0px))}
+.mark{font-family:'Instrument Serif',serif;font-size:clamp(72px,22vw,132px);line-height:.9;letter-spacing:-.02em;color:var(--butter);margin-bottom:auto;padding-top:12vh}
+.sheet{background:var(--cream);border-radius:28px;padding:24px;display:grid;gap:16px;margin-top:40px}
+.sheet h1{font-size:30px;line-height:1.1}
+.sheet p{color:var(--muted);font-size:15px}
+.sent{display:none}
+</style>
+</head>
+<body>
+<div class="proto-note">PROTOTYPE · sign in · <a href="README.md">all screens</a></div>
+<main class="wrap">
+  <div class="mark" aria-hidden="true">Lo<em>Wa</em></div>
+  <form class="sheet" onsubmit="event.preventDefault();this.querySelector('.ask').style.display='none';this.querySelector('.sent').style.display='grid'">
+    <div class="ask" style="display:grid;gap:16px">
+      <h1>LoWa <em>Discover</em></h1>
+      <p>For Sarah and Marco. We'll email you a sign-in link.</p>
+      <div class="field"><label for="e">Email</label><input class="input" id="e" type="email" inputmode="email" autocomplete="email" required></div>
+      <button class="btn block" type="submit">Send link</button>
+    </div>
+    <div class="sent" style="gap:10px">
+      <h1>Check your <em>inbox</em></h1>
+      <p>Open the link on this phone. It keeps you signed in for 30 days.</p>
+    </div>
+  </form>
+</main>
+</body>
+</html>

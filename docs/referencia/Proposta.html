@@ -1,0 +1,404 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>A growth opportunity for Juniper &amp; Clay · LoWa Studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Familjen+Grotesk:wght@300..700&family=Space+Mono:wght@400;700&display=swap">
+<style>
+/* Public proposal (/opportunity/[token]). LoWa tokens, light only. One article per template. */
+:root{
+  --sunset:#EDB08A;--cream:#F7F0E6;--paper:#FFFFFF;--butter:#F4DFA4;--brown:#4A2415;
+  --sky:#B5D6DF;--ink:#3A1E12;--muted:#7A5A4C;--blue:#2F6F86;--line:#E7D6C6;
+  --ease:cubic-bezier(.2,.8,.2,1);
+  --pg:max(clamp(20px,5vw,56px),env(safe-area-inset-left,0px),calc((100% - 1120px) / 2));
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+body{margin:0;background:var(--cream);color:var(--ink);font-family:'Familjen Grotesk',system-ui,sans-serif;font-size:18px;line-height:1.6;overflow-x:clip}
+h1,h2,h3,p{margin:0}
+h1,h2,h3{font-weight:400;letter-spacing:-.02em;text-wrap:balance}
+p,li{text-wrap:pretty}
+em{font-family:'Instrument Serif',Georgia,serif;font-style:italic;font-weight:400}
+a{color:var(--blue)}
+:focus-visible{outline:2px solid var(--ink);outline-offset:3px;border-radius:8px}
+.mono{font-family:'Space Mono',ui-monospace,monospace;font-size:12px;letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}
+
+/* Prototype only */
+.proto{position:sticky;top:0;z-index:30;display:flex;gap:6px;align-items:center;justify-content:center;flex-wrap:wrap;background:var(--ink);padding:8px 12px}
+.proto span{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.05em;color:#F7F0E6;margin-right:6px}
+.proto a{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:#F7F0E6;text-decoration:none;padding:10px 12px;border-radius:999px;min-height:40px;display:inline-flex;align-items:center}
+.proto a[aria-current="true"]{background:var(--butter);color:var(--ink)}
+.tpl{display:none}.tpl.on{display:block}
+
+/* Hero */
+.hero{position:relative;isolation:isolate;overflow:clip;padding:clamp(28px,4vw,40px) var(--pg) clamp(56px,8vw,112px)}
+.hero::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;opacity:.3;mix-blend-mode:multiply;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .23 0 0 0 0 .12 0 0 0 0 .07 0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+.hero-a{background:var(--sunset)}.hero-b{background:var(--sky)}.hero-c{background:var(--butter)}
+.topline{display:flex;justify-content:space-between;align-items:center;gap:16px}
+.lowa{font-family:'Instrument Serif',Georgia,serif;font-size:26px;line-height:1;color:var(--ink);text-decoration:none}
+.hero-grid{display:grid;gap:40px;margin-top:clamp(48px,9vw,104px);align-items:end}
+@media (min-width:960px){.hero-grid{grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:64px}}
+.hero h1{font-size:clamp(42px,7.4vw,92px);line-height:1}
+.hero .for{margin-top:22px;font-size:clamp(18px,1.6vw,21px);max-width:520px}
+.hero .for b{font-weight:600}
+.in{animation:up .9s var(--ease) both}
+.d1{animation-delay:.08s}.d2{animation-delay:.16s}.d3{animation-delay:.3s}
+@keyframes up{from{opacity:0;transform:translateY(24px)}}
+@media (max-width:767px){@keyframes up{from{opacity:0;transform:translateY(16px)}}}
+
+/* Template A: a site that doesn't exist yet */
+.frame{background:var(--paper);border-radius:18px;box-shadow:0 30px 60px -30px rgba(58,30,18,.45);transform:rotate(-2deg);overflow:hidden;max-width:460px;justify-self:end;width:100%}
+.frame .chrome{display:flex;align-items:center;gap:8px;padding:12px 14px;border-bottom:1px solid var(--line);background:#FBF7F1}
+.frame .chrome i{width:10px;height:10px;border-radius:50%;background:var(--line)}
+.frame .url{flex:1;margin-left:6px;background:var(--cream);border-radius:999px;padding:6px 12px;font-family:'Space Mono',monospace;font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.frame .body{padding:32px 26px 38px;display:grid;gap:14px}
+.frame .body b{font-family:'Instrument Serif',serif;font-weight:400;font-size:34px;line-height:1}
+.frame .ph{height:10px;border-radius:6px;background:var(--line)}
+.frame .ph.s{width:60%}
+.frame .tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:6px}
+.frame .tiles span{aspect-ratio:1;border-radius:10px;border:1.5px dashed var(--line)}
+.frame .cap{font-family:'Space Mono',monospace;font-size:11px;color:var(--muted);letter-spacing:.05em;text-transform:uppercase}
+
+/* Template B: what we read on their site */
+.read{background:var(--paper);border-radius:22px;padding:24px;display:grid;gap:4px;max-width:440px;justify-self:end;width:100%}
+.read .row{display:grid;grid-template-columns:auto 1fr;gap:14px;padding:14px 0;border-bottom:1px solid var(--line);align-items:baseline}
+.read .row:last-child{border-bottom:0}
+.read .row em{font-size:28px;line-height:1;color:var(--blue)}
+.read .row p{font-size:16px}
+
+/* Template C: calendar */
+.cal{background:var(--paper);border-radius:22px;padding:22px;max-width:420px;justify-self:end;width:100%}
+.cal-h{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:14px}
+.cal-h b{font-family:'Instrument Serif',serif;font-weight:400;font-size:30px}
+.cal-g{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;font-size:13px;text-align:center}
+.cal-g span{aspect-ratio:1;display:grid;place-items:center;border-radius:10px;color:var(--muted)}
+.cal-g .w{font-family:'Space Mono',monospace;font-size:10px;aspect-ratio:auto;padding-bottom:4px}
+.cal-g .on{background:var(--sunset);color:var(--ink);font-weight:600}
+.cal-g .key{background:var(--ink);color:var(--cream);font-weight:600;animation:pop .5s var(--ease) .4s both}
+@keyframes pop{from{opacity:0;transform:scale(.8)}}
+.cal p{margin-top:14px;font-size:15px}
+
+/* Sections */
+.sec{padding:clamp(64px,9vw,120px) var(--pg)}
+.sec + .sec{border-top:1px solid var(--line)}
+.label{display:block;margin-bottom:18px}
+.sec h2{font-size:clamp(34px,5vw,60px);line-height:1.04;max-width:16ch}
+.prose{max-width:680px;margin-top:24px;font-size:clamp(18px,1.5vw,20px);display:grid;gap:16px}
+.two-col{display:grid;gap:32px}
+@media (min-width:960px){.two-col{grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:72px}.two-col .prose{margin-top:6px}}
+
+.noticed{list-style:none;margin:32px 0 0;padding:0;display:grid;gap:0;max-width:920px}
+.noticed li{display:grid;grid-template-columns:clamp(56px,8vw,96px) 1fr;gap:clamp(14px,3vw,32px);padding:clamp(24px,3vw,36px) 0;border-top:1px solid var(--line)}
+.noticed .n{font-family:'Instrument Serif',serif;font-size:clamp(44px,6vw,72px);line-height:.9;color:var(--blue)}
+.noticed h3{font-size:clamp(22px,2.4vw,28px);line-height:1.2;font-weight:500}
+.noticed dl{margin:14px 0 0;display:grid;gap:10px}
+.noticed dl div{display:grid;gap:2px}
+@media (min-width:768px){.noticed dl div{grid-template-columns:150px 1fr;gap:16px}}
+.noticed dt{font-family:'Space Mono',monospace;font-size:11.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);padding-top:4px}
+.noticed dd{margin:0;font-size:17px}
+.src{display:block;margin-top:10px;font-family:'Space Mono',monospace;font-size:11.5px;color:var(--muted)}
+
+.rec{margin-top:32px;background:var(--paper);border:1px solid var(--line);border-radius:28px;padding:clamp(24px,4vw,44px);display:grid;gap:24px;max-width:920px}
+@media (min-width:768px){.rec{grid-template-columns:1fr 1fr;gap:40px}}
+.rec h3{font-size:clamp(28px,3.4vw,40px);line-height:1.05}
+.rec ul{margin:0;padding:0;list-style:none;display:grid;gap:10px}
+.rec li{display:grid;grid-template-columns:22px 1fr;gap:10px;font-size:17px}
+.rec li svg{margin-top:5px}
+
+.invest{background:var(--brown);color:#F7F0E6}
+.invest .mono{color:#E2C9B5}
+.invest-grid{display:grid;gap:32px;margin-top:28px;max-width:980px}
+@media (min-width:768px){.invest-grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:56px}}
+.price{font-size:clamp(64px,10vw,120px);line-height:.95;letter-spacing:-.03em}
+.price small{font-size:.28em;letter-spacing:0;margin-left:8px;color:#E2C9B5}
+.invest dl{margin:0;display:grid;gap:0}
+.invest dl div{display:grid;gap:4px;padding:16px 0;border-bottom:1px solid rgba(247,240,230,.16)}
+.invest dt{font-family:'Space Mono',monospace;font-size:11.5px;letter-spacing:.07em;text-transform:uppercase;color:#E2C9B5}
+.invest dd{margin:0;font-size:17px}
+.pend{background:rgba(244,223,164,.16);border-radius:6px;padding:0 6px}
+
+.next{text-align:left}
+.next h2{max-width:14ch}
+.ctas{display:flex;flex-wrap:wrap;gap:12px;margin-top:32px}
+.btn{position:relative;overflow:hidden;isolation:isolate;display:inline-flex;align-items:center;gap:10px;min-height:56px;padding:0 28px;border-radius:999px;background:var(--blue);color:#FBF7F1;border:1.5px solid var(--blue);font:500 16px/1 'Familjen Grotesk',sans-serif;text-decoration:none}
+.btn::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--butter);transform:translateX(-101%);transition:transform .5s var(--ease);border-radius:inherit}
+.btn .arr{transition:transform .35s var(--ease)}
+@media (hover:hover){.btn:hover{color:var(--blue)}.btn:hover::before{transform:none}.btn:hover .arr{transform:translateX(4px)}}
+.btn.ghost{background:transparent;color:var(--blue)}
+
+.foot{padding:32px var(--pg) max(32px,env(safe-area-inset-bottom,0px));display:flex;flex-wrap:wrap;gap:12px 24px;justify-content:space-between;align-items:baseline;border-top:1px solid var(--line)}
+
+.reveal{animation:up .8s var(--ease) both;animation-timeline:view();animation-range:entry 0% entry 40%}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<nav class="proto" aria-label="Prototype template">
+  <span>PROTOTYPE · fictional samples</span>
+  <a href="#a" data-t="a">A · Missing website</a>
+  <a href="#b" data-t="b">B · Growth</a>
+  <a href="#c" data-t="c">C · Seasonal</a>
+</nav>
+
+<!-- ============ TEMPLATE A · THE MISSING WEBSITE ============ -->
+<article class="tpl" id="tpl-a">
+  <header class="hero hero-a">
+    <div class="topline"><a class="lowa" href="#">LoWa <em>Studio</em></a><span class="mono" style="color:var(--ink)">Prepared Nov 20, 2026</span></div>
+    <div class="hero-grid">
+      <div>
+        <h1 class="in">Your mugs sell out by noon. <em>Let them sell all week.</em></h1>
+        <p class="for in d1">A digital growth opportunity for <b>Juniper &amp; Clay</b>, Asheville.</p>
+      </div>
+      <div class="frame in d3" aria-hidden="true">
+        <div class="chrome"><i></i><i></i><i></i><span class="url">juniperandclay.com</span></div>
+        <div class="body">
+          <span class="cap">Not live yet</span>
+          <b>Juniper &amp; Clay</b>
+          <span class="ph"></span><span class="ph s"></span>
+          <div class="tiles"><span></span><span></span><span></span></div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <section class="sec two-col" aria-labelledby="a-opp">
+    <div><span class="label mono">The opportunity</span><h2 id="a-opp">People already want to <em>buy.</em></h2></div>
+    <div class="prose reveal">
+      <p>Every weekend at the River Arts market, people ask where they can buy your work later. Today the answer is an Instagram DM, which works for regulars but loses everyone else.</p>
+      <p>A simple website gives those people somewhere to go: your collection, your story, and an easy way to ask for an order.</p>
+    </div>
+  </section>
+
+  <section class="sec" aria-labelledby="a-noticed">
+    <span class="label mono">What we noticed</span>
+    <h2 id="a-noticed">Three things, <em>specific to you.</em></h2>
+    <ol class="noticed">
+      <li class="reveal"><span class="n">1</span><div><h3>Orders depend on DMs.</h3><dl>
+        <div><dt>What we saw</dt><dd>Your Instagram bio says "DM to order" and links nowhere else.</dd></div>
+        <div><dt>Why it matters</dt><dd>Someone who finds you at 11pm can't see prices or availability, so the moment passes.</dd></div>
+        <div><dt>The opportunity</dt><dd>A collection page with a short order request form, answered when it suits you.</dd></div></dl></div></li>
+      <li class="reveal"><span class="n">2</span><div><h3>Great reviews lead nowhere.</h3><dl>
+        <div><dt>What we saw</dt><dd>Your Google profile has 37 reviews averaging 4.9, with no website link.</dd></div>
+        <div><dt>Why it matters</dt><dd>People who search your name see the reviews, then have nowhere to see the work.</dd></div>
+        <div><dt>The opportunity</dt><dd>Link the profile to a site that shows the pieces they're reading about.</dd></div></dl></div></li>
+      <li class="reveal"><span class="n">3</span><div><h3>The holidays could be in reach.</h3><dl>
+        <div><dt>What we saw</dt><dd>Handmade ceramics are a popular gift, and December is weeks away.</dd></div>
+        <div><dt>Why it matters</dt><dd>Gift shoppers plan ahead and look online first. We think a gift section could reach them.</dd></div>
+        <div><dt>The opportunity</dt><dd>A small "gifts under $60" section on the new site, ready before December.</dd></div></dl></div></li>
+    </ol>
+  </section>
+
+  <section class="sec" aria-labelledby="a-rec">
+    <span class="label mono">Our recommendation</span>
+    <h2 id="a-rec">A small website, <em>live fast.</em></h2>
+    <div class="rec reveal">
+      <div><h3>Small business website</h3><p style="margin-top:12px">Three pages that do the work of a shop counter: show the collection, tell your story, take order requests.</p></div>
+      <ul>
+        <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2F6F86" stroke-width="2.6"><path d="m5 12 5 5 9-10"/></svg>Home, About and Contact pages</li>
+        <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2F6F86" stroke-width="2.6"><path d="m5 12 5 5 9-10"/></svg>A panel to add new pieces yourself</li>
+        <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2F6F86" stroke-width="2.6"><path d="m5 12 5 5 9-10"/></svg>Designed for phones first</li>
+        <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2F6F86" stroke-width="2.6"><path d="m5 12 5 5 9-10"/></svg>Order request form and visit tracking</li>
+        <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2F6F86" stroke-width="2.6"><path d="m5 12 5 5 9-10"/></svg>Fast loading and basic search setup</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="sec invest" aria-labelledby="a-inv">
+    <span class="label mono">Investment</span>
+    <div class="invest-grid">
+      <div><p class="price">$920<small>one time</small></p><p style="margin-top:14px;color:#E2C9B5">Optional care plan: $180 a month for hosting, updates, backups and small edits.</p></div>
+      <dl>
+        <div><dt>Payment</dt><dd><span class="pend">[payment terms]</span></dd></div>
+        <div><dt>Delivery</dt><dd><span class="pend">[24-hour delivery, conditions to confirm]</span></dd></div>
+        <div><dt>Not included</dt><dd>Online checkout and payments (available as a separate project)</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <section class="sec next" aria-labelledby="a-next">
+    <span class="label mono">Next step</span>
+    <h2 id="a-next">Let's turn this into your <em>next step.</em></h2>
+    <p class="prose">Reply to the message this link came with, or write to us. A short call is enough to start.</p>
+    <div class="ctas">
+      <a class="btn" href="mailto:hello@lowastudio.com?subject=Juniper%20%26%20Clay%20website">Email LoWa Studio <span class="arr" aria-hidden="true">&rarr;</span></a>
+      <a class="btn ghost" href="#">[Book a call]</a>
+    </div>
+  </section>
+
+  <footer class="foot"><a class="lowa" href="#">LoWa <em>Studio</em></a><span class="mono">Prepared for Juniper &amp; Clay · valid until Jan 19, 2027</span></footer>
+</article>
+
+<!-- ============ TEMPLATE B · THE GROWTH OPPORTUNITY ============ -->
+<article class="tpl" id="tpl-b">
+  <header class="hero hero-b">
+    <div class="topline"><a class="lowa" href="#">LoWa <em>Studio</em></a><span class="mono" style="color:var(--ink)">Prepared Nov 20, 2026</span></div>
+    <div class="hero-grid">
+      <div>
+        <h1 class="in">Your fittings are booked by phone. <em>Your site could book them too.</em></h1>
+        <p class="for in d1">A digital growth opportunity for <b>Harbor Street Tailors</b>, Portland.</p>
+      </div>
+      <div class="read in d3">
+        <span class="mono">What we read on your site</span>
+        <div class="row"><em>5</em><p>pages, all built around services</p></div>
+        <div class="row"><em>0</em><p>ways to book without calling</p></div>
+        <div class="row"><em>1</em><p>phone number, shown only in the footer</p></div>
+      </div>
+    </div>
+  </header>
+
+  <section class="sec two-col" aria-labelledby="b-opp">
+    <div><span class="label mono">The opportunity</span><h2 id="b-opp">The site is there. <em>The path isn't.</em></h2></div>
+    <div class="prose reveal">
+      <p>Your website explains alterations and bespoke suits clearly. What it doesn't do is help someone take the next step, especially on a phone, where most local searches start.</p>
+      <p>A few focused changes can turn visits into booked fittings.</p>
+    </div>
+  </section>
+
+  <section class="sec" aria-labelledby="b-noticed">
+    <span class="label mono">What we noticed</span>
+    <h2 id="b-noticed">Three things, <em>specific to you.</em></h2>
+    <ol class="noticed">
+      <li class="reveal"><span class="n">1</span><div><h3>Booking means calling.</h3><dl>
+        <div><dt>What we saw</dt><dd>The Contact page lists a phone number and opening hours, with no form or booking link.</dd></div>
+        <div><dt>Why it matters</dt><dd>People browsing after hours have no way to reserve a slot.</dd></div>
+        <div><dt>The opportunity</dt><dd>A fitting request button on every page.</dd></div></dl><span class="src">Source: your Contact page, checked Nov 20</span></div></li>
+      <li class="reveal"><span class="n">2</span><div><h3>The phone is hard to find on mobile.</h3><dl>
+        <div><dt>What we saw</dt><dd>On a phone, the number appears only at the very bottom of each page.</dd></div>
+        <div><dt>Why it matters</dt><dd>The one action you want is the hardest one to take.</dd></div>
+        <div><dt>The opportunity</dt><dd>A tap-to-call and booking bar that stays in reach.</dd></div></dl><span class="src">Source: your home page on mobile, checked Nov 20</span></div></li>
+      <li class="reveal"><span class="n">3</span><div><h3>Wedding work deserves its own page.</h3><dl>
+        <div><dt>What we saw</dt><dd>Wedding alterations are mentioned in one line on the Services page.</dd></div>
+        <div><dt>Why it matters</dt><dd>We think couples search for this specifically and plan months ahead.</dd></div>
+        <div><dt>The opportunity</dt><dd>A dedicated wedding page with timing guidance and a request form.</dd></div></dl></div></li>
+    </ol>
+  </section>
+
+  <section class="sec" aria-labelledby="b-rec">
+    <span class="label mono">Our recommendation</span>
+    <h2 id="b-rec">A rebuilt site, <em>made to book.</em></h2>
+    <div class="rec reveal">
+      <div><h3>Bigger website</h3><p style="margin-top:12px">Your current content, reorganized around one goal: getting people to book a fitting.</p></div>
+      <ul>
+        <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2F6F86" stroke-width="2.6"><path d="m5 12 5 5 9-10"/></svg>Home, Services, Weddings, About and Contact</li>
+        <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2F6F86" stroke-width="2.6"><path d="m5 12 5 5 9-10"/></svg>Fitting request form on every page</li>
+        <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2F6F86" stroke-width="2.6"><path d="m5 12 5 5 9-10"/></svg>Mobile call and booking bar</li>
+        <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2F6F86" stroke-width="2.6"><path d="m5 12 5 5 9-10"/></svg>A panel to edit content yourself</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="sec invest" aria-labelledby="b-inv">
+    <span class="label mono">Investment</span>
+    <div class="invest-grid">
+      <div><p class="price"><small style="margin:0 8px 0 0">from</small>$1,450</p><p style="margin-top:14px;color:#E2C9B5">$1,200 for four pages, plus $250 for the Weddings page. Final scope agreed before we start.</p></div>
+      <dl>
+        <div><dt>Payment</dt><dd><span class="pend">[payment terms]</span></dd></div>
+        <div><dt>Optional care plan</dt><dd>$180 a month: hosting, updates, backups and small edits</dd></div>
+        <div><dt>Not included</dt><dd>Online payments and appointment software subscriptions</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <section class="sec next" aria-labelledby="b-next">
+    <span class="label mono">Next step</span>
+    <h2 id="b-next">Let's turn this into your <em>next step.</em></h2>
+    <div class="ctas"><a class="btn" href="mailto:hello@lowastudio.com">Email LoWa Studio <span class="arr" aria-hidden="true">&rarr;</span></a></div>
+  </section>
+  <footer class="foot"><a class="lowa" href="#">LoWa <em>Studio</em></a><span class="mono">Prepared for Harbor Street Tailors · valid until Jan 19, 2027</span></footer>
+</article>
+
+<!-- ============ TEMPLATE C · THE SEASONAL OPPORTUNITY ============ -->
+<article class="tpl" id="tpl-c">
+  <header class="hero hero-c">
+    <div class="topline"><a class="lowa" href="#">LoWa <em>Studio</em></a><span class="mono" style="color:var(--ink)">Prepared Nov 20, 2026</span></div>
+    <div class="hero-grid">
+      <div>
+        <h1 class="in">Your candles are gifts. <em>Let December find them.</em></h1>
+        <p class="for in d1">A seasonal opportunity for <b>Saltmarsh Candle Co.</b>, Charleston.</p>
+      </div>
+      <div class="cal in d3" aria-label="Holiday gift window, December 1 to 19">
+        <div class="cal-h"><b>December</b><span class="mono">2026</span></div>
+        <div class="cal-g" aria-hidden="true">
+          <span class="w">M</span><span class="w">T</span><span class="w">W</span><span class="w">T</span><span class="w">F</span><span class="w">S</span><span class="w">S</span>
+          <span></span><span class="on">1</span><span class="on">2</span><span class="on">3</span><span class="on">4</span><span class="on">5</span><span class="on">6</span>
+          <span class="on">7</span><span class="on">8</span><span class="on">9</span><span class="on">10</span><span class="on">11</span><span class="on">12</span><span class="on">13</span>
+          <span class="on">14</span><span class="on">15</span><span class="on">16</span><span class="on">17</span><span class="on">18</span><span class="key">19</span><span>20</span>
+          <span>21</span><span>22</span><span>23</span><span>24</span><span>25</span><span>26</span><span>27</span>
+        </div>
+        <p>Gift page live by Dec 1. <b>[Last shipping day to confirm]</b></p>
+      </div>
+    </div>
+  </header>
+
+  <section class="sec two-col" aria-labelledby="c-opp">
+    <div><span class="label mono">The opportunity</span><h2 id="c-opp">A gift guide, <em>ready in time.</em></h2></div>
+    <div class="prose reveal">
+      <p>Your shop already sells online. What it doesn't have is a place built for gift shoppers: people who know the occasion and the budget, not the product.</p>
+      <p>A seasonal page groups your best gift candles by price and scent, with clear shipping dates.</p>
+    </div>
+  </section>
+
+  <section class="sec" aria-labelledby="c-noticed">
+    <span class="label mono">What we noticed</span>
+    <h2 id="c-noticed">Three things, <em>specific to you.</em></h2>
+    <ol class="noticed">
+      <li class="reveal"><span class="n">1</span><div><h3>Gift sets are hard to find.</h3><dl>
+        <div><dt>What we saw</dt><dd>Your gift boxes appear on page 3 of the shop, mixed with refills.</dd></div>
+        <div><dt>Why it matters</dt><dd>Gift shoppers decide fast and leave when they can't find a starting point.</dd></div>
+        <div><dt>The opportunity</dt><dd>A gift guide page, linked from the home page through December.</dd></div></dl><span class="src">Source: your online shop, checked Nov 20</span></div></li>
+      <li class="reveal"><span class="n">2</span><div><h3>No shipping deadline is shown.</h3><dl>
+        <div><dt>What we saw</dt><dd>We found no holiday shipping date anywhere on the site.</dd></div>
+        <div><dt>Why it matters</dt><dd>Shoppers who aren't sure a gift will arrive in time often wait or buy elsewhere.</dd></div>
+        <div><dt>The opportunity</dt><dd>A clear "order by" date on the gift page and in the shop banner.</dd></div></dl></div></li>
+      <li class="reveal"><span class="n">3</span><div><h3>Charleston is a gift you could ship.</h3><dl>
+        <div><dt>What we saw</dt><dd>Your scents are named after Charleston places.</dd></div>
+        <div><dt>Why it matters</dt><dd>We think visitors who loved the city may want to send it to someone.</dd></div>
+        <div><dt>The opportunity</dt><dd>A "send Charleston home" collection inside the guide.</dd></div></dl></div></li>
+    </ol>
+  </section>
+
+  <section class="sec" aria-labelledby="c-rec">
+    <span class="label mono">Our recommendation</span>
+    <h2 id="c-rec">One page, <em>one season.</em></h2>
+    <div class="rec reveal">
+      <div><h3>Seasonal landing page</h3><p style="margin-top:12px">A gift guide connected to your existing shop. Your checkout stays exactly as it is.</p></div>
+      <ul>
+        <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2F6F86" stroke-width="2.6"><path d="m5 12 5 5 9-10"/></svg>Gift guide by price and occasion</li>
+        <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2F6F86" stroke-width="2.6"><path d="m5 12 5 5 9-10"/></svg>"Order by" shipping banner</li>
+        <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2F6F86" stroke-width="2.6"><path d="m5 12 5 5 9-10"/></svg>Links straight to your product pages</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="sec invest" aria-labelledby="c-inv">
+    <span class="label mono">Investment</span>
+    <div class="invest-grid">
+      <div><p class="price"><span class="pend">[price]</span></p><p style="margin-top:14px;color:#E2C9B5">Landing page price pending in the catalog. Until it's set, this template can't be published.</p></div>
+      <dl>
+        <div><dt>Delivery</dt><dd><span class="pend">[delivery date to confirm]</span></dd></div>
+        <div><dt>Not included</dt><dd>Changes to your shop platform or checkout</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <section class="sec next" aria-labelledby="c-next">
+    <span class="label mono">Next step</span>
+    <h2 id="c-next">Let's turn this into your <em>next step.</em></h2>
+    <div class="ctas"><a class="btn" href="mailto:hello@lowastudio.com">Email LoWa Studio <span class="arr" aria-hidden="true">&rarr;</span></a></div>
+  </section>
+  <footer class="foot"><a class="lowa" href="#">LoWa <em>Studio</em></a><span class="mono">Prepared for Saltmarsh Candle Co. · valid until Jan 19, 2027</span></footer>
+</article>
+
+<script>
+function show(){const t=['a','b','c'].includes(location.hash.slice(1))?location.hash.slice(1):'a';
+  document.querySelectorAll('.tpl').forEach(x=>x.classList.toggle('on',x.id==='tpl-'+t));
+  document.querySelectorAll('.proto a').forEach(a=>a.setAttribute('aria-current',a.dataset.t===t));window.scrollTo(0,0)}
+addEventListener('hashchange',show);show();
+</script>
+</body>
+</html>

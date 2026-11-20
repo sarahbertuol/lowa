@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>LoWa Discover · Service catalog</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Familjen+Grotesk:wght@300..700&family=Space+Mono:wght@400;700&display=swap">
+<link rel="stylesheet" href="engine.css">
+<style>
+h1{font-size:clamp(32px,8.5vw,48px);line-height:1.04;margin:6px 0 8px}
+.lead{color:var(--muted);margin-bottom:20px}
+details.card{padding:0}
+details.card summary{list-style:none;display:grid;grid-template-columns:1fr auto;gap:4px 12px;align-items:center;padding:16px 18px;min-height:76px;cursor:pointer}
+details.card summary::-webkit-details-marker{display:none}
+summary b{font-weight:500;font-size:17px}
+summary .p{font-size:20px;text-align:right}
+summary span.mono{grid-column:1/-1}
+details[open] summary{border-bottom:1px solid var(--line)}
+.ed{display:grid;gap:16px;padding:18px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.list-ed{display:grid;gap:8px}
+.list-ed div{display:grid;grid-template-columns:1fr 44px;gap:8px}
+.list-ed .x{width:44px;height:56px;border-radius:14px;border:1.5px solid var(--line);background:var(--paper);cursor:pointer;font-size:20px;color:var(--muted)}
+.switch{display:flex;align-items:center;justify-content:space-between;min-height:48px}
+.switch input{width:52px;height:30px;accent-color:var(--blue)}
+.off{opacity:.55}
+</style>
+</head>
+<body>
+<div class="proto-note">PROTOTYPE · prices from the LoWa site · <a href="README.md">all screens</a></div>
+<div class="app">
+  <header class="top">
+    <a class="back" href="Discover.html"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M15 5 8 12l7 7"/></svg>Home</a>
+    <button class="btn small ghost" type="button">Add service</button>
+  </header>
+  <h1>Service <em>catalog</em></h1>
+  <p class="lead">Proposals take prices only from here. Changes apply to new proposals, never to ones already published.</p>
+
+  <div class="stack">
+    <details class="card" open>
+      <summary><b>Small business website</b><span class="p">$920</span><span class="mono">Fixed · one time · active</span></summary>
+      <div class="ed">
+        <div class="field"><label for="n1">Name</label><input class="input" id="n1" value="Small business website"></div>
+        <div class="two">
+          <div class="field"><label for="t1">Price type</label><select class="select" id="t1"><option selected>Fixed</option><option>Starting at</option><option>Monthly</option><option>Custom quote</option></select></div>
+          <div class="field"><label for="v1">Price (USD)</label><input class="input" id="v1" inputmode="decimal" value="920"></div>
+        </div>
+        <div class="field"><label for="pay1">Payment</label><input class="input" id="pay1" placeholder="[e.g. 50% to start, 50% at launch]"></div>
+        <div class="field"><span style="font-weight:500;font-size:15px">Included</span>
+          <div class="list-ed">
+            <div><input class="input" value="Three pages: Home, About, Contact" aria-label="Included item 1"><button class="x" type="button" aria-label="Remove">&times;</button></div>
+            <div><input class="input" value="CMS panel to edit your content" aria-label="Included item 2"><button class="x" type="button" aria-label="Remove">&times;</button></div>
+            <div><input class="input" value="Mobile-first design" aria-label="Included item 3"><button class="x" type="button" aria-label="Remove">&times;</button></div>
+            <div><input class="input" value="Performance and basic SEO" aria-label="Included item 4"><button class="x" type="button" aria-label="Remove">&times;</button></div>
+            <div><input class="input" value="Forms and tracking" aria-label="Included item 5"><button class="x" type="button" aria-label="Remove">&times;</button></div>
+          </div>
+          <button class="btn small quiet" type="button" style="justify-self:start">Add item</button>
+        </div>
+        <div class="field"><span style="font-weight:500;font-size:15px">Not included</span>
+          <div class="list-ed">
+            <div><input class="input" value="Online store and payments" aria-label="Excluded item 1"><button class="x" type="button" aria-label="Remove">&times;</button></div>
+          </div>
+        </div>
+        <div class="field"><label for="d1">Delivery</label><input class="input" id="d1" value="[Live in 24 hours, conditions to confirm]"></div>
+        <label class="switch"><span>Active</span><input type="checkbox" checked></label>
+        <button class="btn block" type="button">Save</button>
+      </div>
+    </details>
+
+    <details class="card"><summary><b>Bigger website</b><span class="p">from $1,200</span><span class="mono">Starting at · 4+ pages · $250 per extra page</span></summary></details>
+    <details class="card"><summary><b>Monthly maintenance</b><span class="p">$180/mo</span><span class="mono">Monthly · hosting, updates, backups, small edits</span></summary></details>
+    <details class="card"><summary><b>E-commerce</b><span class="p">Custom</span><span class="mono">Custom quote · never the $920 package</span></summary></details>
+    <details class="card off"><summary><b>Landing page</b><span class="p">[price]</span><span class="mono">Inactive until price is set</span></summary></details>
+    <details class="card"><summary><b>Digital presence and growth</b><span class="p">Custom</span><span class="mono">Custom quote</span></summary></details>
+    <details class="card"><summary><b>Agency partnership</b><span class="p">Custom</span><span class="mono">White label production · Webflow project management</span></summary></details>
+  </div>
+</div>
+</body>
+</html>
