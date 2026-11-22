@@ -29,7 +29,7 @@ Migrações aplicadas no Supabase (supabase-alizarin-yacht) em 22/11/2026 pelo S
 - `robots.txt` e `next.config.mjs`: `Disallow` e `X-Robots-Tag: noindex, nofollow` para `/discover` e `/opportunity`.
 - Pronto quando: migração roda do zero; com a chave anônima nenhuma tabela é legível; o site público continua idêntico (comparar as 4 páginas antes e depois).
 
-### OE-02 · Login
+### OE-02 · Login (código pronto; falta a configuração do Supabase e o teste da Sarah)
 - `/discover/login` com link mágico por e-mail (Supabase Auth). Cadastro público desligado; só e-mails da tabela `team_members` entram.
 - `middleware.ts` protege `/discover/*` e `/api/discover/*` (sem sessão: página vai para o login, API responde 401).
 - Pronto quando: e-mail fora da lista é recusado com mensagem clara; sessão dura 30 dias no celular.

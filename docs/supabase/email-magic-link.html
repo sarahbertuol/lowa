@@ -1,0 +1,10 @@
+<!-- Supabase > Authentication > Emails > Templates > Magic Link.
+     Subject: Your LoWa Discover code
+     Paste everything below this comment as the message body. -->
+<div style="font-family:Helvetica,Arial,sans-serif;color:#3A1E12;max-width:480px">
+  <p style="font-size:15px;margin:0 0 16px">Your LoWa Discover sign-in code:</p>
+  <p style="font-family:'Courier New',monospace;font-size:32px;letter-spacing:8px;font-weight:bold;margin:0 0 20px">{{ .Token }}</p>
+  <p style="font-size:15px;margin:0 0 8px">Type it in the app. Or, on the device you're signing in from, tap:</p>
+  <p style="margin:0 0 24px"><a href="{{ .RedirectTo }}&token_hash={{ .TokenHash }}&type=email" style="color:#2F6F86;font-weight:bold">Sign in to Discover</a></p>
+  <p style="font-size:13px;color:#7A5A4C;margin:0">The code expires in 1 hour. If you didn't ask for it, you can ignore this email.</p>
+</div>

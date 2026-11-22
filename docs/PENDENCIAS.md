@@ -26,6 +26,13 @@ Itens que dependem da Sarah ou do Marco. No código aparecem como `[colchetes]`.
 - [ ] Texto e condições da oferta para agências (white label, gestão de projetos Webflow)
 - [ ] Moeda: propostas só em USD ou também em outra moeda quando o negócio for de fora dos EUA
 
+## Configuração do login no Supabase (OE-02)
+
+- [ ] Authentication > URL Configuration: Site URL `https://www.lowa-studio.com`; Redirect URLs `https://www.lowa-studio.com/discover/**` e `https://*-sarah-b-s-projects.vercel.app/discover/**`
+- [ ] Authentication > Emails > Magic Link: assunto e corpo de `docs/supabase/email-magic-link.html` (código de 6 dígitos + link)
+- [ ] Authentication > Sign In / Providers: desligar "Allow new users to sign up" (o app cria a conta da equipe sozinho)
+- [ ] Se o e-mail não chegar: o envio padrão do Supabase tem limite baixo e pode recusar endereços de fora da organização. Configurar SMTP próprio (Resend) em Authentication > Emails > SMTP
+
 ## Produto
 
 - [ ] Idioma da interface do app (`/discover`): inglês, como o brief e o site, ou português
