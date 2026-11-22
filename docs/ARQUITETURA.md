@@ -125,4 +125,8 @@ LOW: status "Needs verification", publicação bloqueada até a fundadora escolh
 | `GOOGLE_PLACES_API_KEY` | só servidor | perfil do Google |
 | `PUBLIC_BASE_URL` | só servidor | domínio usado nos links das propostas |
 
-Configurar na Vercel (Preview e Production) e em `.env.local` para rodar local. Nunca no código.
+Ficam na Vercel (Preview e Production), criadas pela integração do Supabase. A Vercel não libera essas chaves para Development, então o Engine é testado nos deploys de preview, não em `npm run dev`. Nunca no código.
+
+### Migrações novas
+
+Cada arquivo novo em `supabase/migrations/` é testado com `npm run test:db` e aplicado colando o conteúdo no SQL Editor do Supabase, terminando com `insert into supabase_migrations.schema_migrations (version, name) values (...)`. Se um dia houver acesso direto ao banco, `npm run db:migrate` faz o mesmo e pula o que já foi aplicado.

@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
-    "test:db": "node supabase/tests/engine.test.mjs"
+    "test:db": "node supabase/tests/engine.test.mjs",
+    "db:migrate": "node scripts/db-migrate.mjs"
   },
   "dependencies": {
     "@supabase/ssr": "0.12.7",
@@ -23,6 +24,7 @@
     "@types/node": "22.10.7",
     "@types/react": "19.0.7",
     "@types/react-dom": "19.0.3",
+    "pg": "8.23.1",
     "typescript": "5.7.3"
   }
 }

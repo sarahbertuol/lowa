@@ -4,16 +4,16 @@ Itens que dependem da Sarah ou do Marco. No código aparecem como `[colchetes]`.
 
 ## Contas e chaves (só a Sarah pode criar)
 
-- [ ] Projeto no Supabase (plano gratuito serve no MVP). Mandar URL e chaves pela Vercel, nunca pelo chat
+- [x] Projeto no Supabase criado pela Vercel (22/11/2026), chaves só em Preview e Production
 - [ ] Chave da API da Anthropic (console.anthropic.com), com limite de gasto mensal definido
 - [ ] Chave do Google Places API (New) no Google Cloud, restrita ao Places, com limite diário
-- [ ] E-mails liberados no app (Sarah e Marco): entram na tabela `team_members` depois que o projeto Supabase existir
+- [x] Login do app: hello@lowa-studio.com (conta única da Sarah e do Marco), cadastrado em `team_members`
 - [ ] Vercel: confirmar se a `main` deste repositório publica direto em lowa-studio.com
 
 ## Marca e contato
 
-- [ ] Domínio oficial: o site está em lowa-studio.com, mas o e-mail e o `layout.tsx` usam lowastudio.com. Qual vale para os links das propostas?
-- [ ] E-mail de contato das propostas (hoje o site mostra hello@lowastudio.com)
+- [x] Domínio oficial das propostas: lowa-studio.com (decisão de 22/11/2026, a partir do e-mail hello@lowa-studio.com). O `layout.tsx` do site ainda usa lowastudio.com
+- [x] E-mail de contato das propostas: hello@lowa-studio.com (o site ainda mostra hello@lowastudio.com)
 - [ ] WhatsApp e link de agenda para o "Next step" da proposta (opcionais)
 - [ ] Ícone do app para a tela inicial (sugestão: o Walter ou o "LoWa" em serif sobre sunset)
 

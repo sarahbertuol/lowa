@@ -22,7 +22,8 @@ TASKS, ARQUITETURA, DESIGN, INTERACOES, PENDENCIAS e protótipos em `docs/refere
 
 ## Fase 1 · Base: login, banco e captura (Etapa 2 do brief)
 
-### OE-01 · Infra e banco ✅ (código e testes; falta aplicar no Supabase quando o projeto existir)
+### OE-01 · Infra e banco ✅
+Migrações aplicadas no Supabase (supabase-alizarin-yacht) em 22/11/2026 pelo SQL Editor: 7 serviços, 1 pessoa na equipe.
 - Projeto Supabase (criado pela Sarah), dependências `@supabase/supabase-js`, `@supabase/ssr`, `zod`.
 - Migrações SQL em `supabase/migrations/` com as tabelas de `ARQUITETURA.md`, RLS ligada em todas e seed do catálogo com os preços do site. Teste: `npm run test:db` (Postgres em memória, sem Supabase).
 - `robots.txt` e `next.config.mjs`: `Disallow` e `X-Robots-Tag: noindex, nofollow` para `/discover` e `/opportunity`.
