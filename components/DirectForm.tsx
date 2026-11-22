@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
-import { Field } from "@/components/BriefingForm";
+import { Field, focusField, clearError } from "@/components/BriefingForm";
+import { sendForm, honeypotProps } from "@/lib/send-form";
 
 /** Contact form for business owners who found us through our work (not agencies). */
 type Errors = Partial<Record<"d-name" | "d-email" | "d-need" | "d-about", string>>;
@@ -16,7 +17,7 @@ const needs = [
 
 export default function DirectForm() {
   const [errors, setErrors] = useState<Errors>({});
-  const [done, setDone] = useState(false);
+  const [done, setDone] = useState<false | "email" | "whatsapp">(false);
   const [busy, setBusy] = useState(false);
 
   function validate(f: FormData): Errors {
@@ -29,36 +30,64 @@ export default function DirectForm() {
     return e;
   }
 
-  function onSubmit(ev: FormEvent<HTMLFormElement>) {
+  async function onSubmit(ev: FormEvent<HTMLFormElement>) {
     ev.preventDefault();
     const form = ev.currentTarget;
-    const found = validate(new FormData(form));
+    const f = new FormData(form);
+    const found = validate(f);
     setErrors(found);
     if (Object.keys(found).length) {
       const firstKey = (["d-name", "d-email", "d-need", "d-about"] as const).find((k) => found[k]);
-      if (firstKey) form.querySelector<HTMLElement>(`#${firstKey}`)?.focus();
+      focusField(form, firstKey);
       return;
     }
-    // No submission endpoint is decided yet (see CLAUDE.md). The message is not sent anywhere.
+    const v = (k: string) => String(f.get(k) ?? "");
     setBusy(true);
-    window.setTimeout(() => {
-      setBusy(false);
-      setDone(true);
-    }, 400);
+    const via = await sendForm("direct", form, [
+      ["Name", v("d-name")],
+      ["Business", v("d-business")],
+      ["Email", v("d-email")],
+      ["Phone or WhatsApp", v("d-phone")],
+      ["Looking for", v("d-need")],
+      ["Current website", v("d-site")],
+      ["About the business", v("d-about")],
+      ["When", v("d-when")],
+    ]);
+    setBusy(false);
+    setDone(via);
   }
 
   if (done) {
     return (
       <div className="thanks" role="status" aria-live="polite">
         <span className="mono">Message received</span>
-        <h3>Thank you. We will be in touch soon.</h3>
-        <p className="hint">Watch your inbox: we reply by email with the next steps.</p>
+        {done === "email" ? (
+          <>
+            <h3>Thank you. We will be in touch soon.</h3>
+            <p className="hint">Watch your inbox: we reply by email with the next steps.</p>
+          </>
+        ) : (
+          <>
+            <h3>Almost there: send it on WhatsApp.</h3>
+            <p className="hint">
+              Our email did not answer, so we opened WhatsApp with your message ready. Just press send.
+            </p>
+          </>
+        )}
       </div>
     );
   }
 
+  const missing = Object.keys(errors).length > 0;
+
   return (
-    <form className="form" onSubmit={onSubmit} noValidate aria-label="Contact for business owners">
+    <form
+      className="form"
+      onSubmit={onSubmit}
+      onInput={(e) => setErrors((prev) => clearError(prev, (e.target as HTMLElement).id))}
+      noValidate
+      aria-label="Contact for business owners"
+    >
       <div className="row">
         <Field id="d-name" label="Your name" error={errors["d-name"]} autoComplete="name" />
         <Field id="d-business" label="Business name (optional)" autoComplete="organization" />
@@ -99,9 +128,15 @@ export default function DirectForm() {
         <span id="d-about-err" className="err">{errors["d-about"]}</span>
       </div>
       <Field id="d-when" label="When would you like it live? (optional)" />
+      <input {...honeypotProps} />
       <div>
+        {missing && (
+          <p className="err form-err" role="alert">
+            Some fields need your attention above.
+          </p>
+        )}
         <button className="btn" type="submit" disabled={busy}>
-          {busy ? "Sending" : "Send message"} <span className="arr">→</span>
+          {busy ? "Sending..." : "Send message"} <span className="arr">→</span>
         </button>
       </div>
     </form>

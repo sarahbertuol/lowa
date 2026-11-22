@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
+import { sendForm, honeypotProps } from "@/lib/send-form";
 
 type Errors = Partial<Record<"name" | "agency" | "email" | "goal" | "need", string>>;
 
@@ -12,7 +13,7 @@ const needs = [
 
 export default function BriefingForm() {
   const [errors, setErrors] = useState<Errors>({});
-  const [done, setDone] = useState(false);
+  const [done, setDone] = useState<false | "email" | "whatsapp">(false);
   const [busy, setBusy] = useState(false);
 
   function validate(f: FormData): Errors {
@@ -26,37 +27,64 @@ export default function BriefingForm() {
     return e;
   }
 
-  function onSubmit(ev: FormEvent<HTMLFormElement>) {
+  async function onSubmit(ev: FormEvent<HTMLFormElement>) {
     ev.preventDefault();
     const form = ev.currentTarget;
-    const found = validate(new FormData(form));
+    const f = new FormData(form);
+    const found = validate(f);
     setErrors(found);
     if (Object.keys(found).length) {
       // aria-invalid is not rendered yet at this point, so focus by field order instead.
       const firstKey = (["name", "agency", "email", "need", "goal"] as const).find((k) => found[k]);
-      if (firstKey) form.querySelector<HTMLElement>(`#${firstKey}`)?.focus();
+      focusField(form, firstKey);
       return;
     }
-    // No submission endpoint is decided yet (see CLAUDE.md). The brief is not sent anywhere.
+    const v = (k: string) => String(f.get(k) ?? "");
     setBusy(true);
-    window.setTimeout(() => {
-      setBusy(false);
-      setDone(true);
-    }, 400);
+    const via = await sendForm("agency", form, [
+      ["Name", v("name")],
+      ["Agency", v("agency")],
+      ["Email", v("email")],
+      ["Need", v("need")],
+      ["What the site should do", v("goal")],
+      ["Audience", v("audience")],
+      ["Deadline", v("deadline")],
+    ]);
+    setBusy(false);
+    setDone(via);
   }
 
   if (done) {
     return (
       <div className="thanks" role="status" aria-live="polite">
         <span className="mono">Briefing received</span>
-        <h3>Thank you. We reply within 5 hours.</h3>
-        <p className="hint">Watch your inbox for the structure, timeline and fixed price.</p>
+        {done === "email" ? (
+          <>
+            <h3>Thank you. We reply within 5 hours.</h3>
+            <p className="hint">Watch your inbox for the structure, timeline and fixed price.</p>
+          </>
+        ) : (
+          <>
+            <h3>Almost there: send it on WhatsApp.</h3>
+            <p className="hint">
+              Our email did not answer, so we opened WhatsApp with your briefing ready. Just press send.
+            </p>
+          </>
+        )}
       </div>
     );
   }
 
+  const missing = Object.keys(errors).length > 0;
+
   return (
-    <form className="form" onSubmit={onSubmit} noValidate aria-label="Project briefing">
+    <form
+      className="form"
+      onSubmit={onSubmit}
+      onInput={(e) => setErrors((prev) => clearError(prev, (e.target as HTMLElement).id))}
+      noValidate
+      aria-label="Project briefing"
+    >
       <div className="row">
         <Field id="name" label="Your name" error={errors.name} autoComplete="name" />
         <Field id="agency" label="Agency name" error={errors.agency} autoComplete="organization" />
@@ -96,13 +124,37 @@ export default function BriefingForm() {
         <Field id="audience" label="Who is the audience? (optional)" />
         <Field id="deadline" label="Deadline in mind? (optional)" />
       </div>
+      <input {...honeypotProps} />
       <div>
+        {missing && (
+          <p className="err form-err" role="alert">
+            Some fields need your attention above.
+          </p>
+        )}
         <button className="btn" type="submit" disabled={busy}>
-          {busy ? "Sending" : "Send the briefing"} <span className="arr">→</span>
+          {busy ? "Sending..." : "Send the briefing"} <span className="arr">→</span>
         </button>
       </div>
     </form>
   );
+}
+
+/** Removes the error of a field as soon as the person changes it. */
+export function clearError<T extends Record<string, string | undefined>>(prev: T, id: string): T {
+  if (!id || !(id in prev)) return prev;
+  const next = { ...prev };
+  delete next[id];
+  return next;
+}
+
+/** Brings the first invalid field to the middle of the screen and focuses it. */
+export function focusField(form: HTMLFormElement, id?: string) {
+  if (!id) return;
+  const el = form.querySelector<HTMLElement>(`#${id}`);
+  if (!el) return;
+  const smooth = !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  el.scrollIntoView({ block: "center", behavior: smooth ? "smooth" : "auto" });
+  el.focus({ preventScroll: true });
 }
 
 export function Field({

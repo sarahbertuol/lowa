@@ -326,8 +326,8 @@ export default function HomePage() {
             </div>
             <div className="side">
               <span className="mono">Or write to us</span>
-              <a className="copy-mail" href="mailto:hello@lowastudio.com">
-                hello@lowastudio.com
+              <a className="copy-mail" href="mailto:hello@lowa-studio.com">
+                hello@lowa-studio.com
               </a>
             </div>
           </div>

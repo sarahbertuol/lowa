@@ -17,9 +17,9 @@ Static marketing site for LoWa Studio, a US-only production studio that sells AI
 ## Tasks, in order
 1. Done: Next.js structure, tokens in `app/globals.css`. Next: review on mobile and tighten spacing.
 2. Done: `/about`, `/services`, `/contact` with the briefing form. Next: add real copy review and a styled 404.
-3. Briefing form: fields for name, agency, email, website goal, audience, deadline, and a short "what you need" select. No submission endpoint is decided yet, so keep the form handler as a stub that shows a clear thank you state and logs nothing to third parties.
+3. Contact forms (agency briefing and business owners, on /contact) send to `/api/contato`, which emails them via Resend (env vars RESEND_API_KEY, PROPOSTA_TO=hello@lowa-studio.com, PROPOSTA_FROM, optional PROPOSTA_CC, in Production and Preview). If sending fails, the form opens WhatsApp 5554981490779 with the message ready. Honeypot field `contato_alt`, 5 sends per 10 min per IP.
 4. Replace the colour blocks in the hero, cards, case studies and founder tiles with real images once provided. Keep the aspect ratios and rounded frames.
-5. SEO and social: titles, descriptions and canonicals are in place. Still missing: an Open Graph image at `public/og.png` (1200x630), and the final domain in `app/layout.tsx` (currently www.lowastudio.com, unconfirmed).
+5. SEO and social: titles, descriptions and canonicals are in place. Still missing: an Open Graph image at `public/og.png` (1200x630). Domain: www.lowa-studio.com (set in `app/layout.tsx`).
 6. Performance: target PageSpeed 90+ on mobile. No heavy libraries. Preload the Google Fonts used above, with `display=swap`.
 7. Accessibility: check contrast of the blue text on cream and on the sky band, visible focus, reduced motion (already set).
 
@@ -39,8 +39,8 @@ Static marketing site for LoWa Studio, a US-only production studio that sells AI
 - Real photos (hero frames, intro frame, founders, case shots).
 - About: the short journey of Sarah B. and Marco K. (two milestones each; the Journey list was removed from the page until they arrive). Copy of the "Our story" section to review (Walter, Lorena due March 2027, LoWa = Lorena + Walter).
 - Free hosting condition (for the footnote).
-- Briefing form destination (email, CRM or form service).
-- Domain: lowastudio.com availability (to check manually) and trademark search for LoWa Studio (US classes 35 and 42) before launch.
+- Email: hello@lowa-studio.com should forward to Sarah's Gmail (Cloudflare Email Routing; the DNS is on GoDaddy today). Resend domain lowa-studio.com to verify, then the env vars on Vercel.
+- Trademark search for LoWa Studio (US classes 35 and 42) before launch.
 
 ## Contexto de negócio
 

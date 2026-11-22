@@ -27,7 +27,7 @@ export default function ContactPage() {
           </p>
         </Reveal>
         <Reveal delay={2} className="cta-row" style={{ marginTop: 28 }}>
-          <a className="btn" href="#agency">
+          <a className="btn" href="#briefing">
             I&apos;m an agency <span className="arr">→</span>
           </a>
           <a className="btn-ghost" href="#direct">
@@ -37,7 +37,7 @@ export default function ContactPage() {
         </Reveal>
       </section>
 
-      <section className="band" id="agency" style={{ paddingTop: 40 }}>
+      <section className="band" id="briefing" style={{ paddingTop: 40 }}>
         <Reveal>
           <div className="mono">For agencies</div>
           <h2 className="contact-title">
@@ -49,8 +49,8 @@ export default function ContactPage() {
         </Reveal>
         <p className="hint" style={{ marginTop: 20 }}>
           Or write to us at{" "}
-          <a href="mailto:hello@lowastudio.com" style={{ color: "var(--blue)" }}>
-            hello@lowastudio.com
+          <a href="mailto:hello@lowa-studio.com" style={{ color: "var(--blue)" }}>
+            hello@lowa-studio.com
           </a>
           .
         </p>
