@@ -50,6 +50,7 @@ Nenhuma biblioteca pesada de UI. As telas usam CSS próprio com os tokens LoWa.
 
 | Tabela | Campos principais |
 |---|---|
+| `team_members` | e-mail, nome (quem pode usar o app) |
 | `opportunities` | id, nome, cidade, região/país, site, instagram, categoria, contato, onde encontrou, observação, como conheceu (`in_person` ou `online`), status, confiança, modelo (A, B, C), datas (captura, contato), criado por |
 | `opportunity_photos` | id, opportunity_id, caminho no Storage, texto extraído |
 | `research_jobs` | id, opportunity_id, etapa, status (`queued`, `running`, `done`, `failed`), tentativas, erro, início, fim |
@@ -104,7 +105,7 @@ LOW: status "Needs verification", publicação bloqueada até a fundadora escolh
 
 ## Segurança e privacidade
 
-- Login só para e-mails em `DISCOVER_ALLOWED_EMAILS`; cadastro público desligado no Supabase.
+- Login só para e-mails da tabela `team_members` (a Sarah edita no painel do Supabase); cadastro público desligado. A mesma tabela alimenta a RLS (`is_team()`).
 - Token da proposta: 128 bits aleatórios em base64url (22 caracteres). Expira em 60 dias por padrão; revogar responde 410.
 - Página pública: `noindex, nofollow`, sem pesquisa, notas, confiança, contato pessoal ou observação da fundadora.
 - Leitor de páginas: só `http`/`https`, bloqueia IPs privados e locais, tempo limite de 8 s, máximo de 2 MB, respeita robots.txt.
@@ -122,7 +123,6 @@ LOW: status "Needs verification", publicação bloqueada até a fundadora escolh
 | `ANTHROPIC_API_KEY` | só servidor | IA, visão e busca na web |
 | `AI_MODEL` | só servidor | modelo padrão (`claude-sonnet-5-5`) |
 | `GOOGLE_PLACES_API_KEY` | só servidor | perfil do Google |
-| `DISCOVER_ALLOWED_EMAILS` | só servidor | e-mails liberados, separados por vírgula |
 | `PUBLIC_BASE_URL` | só servidor | domínio usado nos links das propostas |
 
 Configurar na Vercel (Preview e Production) e em `.env.local` para rodar local. Nunca no código.

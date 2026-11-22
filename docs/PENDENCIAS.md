@@ -7,7 +7,7 @@ Itens que dependem da Sarah ou do Marco. No código aparecem como `[colchetes]`.
 - [ ] Projeto no Supabase (plano gratuito serve no MVP). Mandar URL e chaves pela Vercel, nunca pelo chat
 - [ ] Chave da API da Anthropic (console.anthropic.com), com limite de gasto mensal definido
 - [ ] Chave do Google Places API (New) no Google Cloud, restrita ao Places, com limite diário
-- [ ] E-mails liberados no app (Sarah e Marco)
+- [ ] E-mails liberados no app (Sarah e Marco): entram na tabela `team_members` depois que o projeto Supabase existir
 - [ ] Vercel: confirmar se a `main` deste repositório publica direto em lowa-studio.com
 
 ## Marca e contato

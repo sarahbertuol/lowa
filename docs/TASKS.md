@@ -14,7 +14,8 @@ Regra: uma tarefa por vez, na ordem. Ao terminar cada uma: build, typecheck, tes
 
 ## Fase 0 · Docs
 
-### OE-00 · Docs e protótipos (em revisão pela Sarah)
+### OE-00 · Docs e protótipos ✅
+Aprovado pela Sarah em 22/11/2026.
 TASKS, ARQUITETURA, DESIGN, INTERACOES, PENDENCIAS e protótipos em `docs/referencia/`.
 
 ---
@@ -23,12 +24,12 @@ TASKS, ARQUITETURA, DESIGN, INTERACOES, PENDENCIAS e protótipos em `docs/refere
 
 ### OE-01 · Infra e banco
 - Projeto Supabase (criado pela Sarah), dependências `@supabase/supabase-js`, `@supabase/ssr`, `zod`.
-- Migrações SQL em `supabase/migrations/` com as tabelas de `ARQUITETURA.md`, RLS ligada em todas e seed do catálogo com os preços do site.
+- Migrações SQL em `supabase/migrations/` com as tabelas de `ARQUITETURA.md`, RLS ligada em todas e seed do catálogo com os preços do site. Teste: `npm run test:db` (Postgres em memória, sem Supabase).
 - `robots.txt` e `next.config.mjs`: `Disallow` e `X-Robots-Tag: noindex, nofollow` para `/discover` e `/opportunity`.
 - Pronto quando: migração roda do zero; com a chave anônima nenhuma tabela é legível; o site público continua idêntico (comparar as 4 páginas antes e depois).
 
 ### OE-02 · Login
-- `/discover/login` com link mágico por e-mail (Supabase Auth). Cadastro público desligado; só e-mails em `DISCOVER_ALLOWED_EMAILS` entram.
+- `/discover/login` com link mágico por e-mail (Supabase Auth). Cadastro público desligado; só e-mails da tabela `team_members` entram.
 - `middleware.ts` protege `/discover/*` e `/api/discover/*` (sem sessão: página vai para o login, API responde 401).
 - Pronto quando: e-mail fora da lista é recusado com mensagem clara; sessão dura 30 dias no celular.
 
