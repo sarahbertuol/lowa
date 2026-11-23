@@ -43,4 +43,4 @@ Legenda: ✅ passou hoje · ☑️ passou na tarefa de origem, não repetido hoj
 
 ## Registros de teste no banco
 
-Buddy Brew Coffee (nova), Tampa Property Care (agora com Small website escolhido e rascunho v1), Colleen Crafthouse (Contacted, e-mail de teste owner@example.com), Black Trumpet Farm, Wildgoods, Spicewalla, Oxford Exchange, French Broad Chocolates. CAVA é da Sarah. Nenhuma proposta publicada. Apagar os de teste fica para a OE-18, com sua confirmação.
+Buddy Brew Coffee (nova), Tampa Property Care (agora com Small website escolhido e rascunho v1), Colleen Crafthouse (Contacted, e-mail de teste owner@example.com), Black Trumpet Farm, Wildgoods, Spicewalla, Oxford Exchange, French Broad Chocolates. CAVA é da Sarah. Nenhuma proposta publicada. Apagados em 23/11/2026 com a confirmação da Sarah; só a CAVA ficou.
