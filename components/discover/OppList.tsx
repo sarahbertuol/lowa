@@ -8,6 +8,8 @@ export type OppRow = {
   status: Status;
   captured_at: string;
   contacted_at: string | null;
+  /** Research stopped on a failed step (shown as Paused). */
+  paused?: boolean;
 };
 
 const day = (iso: string) =>
@@ -30,7 +32,10 @@ export default function OppList({ rows }: { rows: OppRow[] }) {
               <b>{o.name}</b>
               <span>{o.city} · {detail(o)}</span>
             </span>
-            <span className={`dx-chip s-${o.status}`}>{STATUS_LABEL[o.status] ?? o.status}</span>
+            <span className={`dx-chip s-${o.paused ? "paused" : o.status}`}>
+              {o.status === "researching" && !o.paused && <span className="dx-pulse" aria-hidden="true" />}
+              {o.paused ? "Paused" : STATUS_LABEL[o.status] ?? o.status}
+            </span>
           </Link>
         </li>
       ))}

@@ -5,7 +5,7 @@ import { useSearchParams } from "next/navigation";
 import Toast from "./Toast";
 
 const MESSAGES: Record<string, string> = {
-  saved: "Saved.",
+  saved: "Saved. Research started.",
   offline: "Saved on this phone. It will sync when you're online.",
   signin: "Saved on this phone. Sign in again to sync it.",
   deleted: "Deleted.",

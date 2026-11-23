@@ -1,4 +1,5 @@
-import { NextResponse } from "next/server";
+import { after, NextResponse } from "next/server";
+import { queueResearch, runResearch } from "@/lib/engine/research/runner";
 import { createUserClient } from "@/lib/engine/supabase/server";
 import { captureSchema, plausibleCaptureTime } from "@/lib/engine/capture";
 
@@ -7,6 +8,8 @@ import { captureSchema, plausibleCaptureTime } from "@/lib/engine/capture";
  * already resized on the phone). Idempotent by `client_ref`: the offline queue can retry safely.
  * Runs as the signed-in user, so row level security applies.
  */
+export const maxDuration = 300;
+
 const MAX_PHOTO = 4 * 1024 * 1024;
 const BUCKET = "opportunity-photos";
 
@@ -59,6 +62,13 @@ export async function POST(request: Request) {
     if (link.error) return NextResponse.json({ error: "photo_failed" }, { status: 500 });
   }
 
-  // Research starts here once OE-06 exists; until then the opportunity stays "captured".
+  // Research starts right away, after the response (OE-06). A retried sync doesn't restart it:
+  // steps already queued or done are kept.
+  try {
+    await queueResearch(opp.id);
+    after(() => runResearch(opp.id).catch((e) => console.error("research", opp.id, e)));
+  } catch (e) {
+    console.error("queue research", opp.id, e); // the lead is saved; Start research is on its page
+  }
   return NextResponse.json({ id: opp.id }, { status: 201, headers: { "Cache-Control": "no-store" } });
 }

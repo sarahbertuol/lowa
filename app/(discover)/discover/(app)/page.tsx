@@ -8,6 +8,7 @@ import SignOut from "@/components/discover/SignOut";
 import QueuedList from "@/components/discover/QueuedList";
 import SavedToast from "@/components/discover/SavedToast";
 import OppList, { type OppRow } from "@/components/discover/OppList";
+import AutoRefresh from "@/components/discover/AutoRefresh";
 
 /**
  * Home of LoWa Discover (docs/referencia/Discover.html, OE-05).
@@ -26,10 +27,14 @@ export default async function DiscoverHome({ searchParams }: Props) {
 
   const { data, error, count } = await supabase
     .from("opportunities")
-    .select("id,name,city,status,captured_at,contacted_at", { count: "exact" })
+    .select("id,name,city,status,captured_at,contacted_at,research_jobs(status)", { count: "exact" })
     .order("updated_at", { ascending: false })
     .limit(LIMIT);
-  const rows = (data ?? []) as OppRow[];
+  type Raw = Omit<OppRow, "paused"> & { research_jobs: { status: string }[] | null };
+  const rows: OppRow[] = ((data ?? []) as Raw[]).map(({ research_jobs, ...r }) => ({
+    ...r,
+    paused: r.status === "researching" && (research_jobs ?? []).some((j) => j.status === "failed"),
+  }));
 
   const processing = rows.filter((r) => PROCESSING.includes(r.status));
   const ready = rows.filter((r) => READY.includes(r.status));
@@ -152,6 +157,7 @@ export default async function DiscoverHome({ searchParams }: Props) {
         <span className="mono">Signed in as {user.email}</span>
         <SignOut />
       </section>
+      <AutoRefresh active={processing.some((r) => r.status === "researching" && !r.paused)} />
       <Suspense fallback={null}>
         <SavedToast />
       </Suspense>

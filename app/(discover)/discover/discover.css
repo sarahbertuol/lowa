@@ -171,5 +171,24 @@ body:has(.dx){background:var(--cream)}
 .dx-btn.danger{background:#9B2A1A;border-color:#9B2A1A}
 @media (hover:hover){.dx-btn.danger:hover{color:#9B2A1A}}
 
+/* Research progress (OE-06, docs/referencia/Oportunidade.html) */
+.dx-chip{display:inline-flex;align-items:center;gap:6px}
+.dx-pulse{width:7px;height:7px;border-radius:50%;background:currentColor;animation:dxPulse 1.2s ease-in-out infinite}
+.s-paused{background:#F6D3BE;color:#7A2E0B}
+.dx-steps{list-style:none;margin:0;padding:0}
+.dx-steps li{display:grid;grid-template-columns:28px 1fr;gap:12px;padding:12px 0;border-bottom:1px solid var(--line);transition:opacity .3s}
+.dx-steps li:last-child{border-bottom:0}
+.dx-steps .mk{width:24px;height:24px;border-radius:50%;border:1.5px solid var(--line);display:grid;place-items:center;margin-top:1px;font-weight:700;font-size:13px}
+.dx-steps .done .mk{background:var(--ink);border-color:var(--ink);color:var(--cream)}
+.dx-steps .done .mk svg{animation:dxPop .3s var(--ease)}
+.dx-steps .run .mk{border-color:var(--blue)}
+.dx-steps .run .mk::after{content:"";width:10px;height:10px;border-radius:50%;background:var(--blue);animation:dxPulse 1.2s infinite}
+.dx-steps .wait{opacity:.5}
+.dx-steps .fail .mk{border-color:#B3261E;color:#B3261E}
+.dx-steps b{font-weight:500}
+.dx-steps p{font-size:14px;color:var(--muted)}
+.dx-paused{background:#F6D3BE;color:#7A2E0B;border-color:#EFC2A6}
+.dx-paused b{font-weight:600}
+
 @keyframes dxUp{from{opacity:0;transform:translateY(16px)}}
 @media (prefers-reduced-motion:reduce){.dx *,.dx *::before,.dx *::after{animation:none!important;transition:none!important}}

@@ -6,6 +6,8 @@ import { NetDot } from "@/components/discover/Network";
 import StatusPicker from "./StatusPicker";
 import Notes from "./Notes";
 import DeleteOpportunity from "./DeleteOpportunity";
+import ResearchProgress from "./ResearchProgress";
+import { STEPS, isPaused, type Job } from "@/lib/engine/research/steps";
 
 export const metadata: Metadata = { title: "Opportunity" };
 
@@ -28,12 +30,15 @@ export default async function OpportunityDetail({ params }: Props) {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) redirect("/discover/login");
 
-  const [{ data: o }, { data: history }, { data: photos }] = await Promise.all([
+  const [{ data: o }, { data: history }, { data: photos }, { data: jobRows }] = await Promise.all([
     supabase.from("opportunities").select("*").eq("id", id).maybeSingle(),
     supabase.from("status_history").select("id,from_status,to_status,changed_at").eq("opportunity_id", id).order("changed_at", { ascending: false }).limit(50),
     supabase.from("opportunity_photos").select("id,storage_path").eq("opportunity_id", id),
+    supabase.from("research_jobs").select("step,status,attempts,error,result,finished_at").eq("opportunity_id", id),
   ]);
   if (!o) notFound();
+  const jobs = ((jobRows ?? []) as Job[]).sort((a, b) => STEPS.indexOf(a.step) - STEPS.indexOf(b.step));
+  const paused = o.status === "researching" && isPaused(jobs);
 
   const signed = photos?.length
     ? (await supabase.storage.from("opportunity-photos").createSignedUrls(photos.map((p) => p.storage_path), 3600)).data ?? []
@@ -58,7 +63,7 @@ export default async function OpportunityDetail({ params }: Props) {
       </header>
 
       <section className="dx-opp-head">
-        <span className={`dx-chip s-${o.status}`}>{STATUS_LABEL[o.status as Status]}</span>
+        <span className={`dx-chip s-${paused ? "paused" : o.status}`}>{paused ? "Paused" : STATUS_LABEL[o.status as Status]}</span>
         <h1>{o.name}</h1>
         <p>{o.city}</p>
       </section>
@@ -67,6 +72,8 @@ export default async function OpportunityDetail({ params }: Props) {
         <div><dt className="mono">Captured</dt><dd>{fmt(o.captured_at)}</dd></div>
         <div><dt className="mono">Contacted</dt><dd>{o.contacted_at ? fmt(o.contacted_at) : "Not yet"}</dd></div>
       </dl>
+
+      <ResearchProgress id={o.id} initial={jobs} hasPhoto={(photos?.length ?? 0) > 0} />
 
       <StatusPicker id={o.id} status={o.status as Status} />
 
