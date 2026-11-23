@@ -5,8 +5,8 @@ Itens que dependem da Sarah ou do Marco. No código aparecem como `[colchetes]`.
 ## Contas e chaves (só a Sarah pode criar)
 
 - [x] Projeto no Supabase criado pela Vercel (22/11/2026), chaves só em Preview e Production
-- [ ] Chave da API da Anthropic (console.anthropic.com), com limite de gasto mensal definido
-- [ ] Chave do Google Places API (New) no Google Cloud, restrita ao Places, com limite diário
+- [ ] Chave da API da Anthropic (console.anthropic.com), com limite de gasto mensal (decisão de 22/11/2026: API paga com teto baixo, US$ 10 a 20; o custo real por oportunidade é medido na OE-07). Na Vercel: `ANTHROPIC_API_KEY`, Preview e Production, Sensitive
+- [ ] Chave do Google no Google Cloud com Places API (New) e Geocoding API, restrita a essas duas, com limite diário (deve ficar na cota gratuita). Na Vercel: `GOOGLE_PLACES_API_KEY`, Preview e Production, Sensitive
 - [x] Login do app: hello@lowa-studio.com (conta única da Sarah e do Marco), cadastrado em `team_members`
 - [ ] Vercel: confirmar se a `main` deste repositório publica direto em lowa-studio.com
 
