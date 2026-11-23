@@ -15,7 +15,9 @@ import Analysis, { type AnalysisRow } from "./Analysis";
 import { SERVICE_COLUMNS, type Service } from "@/lib/engine/catalog";
 import Regenerate from "./Regenerate";
 import ProposalDraft, { type VersionRow } from "./ProposalDraft";
-import { copyCheck, pendingItems, type ProposalContent } from "@/lib/engine/proposal";
+import type { ProposalContent } from "@/lib/engine/proposal";
+import { checkPublish } from "@/lib/engine/publish-check";
+import Identity, { identityRows } from "./Identity";
 import PublishBox, { type LiveLink } from "./PublishBox";
 import { liveSnapshot } from "@/lib/engine/publish";
 
@@ -34,7 +36,12 @@ const fmt = (iso: string, withTime = false) =>
     timeZone: "America/New_York",
   }).format(new Date(iso));
 
-/** Opportunity detail (OE-05, OE-07, OE-09, OE-12): status in one tap, dates, research, analysis, proposal draft and sources, what was captured, notes and history. */
+/**
+ * Opportunity detail and review (OE-05 to OE-14): status, research, identity, analysis, offer,
+ * proposal draft, public link, sources, notes and history. On desktop the review opens in two
+ * columns (findings on the left, the offer and the proposal on the right); on the phone, one
+ * column in the order of the work.
+ */
 export default async function OpportunityDetail({ params }: Props) {
   const { id } = await params;
   if (!UUID.test(id)) notFound();
@@ -63,7 +70,7 @@ export default async function OpportunityDetail({ params }: Props) {
   const services = (serviceRows ?? []) as Service[];
   const proposals = (proposalRows ?? []) as (VersionRow & { id: string; template: string; content: ProposalContent })[];
   const proposal = proposals[0] ?? null;
-  const snap = proposal ? await liveSnapshot(supabase, id) : null;
+  const [snap, check] = proposal ? await Promise.all([liveSnapshot(supabase, id), checkPublish(supabase, id)]) : [null, null];
   const live: LiveLink | null = snap
     ? { token: snap.token, publishedAt: snap.published_at, expiresAt: snap.expires_at, version: proposals.find((p) => p.id === snap.proposal_id)?.version ?? null }
     : null;
@@ -114,7 +121,7 @@ export default async function OpportunityDetail({ params }: Props) {
   if (o.instagram) facts.push(["Instagram", <a key="i" className="dx-link" href={`https://instagram.com/${o.instagram}`} target="_blank" rel="noopener noreferrer">@{o.instagram}</a>]);
 
   return (
-    <main className="dx-app">
+    <main className="dx-app dx-wide">
       <header className="dx-top">
         <a className="dx-back" href="/discover">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true"><path d="M15 5 8 12l7 7" /></svg>
@@ -142,73 +149,83 @@ export default async function OpportunityDetail({ params }: Props) {
         <div><dt className="mono">Contacted</dt><dd>{o.contacted_at ? fmt(o.contacted_at) : "Not yet"}</dd></div>
       </dl>
 
-      <ResearchProgress id={o.id} initial={jobs} hasPhoto={(photos?.length ?? 0) > 0} />
-
-      {analysis && <Analysis id={o.id} analysis={analysis} services={services} sourceLabel={sourceLabel} />}
-      {!analysis && jobs.length > 0 && !isActive(jobs) && !paused && level !== "low" && (
-        <section className="dx-group" aria-labelledby="h-noticed">
-          <h2 id="h-noticed" className="dx-h2">What we noticed</h2>
-          <div className="dx-card dx-stack">
-            <p className="dx-why">No analysis yet for this opportunity.</p>
-            <div><Regenerate id={o.id} label="Run the analysis" /></div>
-          </div>
-        </section>
-      )}
-
-      {proposal && (
-        <ProposalDraft key={proposal.version} id={o.id} version={proposal.version} template={proposal.template}
-          content={proposal.content} versions={proposals.map(({ version, created_at, status }) => ({ version, created_at, status }))} />
-      )}
-      {proposal && (
-        <PublishBox id={o.id} version={proposal.version} live={live} pending={pendingItems(proposal.content)}
-          blocked={level === "low" || o.status === "needs_verification" ? "Confirm which business this is before publishing."
-            : copyCheck(proposal.content).length ? "Fix the copy issues in the draft before publishing." : null} />
-      )}
-
-      <Sources id={o.id} findings={findings} />
-
-      <StatusPicker id={o.id} status={o.status as Status} />
-
-      {(facts.length > 0 || o.observation || signed.length > 0) && (
-        <section className="dx-group" aria-labelledby="h-captured">
-          <h2 id="h-captured" className="dx-h2">What you captured</h2>
-          <div className="dx-card dx-stack">
-            {facts.length > 0 && (
-              <dl className="dx-facts">
-                {facts.map(([k, v]) => (
-                  <div key={k}><dt className="mono">{k}</dt><dd>{v}</dd></div>
-                ))}
-              </dl>
-            )}
-            {o.observation && <p className="dx-obs">{o.observation}</p>}
-            {signed.length > 0 && (
-              <div className="dx-photos">
-                {signed.map((s, i) => s.signedUrl && (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <a key={i} href={s.signedUrl} target="_blank" rel="noopener noreferrer"><img src={s.signedUrl} alt={`Photo captured for ${o.name}`} /></a>
-                ))}
-              </div>
+      <div className="dx-split">
+        <div className="dx-col">
+          <div className="o-research"><ResearchProgress id={o.id} initial={jobs} hasPhoto={(photos?.length ?? 0) > 0} /></div>
+          {raw.length > 0 && <div className="o-identity"><Identity rows={identityRows(raw)} /></div>}
+          <div className="o-noticed">
+            {analysis && <Analysis part="noticed" id={o.id} analysis={analysis} services={services} sourceLabel={sourceLabel} />}
+            {!analysis && jobs.length > 0 && !isActive(jobs) && !paused && level !== "low" && (
+              <section className="dx-group" aria-labelledby="h-noticed">
+                <h2 id="h-noticed" className="dx-h2">What we noticed</h2>
+                <div className="dx-card dx-stack">
+                  <p className="dx-why">No analysis yet for this opportunity.</p>
+                  <div><Regenerate id={o.id} label="Run the analysis" /></div>
+                </div>
+              </section>
             )}
           </div>
-        </section>
-      )}
+          <div className="o-sources"><Sources id={o.id} findings={findings} /></div>
+          {(facts.length > 0 || o.observation || signed.length > 0) && (
+            <div className="o-captured">
+              <section className="dx-group" aria-labelledby="h-captured">
+                <h2 id="h-captured" className="dx-h2">What you captured</h2>
+                <div className="dx-card dx-stack">
+                  {facts.length > 0 && (
+                    <dl className="dx-facts">
+                      {facts.map(([k, v]) => (
+                        <div key={k}><dt className="mono">{k}</dt><dd>{v}</dd></div>
+                      ))}
+                    </dl>
+                  )}
+                  {o.observation && <p className="dx-obs">{o.observation}</p>}
+                  {signed.length > 0 && (
+                    <div className="dx-photos">
+                      {signed.map((s, i) => s.signedUrl && (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <a key={i} href={s.signedUrl} target="_blank" rel="noopener noreferrer"><img src={s.signedUrl} alt={`Photo captured for ${o.name}`} /></a>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </section>
+            </div>
+          )}
+          <div className="o-notes"><Notes id={o.id} initial={o.notes ?? ""} /></div>
+          <div className="o-history">
+            <section className="dx-group" aria-labelledby="h-history">
+              <h2 id="h-history" className="dx-h2">History</h2>
+              <ol className="dx-history">
+                {(history ?? []).map((h) => (
+                  <li key={h.id}>
+                    <span className={`dx-dot s-${h.to_status}`} aria-hidden="true" />
+                    <span>
+                      <b>{STATUS_LABEL[h.to_status as Status]}</b>
+                      <span className="mono">{fmt(h.changed_at, true)}</span>
+                    </span>
+                  </li>
+                ))}
+              </ol>
+            </section>
+          </div>
+        </div>
 
-      <Notes id={o.id} initial={o.notes ?? ""} />
-
-      <section className="dx-group" aria-labelledby="h-history">
-        <h2 id="h-history" className="dx-h2">History</h2>
-        <ol className="dx-history">
-          {(history ?? []).map((h) => (
-            <li key={h.id}>
-              <span className={`dx-dot s-${h.to_status}`} aria-hidden="true" />
-              <span>
-                <b>{STATUS_LABEL[h.to_status as Status]}</b>
-                <span className="mono">{fmt(h.changed_at, true)}</span>
-              </span>
-            </li>
-          ))}
-        </ol>
-      </section>
+        <div className="dx-col">
+          {analysis && <div className="o-offer"><Analysis part="offer" id={o.id} analysis={analysis} services={services} sourceLabel={sourceLabel} /></div>}
+          {proposal && check && (
+            <div className="o-publish">
+              <PublishBox id={o.id} version={proposal.version} live={live} pending={check.pending} blocked={check.blocked} />
+            </div>
+          )}
+          {proposal && (
+            <div className="o-draft">
+              <ProposalDraft key={proposal.version} id={o.id} version={proposal.version} template={proposal.template}
+                content={proposal.content} versions={proposals.map(({ version, created_at, status }) => ({ version, created_at, status }))} />
+            </div>
+          )}
+          <div className="o-status"><StatusPicker id={o.id} status={o.status as Status} /></div>
+        </div>
+      </div>
 
       <DeleteOpportunity id={o.id} name={o.name} />
     </main>

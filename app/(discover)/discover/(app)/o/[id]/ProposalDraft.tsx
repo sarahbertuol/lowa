@@ -6,7 +6,7 @@ import { copyCheck, readingTime, type ProposalContent } from "@/lib/engine/propo
 import { regenerateDraft, saveProposal } from "./proposal-actions";
 
 /**
- * Proposal draft (OE-12): the six sections, editable. Save makes a new version.
+ * Proposal draft (OE-12, OE-14): the six sections, editable. Save makes a new version.
  * The copy check runs as you type; Investment comes from the catalog and isn't edited here.
  */
 
@@ -120,7 +120,7 @@ export default function ProposalDraft({ id, version, template, content, versions
         {versions.length > 1 && (
           <details className="dx-prop-ver">
             <summary>{versions.length} versions</summary>
-            <ol>{versions.map((v) => <li key={v.version}><b>v{v.version}</b> <span className="mono">{when(v.created_at)} · {v.status}</span></li>)}</ol>
+            <ol>{versions.map((v) => <li key={v.version}><b>v{v.version}</b> <span className="mono">{when(v.created_at)} · {v.status}</span> <a className="dx-link" href={`/discover/preview/${id}?v=${v.version}`}>Preview</a></li>)}</ol>
           </details>
         )}
         {regenErr && <p className="dx-field-err" role="alert">{regenErr}</p>}

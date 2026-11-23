@@ -5,8 +5,8 @@ import { useRouter } from "next/navigation";
 import { publishProposal, unpublishProposal } from "./proposal-actions";
 
 /**
- * Public link (OE-13). Publishing asks for a second tap: that tap is the founder's approval.
- * The full review screen (template, previews of the messages) comes in OE-14.
+ * Publish (OE-13, OE-14). Publishing asks for a second tap: that tap is the founder's approval.
+ * What blocks it comes from lib/engine/publish-check.ts, the same checks the server runs.
  */
 
 export type LiveLink = { token: string; publishedAt: string; expiresAt: string; version: number | null };
@@ -15,7 +15,7 @@ const day = (iso: string) =>
   new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric", year: "numeric", timeZone: "America/New_York" }).format(new Date(iso));
 
 export default function PublishBox({ id, version, live, blocked, pending: waiting }: {
-  id: string; version: number; live: LiveLink | null; blocked: string | null; pending: string[];
+  id: string; version: number; live: LiveLink | null; blocked: string[]; pending: string[];
 }) {
   const [confirm, setConfirm] = useState(false);
   const [err, setErr] = useState<string | null>(null);
@@ -26,6 +26,8 @@ export default function PublishBox({ id, version, live, blocked, pending: waitin
   useEffect(() => setOrigin(window.location.origin), []);
 
   const url = live ? `${origin}/opportunity/${live.token}` : "";
+  const stop = blocked.length > 0;
+  const preview = <a className="dx-btn ghost small" href={`/discover/preview/${id}`}>Preview</a>;
   const outdated = live && live.version !== null && live.version !== version;
 
   function publish() {
@@ -46,7 +48,7 @@ export default function PublishBox({ id, version, live, blocked, pending: waitin
 
   return (
     <section className="dx-group" aria-labelledby="h-public">
-      <h2 id="h-public" className="dx-h2">Public link</h2>
+      <h2 id="h-public" className="dx-h2">Publish</h2>
       <div className="dx-card dx-stack">
         {live ? (
           <>
@@ -55,18 +57,29 @@ export default function PublishBox({ id, version, live, blocked, pending: waitin
             {outdated && <p className="dx-why">The link shows v{live.version}. Publish again to show v{version}; the link stays the same.</p>}
             <div className="dx-row-btns">
               <button type="button" className="dx-btn small" onClick={copy}>{copied ? "Copied" : "Copy link"}</button>
-              {outdated && <button type="button" className="dx-btn ghost small" onClick={() => setConfirm(true)} disabled={busy || !!blocked}>Publish v{version}</button>}
+              {outdated && <button type="button" className="dx-btn ghost small" onClick={() => setConfirm(true)} disabled={busy || stop}>Publish v{version}</button>}
+              {preview}
               <button type="button" className="dx-btn ghost small" onClick={unpublish} disabled={busy}>Unpublish</button>
             </div>
           </>
         ) : (
           <>
             <p className="dx-why">Nobody can see this proposal until you publish it. Publishing makes v{version} public to anyone with the link, for 60 days.</p>
-            {!confirm && <div><button type="button" className="dx-btn small" onClick={() => setConfirm(true)} disabled={busy || !!blocked}>Publish…</button></div>}
+            {!confirm && (
+              <div className="dx-row-btns">
+                <button type="button" className="dx-btn small" onClick={() => setConfirm(true)} disabled={busy || stop}>Publish proposal</button>
+                {preview}
+              </div>
+            )}
           </>
         )}
-        {blocked && <p className="dx-field-err">{blocked}</p>}
-        {confirm && !blocked && (
+        {stop && (
+          <div className="dx-issues" role="status">
+            <b>Before publishing</b>
+            <ul>{blocked.map((b) => <li key={b}>{b}</li>)}</ul>
+          </div>
+        )}
+        {confirm && !stop && (
           <div className="dx-confirm" role="group" aria-label="Confirm publishing">
             <p><b>Publish v{version}?</b> Anyone with the link will see it. Nothing is sent: you share the link yourself.</p>
             {waiting.length > 0 && <p className="dx-why">Still pending and shown as pending: {waiting.join(", ")}.</p>}

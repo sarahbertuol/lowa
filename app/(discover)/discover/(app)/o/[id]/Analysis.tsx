@@ -1,9 +1,10 @@
 import {
-  DIMENSION_LABEL, SENTENCE_LABEL, TEMPLATE_LABEL,
+  DIMENSION_LABEL, SENTENCE_LABEL,
   type DimensionRow, type Insight, type Sentence, type Template,
 } from "@/lib/engine/research/insights";
 import Regenerate from "./Regenerate";
 import ChangeService from "./ChangeService";
+import ChangeTemplate from "./ChangeTemplate";
 import { quote } from "@/lib/engine/pricing";
 import type { Service } from "@/lib/engine/catalog";
 
@@ -13,7 +14,7 @@ export type AnalysisRow = {
   version: number;
   created_at: string;
   insights: Insight[];
-  dimensions: { items?: DimensionRow[]; serviceReason?: string } | null;
+  dimensions: { items?: DimensionRow[]; serviceReason?: string; ruleTemplate?: Template; templateByFounder?: Template } | null;
   service_slug: string | null;
   extra_pages: number;
   template: Template | null;
@@ -31,19 +32,22 @@ const TEMPLATE_WHY: Record<Template, string> = {
 const when = (iso: string) =>
   new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric", hour: "numeric", minute: "2-digit", timeZone: "America/New_York" }).format(new Date(iso));
 
-export default function Analysis({ id, analysis, services, sourceLabel }: {
+export default function Analysis({ id, analysis, services, sourceLabel, part }: {
   id: string;
+  /** The review splits in two columns on desktop (OE-14): the findings, then the offer. */
+  part: "noticed" | "offer";
   analysis: AnalysisRow;
   services: Service[];
   sourceLabel: Record<string, string>;
 }) {
   const dims = analysis.dimensions?.items ?? [];
+  const rule = analysis.dimensions?.ruleTemplate ?? (analysis.dimensions?.templateByFounder ? null : analysis.template);
   const service = services.find((s) => s.slug === analysis.service_slug) ?? null;
   // The price is always computed here from the catalog row, never stored from the AI.
   const q = service ? quote(service, analysis.extra_pages) : null;
   return (
     <>
-      <section className="dx-group" aria-labelledby="h-noticed">
+      {part === "noticed" && <section className="dx-group" aria-labelledby="h-noticed">
         <div className="dx-sec-row">
           <h2 id="h-noticed" className="dx-h2">What we noticed</h2>
           <Regenerate id={id} />
@@ -91,9 +95,9 @@ export default function Analysis({ id, analysis, services, sourceLabel }: {
           )}
           <p className="mono dim">Version {analysis.version} · {when(analysis.created_at)}</p>
         </div>
-      </section>
+      </section>}
 
-      <section className="dx-group" aria-labelledby="h-reco">
+      {part === "offer" && <section className="dx-group" aria-labelledby="h-reco">
         <h2 id="h-reco" className="dx-h2">Recommendation</h2>
         <div className="dx-card dx-stack">
           {service && q ? (
@@ -124,11 +128,12 @@ export default function Analysis({ id, analysis, services, sourceLabel }: {
           {analysis.template && (
             <div>
               <p className="mono dim">Proposal template</p>
-              <p><b>{TEMPLATE_LABEL[analysis.template]}</b> <span className="dx-why">{TEMPLATE_WHY[analysis.template]} You can change it in the review.</span></p>
+              {rule && <p className="dx-why">Rule: {TEMPLATE_WHY[rule]}</p>}
+              <ChangeTemplate key={analysis.template} id={id} current={analysis.template} rule={rule} chosen={!!analysis.dimensions?.templateByFounder} />
             </div>
           )}
         </div>
-      </section>
+      </section>}
     </>
   );
 }

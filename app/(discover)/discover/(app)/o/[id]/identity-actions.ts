@@ -150,6 +150,35 @@ export async function chooseService(oppId: string, slug: string, extraPages: num
   return { ok: true };
 }
 
+const TEMPLATES = ["missing_website", "growth", "seasonal"] as const;
+
+/**
+ * Change template (OE-14). The founder's pick stays when the analysis runs again; picking the
+ * template the rule chose goes back to the rule. The draft is written again for the new template.
+ */
+export async function chooseTemplate(oppId: string, template: string): Promise<Result> {
+  const t = z.enum(TEMPLATES).safeParse(template);
+  if (!uuid.safeParse(oppId).success || !t.success) return { ok: false, error: "Pick a template." };
+  const db = await client();
+  if (!db) return { ok: false, error: "Sign in again to change the template." };
+  const { data: running } = await db.from("research_jobs").select("id").eq("opportunity_id", oppId).in("status", ["running", "queued"]).limit(1);
+  if (running?.length) return { ok: false, error: "The research is still running. Try again when it's done." };
+  const { data: a } = await db.from("analyses").select("id,dimensions,template").eq("opportunity_id", oppId)
+    .order("version", { ascending: false }).limit(1).maybeSingle();
+  if (!a) return { ok: false, error: "Run the analysis first." };
+  const dims = { ...(a.dimensions as Record<string, unknown>) };
+  // Analyses older than OE-14 don't store the rule: until the founder first picks, the current template is the rule.
+  const rule = (dims.ruleTemplate as string | undefined) ?? (dims.templateByFounder ? null : a.template);
+  if (rule) dims.ruleTemplate = rule;
+  if (t.data === rule) delete dims.templateByFounder; else dims.templateByFounder = t.data;
+  const { error } = await db.from("analyses").update({ template: t.data, dimensions: dims }).eq("id", a.id);
+  if (error) return { ok: false, error: "Couldn't save. Try again." };
+  await db.from("opportunities").update({ template: t.data }).eq("id", oppId);
+  await rerun(db, oppId, ["draft"]);
+  refresh(oppId);
+  return { ok: true };
+}
+
 /** "Regenerate" (OE-09): a new analysis version from the same findings. Earlier versions stay. */
 export async function regenerateAnalysis(oppId: string): Promise<Result> {
   if (!uuid.safeParse(oppId).success) return { ok: false, error: "Invalid opportunity." };

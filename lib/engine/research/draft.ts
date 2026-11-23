@@ -1,8 +1,8 @@
 import { z } from "zod";
 import { structured } from "@/lib/engine/providers/ai";
 import { addUsage, emptyUsage } from "@/lib/engine/providers/types";
-import { SERVICE_COLUMNS, money, type Service } from "@/lib/engine/catalog";
-import { quote } from "@/lib/engine/pricing";
+import { SERVICE_COLUMNS, type Service } from "@/lib/engine/catalog";
+import { buildInvestment } from "@/lib/engine/investment";
 import { copyCheck, readingTime, type ProposalContent } from "@/lib/engine/proposal";
 import type { Insight, Template } from "./insights";
 import type { StepContext, StepResult } from "./handlers";
@@ -43,15 +43,15 @@ export async function draft(ctx: StepContext): Promise<StepResult> {
   const catalog = (rows ?? []) as Service[];
   const service = catalog.find((s) => s.slug === a.service_slug);
   if (!service) throw new Error("The suggested service is no longer in the catalog.");
-  const care = catalog.find((s) => s.slug === "maintenance" && s.active);
 
   // "Source: your website, checked Nov 23" under an insight (public wording, no internal detail).
+  // Only a verified finding with a real address: "No website found" is never cited as the website.
   const ids = [...new Set(insights.flatMap((i) => i.sources))];
   const { data: found } = ids.length
-    ? await db.from("research_findings").select("id,kind,checked_at,verification").in("id", ids)
-    : { data: [] as { id: string; kind: string; checked_at: string; verification: string }[] };
+    ? await db.from("research_findings").select("id,kind,checked_at,verification,source_url").in("id", ids)
+    : { data: [] as { id: string; kind: string; checked_at: string; verification: string; source_url: string | null }[] };
   const sourceLine = (i: Insight | undefined) => {
-    const f = (found ?? []).find((x) => i?.sources.includes(x.id) && x.verification !== "rejected" && PUBLIC_SOURCE[x.kind]);
+    const f = (found ?? []).find((x) => i?.sources.includes(x.id) && x.verification === "verified" && !!x.source_url && PUBLIC_SOURCE[x.kind]);
     if (!f) return undefined;
     const day = new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric", timeZone: "America/New_York" }).format(new Date(f.checked_at));
     return `Source: ${PUBLIC_SOURCE[f.kind]}, checked ${day}`;
@@ -92,36 +92,22 @@ export async function draft(ctx: StepContext): Promise<StepResult> {
   const d = ex.data;
 
   // Investment: only from the catalog.
-  const q = quote(service, a.extra_pages);
-  const unit = service.price_type === "fixed" ? "one time" : service.price_type === "monthly" ? "a month" : "";
-  const note = service.price_type === "custom"
-    ? "We scope it with you first, then send a fixed quote before any work starts."
-    : q.lines.length
-      ? `${q.lines.join(", ")}.${service.price_type === "from" ? " Final scope agreed before we start." : ""}`
-      : service.price_type === "from" ? "Final scope agreed before we start." : "";
-  const isSite = service.category === "website";
+  const inv = buildInvestment(service, a.extra_pages, catalog);
   const content: ProposalContent = {
     hero: { headline: dash(d.hero.headline), subline: dash(d.hero.subline) },
     opportunity: { title: dash(d.opportunity.title), body: d.opportunity.body.slice(0, 3).map(dash) },
     noticed: d.noticed
       .filter((n) => n.insight >= 1 && n.insight <= insights.length)
       .slice(0, 3)
-      .map((n) => ({ title: dash(n.title).replace(/\.$/, ""), saw: dash(n.saw), why: dash(n.why), opportunity: dash(n.opportunity) })),
+      .map((n) => {
+        const source = sourceLine(insights[n.insight - 1]);
+        return { title: dash(n.title).replace(/\.$/, ""), saw: dash(n.saw), why: dash(n.why), opportunity: dash(n.opportunity), ...(source ? { source } : {}) };
+      }),
     recommendation: {
       title: dash(d.recommendation.title), service: service.name,
       description: dash(d.recommendation.description), bullets: d.recommendation.bullets.slice(0, 5).map(dash),
     },
-    investment: {
-      label: q.label,
-      unit,
-      note,
-      payment: service.payment_terms ?? "[payment terms]",
-      delivery: service.delivery ?? "[delivery time]",
-      notIncluded: service.exclusions,
-      care: isSite && care?.price_cents != null
-        ? `Optional care plan: ${money(care.price_cents)} a month${care.summary ? ` (${care.summary.replace(/\.$/, "").toLowerCase()})` : ""}.`
-        : null,
-    },
+    investment: inv.investment,
     nextStep: { title: dash(d.next_step.title), body: dash(d.next_step.body) },
   };
 
@@ -129,7 +115,7 @@ export async function draft(ctx: StepContext): Promise<StepResult> {
     .order("version", { ascending: false }).limit(1).maybeSingle();
   const version = (last?.version ?? 0) + 1;
   const { error } = await db.from("proposals").insert({
-    opportunity_id: o.id, version, template, service_slug: service.slug, extra_pages: q.extraPages,
+    opportunity_id: o.id, version, template, service_slug: service.slug, extra_pages: inv.extraPages,
     content, status: "draft",
   });
   if (error) throw new Error(`draft: ${error.message}`);

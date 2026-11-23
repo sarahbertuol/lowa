@@ -147,7 +147,7 @@ export async function analysis(ctx: StepContext): Promise<StepResult> {
   // Template by rule: no verified website = A; strong season among the insights = C; otherwise B.
   const hasSite = findings.some((f) => f.kind === "website" && f.verification === "verified");
   const seasonal = a.strong_seasonality && insights.some((i) => i.dimension === "seasonality");
-  const template: Template = !hasSite ? "missing_website" : seasonal ? "seasonal" : "growth";
+  const ruleTemplate: Template = !hasSite ? "missing_website" : seasonal ? "seasonal" : "growth";
 
   // Service (OE-11): the AI only names it. A business that needs to sell online never gets a
   // priced website package (the US$920 site is not an online store): it gets ecommerce.
@@ -174,6 +174,9 @@ export async function analysis(ctx: StepContext): Promise<StepResult> {
     extraPages = picked.extra_page_cents != null ? last!.extra_pages : 0;
     reason = "You chose this service.";
   }
+  // A template the founder picked (OE-14) also stays.
+  const lastDims = last?.dimensions as { templateByFounder?: Template } | null;
+  const template: Template = lastDims?.templateByFounder ?? ruleTemplate;
   const version = (last?.version ?? 0) + 1;
   const { error } = await db.from("analyses").insert({
     opportunity_id: o.id,
@@ -181,6 +184,7 @@ export async function analysis(ctx: StepContext): Promise<StepResult> {
     dimensions: {
       items: dimensions, strongSeasonality: a.strong_seasonality, serviceReason: reason,
       needsOnlineSales: a.needs_online_sales, productSeller, suggestedSlug: a.service_slug, serviceByFounder: !!picked,
+      ruleTemplate, ...(lastDims?.templateByFounder ? { templateByFounder: lastDims.templateByFounder } : {}),
     },
     insights,
     service_slug: service.slug,

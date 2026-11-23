@@ -6,9 +6,8 @@ import { revalidatePath } from "next/cache";
 import { createUserClient } from "@/lib/engine/supabase/server";
 import { requeueSteps, runResearch } from "@/lib/engine/research/runner";
 import { copyCheck, type CopyIssue, type ProposalContent } from "@/lib/engine/proposal";
-import { liveSnapshot, newToken, toPublic } from "@/lib/engine/publish";
-import { loadAssessment } from "@/lib/engine/research/confidence";
-import type { Template } from "@/lib/engine/research/insights";
+import { liveSnapshot, newToken } from "@/lib/engine/publish";
+import { checkPublish } from "@/lib/engine/publish-check";
 
 /**
  * Proposal edits (OE-12). Every save is a new version; earlier versions stay. The price block
@@ -79,10 +78,10 @@ export async function regenerateDraft(oppId: string): Promise<{ ok: true } | { o
 }
 
 /**
- * Publish (OE-13; the full review screen is OE-14). The founder's tap is the approval: the
- * latest version is frozen into a public snapshot. An opportunity has one live link: publishing
- * again keeps the same link and replaces what it shows. Blocked while the identity is LOW or the
- * copy check fails.
+ * Publish (OE-13, OE-14). The founder's second tap is the approval: the latest version is frozen
+ * into a public snapshot, with the catalog price of this moment. An opportunity has one live link:
+ * publishing again keeps the same link and replaces what it shows. The checks are the same ones
+ * the review screen shows (lib/engine/publish-check.ts).
  */
 export async function publishProposal(oppId: string, baseVersion: number): Promise<{ ok: true; token: string } | { ok: false; error: string }> {
   if (!z.uuid().safeParse(oppId).success || !Number.isInteger(baseVersion)) return { ok: false, error: "Invalid proposal." };
@@ -90,21 +89,12 @@ export async function publishProposal(oppId: string, baseVersion: number): Promi
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return { ok: false, error: "Sign in again to publish." };
 
-  const { data: o } = await supabase.from("opportunities").select("id,name,city,status,identity_confirmed").eq("id", oppId).maybeSingle();
-  if (!o) return { ok: false, error: "Opportunity not found." };
-  const a = await loadAssessment(supabase, oppId, o.identity_confirmed);
-  if (a.level === "low" || o.status === "needs_verification") return { ok: false, error: "Confirm which business this is before publishing." };
-
-  const { data: rows } = await supabase.from("proposals").select("id,version,template,content")
-    .eq("opportunity_id", oppId).order("version", { ascending: false }).limit(1);
-  const p = rows?.[0];
-  if (!p) return { ok: false, error: "There is no draft to publish yet." };
-  if (p.version !== baseVersion) return { ok: false, error: `A newer version (v${p.version}) exists. Reload before publishing.` };
-  const content = p.content as ProposalContent;
-  const issues = copyCheck(content);
-  if (issues.length) return { ok: false, error: `Fix the ${issues.length} copy issue${issues.length > 1 ? "s" : ""} first.` };
-
-  const publicContent = toPublic(content, { name: o.name, city: o.city }, p.template as Template);
+  const check = await checkPublish(supabase, oppId);
+  if (!check) return { ok: false, error: "There is no draft to publish yet." };
+  if (check.proposal.version !== baseVersion) return { ok: false, error: `A newer version (v${check.proposal.version}) exists. Reload before publishing.` };
+  if (check.blocked.length) return { ok: false, error: check.blocked[0] };
+  const p = check.proposal;
+  const publicContent = check.publicContent;
   const now = new Date().toISOString();
   const live = await liveSnapshot(supabase, oppId);
   let token: string;

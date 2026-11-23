@@ -301,3 +301,21 @@ select.dx-input{appearance:auto}
 /* Public link (OE-13) */
 .dx-pub-url{word-break:break-all;font-family:'Space Mono',monospace;font-size:13px}
 .dx-confirm{border:1px solid var(--line);background:var(--cream);border-radius:16px;padding:14px;display:grid;gap:10px}
+
+/* Proposal preview (OE-14) */
+.dx-preview-bar{position:sticky;top:0;z-index:20;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;padding:6px max(16px,env(safe-area-inset-left,0px));background:var(--ink);color:#F7F0E6}
+.dx-preview-bar .dx-back{color:#F7F0E6}
+.dx .dx-preview-bar .mono{color:#E2C9B5}
+.dx-preview-bar :focus-visible{outline-color:var(--butter)}
+
+/* Review layout (OE-14): one column on the phone in the order of the work; two on desktop. */
+.dx-split{display:flex;flex-direction:column}
+.dx-col{display:contents}
+.o-research{order:1}.o-identity{order:2}.o-noticed{order:3}.o-offer{order:4}.o-publish{order:5}.o-draft{order:6}
+.o-sources{order:7}.o-status{order:8}.o-captured{order:9}.o-notes{order:10}.o-history{order:11}
+@media (min-width:1100px){
+  .dx-app.dx-wide{max-width:1240px}
+  .dx-wide .dx-opp-head,.dx-wide .dx-dates{max-width:720px}
+  .dx-split{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:0 40px;align-items:start}
+  .dx-col{display:flex;flex-direction:column;min-width:0}
+}

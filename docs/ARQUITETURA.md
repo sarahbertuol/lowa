@@ -95,7 +95,7 @@ LOW: status "Needs verification", publicação bloqueada até a fundadora escolh
 - **A, The missing website**: nenhum site oficial verificado.
 - **B, The growth opportunity**: site oficial verificado.
 - **C, The seasonal opportunity**: a análise marca sazonalidade forte (produto de presente, data comemorativa próxima, evento local) e ela é um dos 3 insights.
-- A fundadora pode trocar na revisão.
+- A fundadora pode trocar na revisão (OE-14): a troca grava `templateByFounder` em `dimensions` (e `ruleTemplate` guarda o que a regra escolheu), reescreve o rascunho e vale também quando a análise roda de novo. Escolher o mesmo modelo da regra volta para a regra.
 - Ordem quando mais de uma regra vale (OE-09): sem site verificado é sempre A; com site, C se a sazonalidade forte estiver entre os insights; senão B. A IA só diz se a sazonalidade é forte; a escolha é do servidor.
 - Em `analyses`, a coluna `dimensions` guarda `{ items: [6 dimensões com nota strong/fair/weak/unknown], strongSeasonality, serviceReason }`.
 
@@ -104,6 +104,7 @@ LOW: status "Needs verification", publicação bloqueada até a fundadora escolh
 - A IA devolve apenas `service_slug` e, se for o caso, número de páginas extras sugeridas.
 - O servidor calcula o valor a partir de `services`. Tipo `custom` mostra "Custom quote" sem valor.
 - O snapshot publicado congela o serviço e o valor. Mudar o catálogo não altera propostas já publicadas.
+- Na publicação e na prévia (`/discover/preview/[id]`), o bloco Investment é recalculado do catálogo daquele momento (`lib/engine/investment.ts`); as travas de publicação ficam em `lib/engine/publish-check.ts`, usadas pela tela e pelo servidor.
 
 ## Segurança e privacidade
 
