@@ -8,6 +8,7 @@ const MESSAGES: Record<string, string> = {
   saved: "Saved.",
   offline: "Saved on this phone. It will sync when you're online.",
   signin: "Saved on this phone. Sign in again to sync it.",
+  deleted: "Deleted.",
 };
 
 /** Confirmation after a capture (?saved=...), then cleans the address bar. */
