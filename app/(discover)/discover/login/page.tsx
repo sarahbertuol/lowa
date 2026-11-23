@@ -12,7 +12,7 @@ export default async function LoginPage({ searchParams }: Props) {
   return (
     <main className="dx-login">
       <div className="dx-login-in">
-        <p className="dx-mark" aria-hidden="true">Lo<em>Wa</em></p>
+        <p className="dx-mark" aria-hidden="true">Lo<em>Wa</em> Studio</p>
         <LoginForm
           next={safeNext(next)}
           configured={supabaseConfigured()}

@@ -39,8 +39,8 @@ body:has(.dx){background:var(--cream)}
 
 /* Login (docs/referencia/Login.html) */
 .dx-login{background:var(--sunset);min-height:100svh}
-.dx-login-in{min-height:100svh;display:grid;grid-template-rows:1fr auto;max-width:520px;margin:0 auto;padding:24px var(--pad) max(24px,env(safe-area-inset-bottom,0px))}
-.dx-mark{align-self:center;font-family:'Instrument Serif',Georgia,serif;font-size:clamp(72px,22vw,132px);line-height:.9;letter-spacing:-.02em;color:var(--butter);margin:0}
+.dx-login-in{min-height:100svh;display:grid;align-content:center;gap:clamp(28px,6vh,56px);max-width:480px;margin:0 auto;padding:24px var(--pad) max(24px,env(safe-area-inset-bottom,0px))}
+.dx-mark{justify-self:center;text-align:center;white-space:nowrap;font-family:'Instrument Serif',Georgia,serif;font-size:clamp(52px,14vw,96px);line-height:.9;letter-spacing:-.02em;color:var(--butter);margin:0}
 .dx-sheet{background:var(--cream);border-radius:28px;padding:24px;display:grid;gap:16px;animation:dxUp .5s var(--ease) both}
 .dx-sheet h1{font-size:30px;line-height:1.1}
 .dx-sheet p{color:var(--muted);font-size:15px}

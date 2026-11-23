@@ -16,7 +16,7 @@ export async function middleware(request: NextRequest) {
 
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-  if (!url || !key) {
+  if (!url || !key || !/^https?:\/\//.test(url)) {
     // Not configured yet: never expose the app, show the login page with a setup notice.
     if (isApi) return NextResponse.json({ error: "not_configured" }, { status: 503 });
     if (isPublic) return NextResponse.next();
