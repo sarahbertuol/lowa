@@ -15,7 +15,7 @@ Itens que dependem da Sarah ou do Marco. No código aparecem como `[colchetes]`.
 - [x] Domínio oficial das propostas: lowa-studio.com (decisão de 22/11/2026, a partir do e-mail hello@lowa-studio.com). O `layout.tsx` do site ainda usa lowastudio.com
 - [x] E-mail de contato das propostas: hello@lowa-studio.com (o site ainda mostra hello@lowastudio.com)
 - [ ] WhatsApp e link de agenda para o "Next step" da proposta (opcionais)
-- [ ] Ícone do app para a tela inicial (sugestão: o Walter ou o "LoWa" em serif sobre sunset)
+- [ ] Ícone do app para a tela inicial. Provisório desde a OE-03: "LoWa" em Instrument Serif butter sobre sunset (`lib/engine/app-icon.tsx`). Trocar quando a Sarah mandar o definitivo
 
 ## Comercial
 

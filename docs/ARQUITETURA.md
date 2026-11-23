@@ -29,7 +29,7 @@ app/api/discover/             rotas de API do app
 lib/engine/                   pipeline, regras de confiança, preço, prompts
 lib/engine/providers/         ai, search, places, reader, vision, storage
 supabase/migrations/          SQL versionado
-public/discover/              manifest, ícones, service worker
+public/discover/              manifest e service worker (ícones gerados em /discover/app-icon/[size])
 ```
 
 ## Stack nova

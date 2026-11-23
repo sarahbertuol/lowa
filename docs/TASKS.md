@@ -35,9 +35,9 @@ Login testado pela Sarah em 22/11/2026 com hello@lowa-studio.com (código por e-
 - `middleware.ts` protege `/discover/*` e `/api/discover/*` (sem sessão: página vai para o login, API responde 401).
 - Pronto quando: e-mail fora da lista é recusado com mensagem clara; sessão dura 30 dias no celular.
 
-### OE-03 · Casca do app e PWA
+### OE-03 · Casca do app e PWA (código pronto; falta o teste de instalação no celular)
 - Layout `app/(discover)/discover/layout.tsx` sem header e footer do site, tokens LoWa, barra inferior com o botão "New".
-- Manifest com `scope: /discover/`, ícones, `display: standalone`. Service worker só nesse escopo: guarda a casca e a tela de captura para abrir sem internet.
+- Manifest com `scope: /discover` (sem barra final, para incluir a própria /discover; o service worker usa o cabeçalho `Service-Worker-Allowed`), ícones, `display: standalone`. Service worker só nesse escopo: guarda a casca e a tela de captura para abrir sem internet.
 - Indicador de rede (online, offline, sincronizando).
 - Pronto quando: instala na tela inicial do iPhone e do Android; abre offline na tela de captura; o site público não registra service worker.
 
