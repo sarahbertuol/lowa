@@ -18,7 +18,6 @@ const adminSchema = publicSchema.extend({
 const aiSchema = z.object({
   ANTHROPIC_API_KEY: z.string().min(20),
   AI_MODEL: z.string().min(1).default("claude-sonnet-5-5"),
-  GOOGLE_PLACES_API_KEY: z.string().min(10),
 });
 
 export type PublicEnv = z.infer<typeof publicSchema>;
@@ -51,11 +50,18 @@ export function adminEnv(): AdminEnv {
   return parsed.success ? parsed.data : fail("Supabase admin", parsed.error);
 }
 
-/** AI and research providers (OE-07). Server only. */
+/** Claude API (OE-07). Server only. */
 export function aiEnv(): AiEnv {
   serverOnly("aiEnv");
   const parsed = aiSchema.safeParse(process.env);
   return parsed.success ? parsed.data : fail("AI", parsed.error);
+}
+
+/** Google Places and Geocoding key, or null while it is not set (the research skips Google and says so). Server only. */
+export function googleKey(): string | null {
+  serverOnly("googleKey");
+  const k = process.env.GOOGLE_PLACES_API_KEY?.trim();
+  return k && k.length >= 10 ? k : null;
 }
 
 /** True when login and the database can work (used to show a setup notice instead of crashing). */

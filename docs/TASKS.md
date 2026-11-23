@@ -67,7 +67,8 @@ Testada no Chrome em 22/11/2026: a captura dispara a pesquisa em segundo plano; 
 - Tela de andamento (`Oportunidade.html`, estado Researching) com etapas e resultados parciais.
 - Pronto quando: derrubar uma etapa de propósito deixa a oportunidade em "Research paused" e o Resume conclui sem repetir as etapas prontas.
 
-### OE-07 · Fornecedores de pesquisa
+### OE-07 · Fornecedores de pesquisa ✅
+Testada no Chrome em 23/11/2026 com um negócio real (Buddy Brew Coffee, Tampa; registro apagado depois): site oficial achado pela busca (buddybrew.com), loja Shopify, contatos, Instagram e Facebook candidatos e um concorrente local, cada achado com fonte, data, verificação e confiança (seção "Sources" do detalhe). Custo medido: US$ 0,15 a 0,17 por oportunidade em IA (Sonnet 5.5, 4 a 6 buscas), cerca de 1 minuto. Sem a chave do Google, a etapa "Business identity" é pulada e diz por quê; por isso o site ainda aparece como "Not verified" (a verificação cruzada depende do perfil do Google). Fornecedores em `lib/engine/providers/` (ai, search, places, reader, vision); leitor testado contra IP interno, porta local, metadados de nuvem, Instagram, robots.txt e tempo limite. Falta testar: leitura de foto (sem foto no teste) e a etapa do Google (sem chave).
 - Interfaces em `lib/engine/providers/` (search, places, page reader, vision, ai). Trocar fornecedor = trocar um arquivo.
 - Google Places API (perfil, site, telefone, nota, link do Maps), busca na web da API do Claude, leitor de páginas no servidor (tempo limite, tamanho máximo, sem IP interno, respeita robots.txt), leitura de foto (cartão, vitrine) pela visão do Claude.
 - Instagram e Facebook: só o link informado ou o que aparecer em resultado público de busca. Nada de login, raspagem ou contorno de bloqueio.

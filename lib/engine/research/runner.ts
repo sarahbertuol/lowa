@@ -36,7 +36,7 @@ export async function runResearch(opportunityId: string, opts: Options = {}) {
   const db = createAdminClient();
 
   const { data: opp } = await db
-    .from("opportunities").select("id,name,city,website,instagram,status").eq("id", opportunityId).maybeSingle();
+    .from("opportunities").select("id,name,city,website,instagram,category,status").eq("id", opportunityId).maybeSingle();
   if (!opp) return;
   const { count: photoCount } = await db
     .from("opportunity_photos").select("id", { count: "exact", head: true }).eq("opportunity_id", opportunityId);
@@ -70,7 +70,7 @@ export async function runResearch(opportunityId: string, opts: Options = {}) {
 
       try {
         if (opts.failStep === step) throw new Error("Test failure (preview only).");
-        const result = await runStep(step, { opportunity: opp, photoCount: photoCount ?? 0, previous });
+        const result = await runStep(step, { db, opportunity: opp, photoCount: photoCount ?? 0, previous });
         await db.from("research_jobs")
           .update({ status: "done", result, finished_at: new Date().toISOString() })
           .eq("id", job.id);

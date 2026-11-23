@@ -1,7 +1,7 @@
 import { after, NextResponse, type NextRequest } from "next/server";
 import { createUserClient } from "@/lib/engine/supabase/server";
 import { queueResearch, resetFailed, runResearch } from "@/lib/engine/research/runner";
-import { STEPS, type Step } from "@/lib/engine/research/steps";
+import { STEPS, slimJob, type Step } from "@/lib/engine/research/steps";
 
 /**
  * Research for one opportunity (OE-06).
@@ -30,7 +30,7 @@ export async function GET(_req: NextRequest, { params }: Ctx) {
     .from("research_jobs")
     .select("step,status,attempts,error,result,finished_at")
     .eq("opportunity_id", id);
-  const sorted = (jobs ?? []).sort((a, b) => STEPS.indexOf(a.step) - STEPS.indexOf(b.step));
+  const sorted = (jobs ?? []).map(slimJob).sort((a, b) => STEPS.indexOf(a.step) - STEPS.indexOf(b.step));
   return NextResponse.json({ status: ok.opp.status, jobs: sorted }, { headers: { "Cache-Control": "no-store" } });
 }
 

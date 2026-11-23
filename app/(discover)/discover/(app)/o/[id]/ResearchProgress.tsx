@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import { STEPS, STEP_LABEL, isActive, isPaused, type Job, type Step } from "@/lib/engine/research/steps";
+import { STEPS, STEP_LABEL, isActive, isPaused, researchCost, type Job, type Step } from "@/lib/engine/research/steps";
 
 /**
  * Research progress (docs/referencia/Oportunidade.html, Researching). Polls every 2s while a step
@@ -23,8 +23,9 @@ export default function ResearchProgress({ id, initial, hasPhoto }: { id: string
       const j = (await r.json()) as { status: string; jobs: Job[] };
       setJobs(j.jobs);
       const active = isActive(j.jobs);
-      // Status chip and history live in the server page: refresh when they change.
-      const key = `${j.status}|${isPaused(j.jobs)}|${active}`;
+      // Status chip, history and sources live in the server page: refresh when they change.
+      const done = j.jobs.filter((x) => x.status === "done").length;
+      const key = `${j.status}|${isPaused(j.jobs)}|${active}|${done}`;
       if (lastKey.current && key !== lastKey.current) router.refresh();
       lastKey.current = key;
       wasActive.current = active;
@@ -64,6 +65,7 @@ export default function ResearchProgress({ id, initial, hasPhoto }: { id: string
   const paused = isPaused(jobs);
   const active = isActive(jobs);
   const failed = jobs.find((j) => j.status === "failed");
+  const cost = researchCost(jobs);
 
   // Preview-only test hook (?test=fail-website) to check pause and resume.
   const [testStep, setTestStep] = useState<Step | null>(null);
@@ -106,6 +108,14 @@ export default function ResearchProgress({ id, initial, hasPhoto }: { id: string
                 );
               })}
             </ol>
+            {cost && !active && (
+              <p className="dx-cost">
+                Research cost: {cost.usd != null ? `US$${cost.usd.toFixed(2)}` : "unknown"} in AI
+                {cost.searches ? `, ${cost.searches} web search${cost.searches > 1 ? "es" : ""}` : ""}
+                {cost.places ? `, ${cost.places} Google lookup${cost.places > 1 ? "s" : ""}` : ""}
+                {cost.pages ? `, ${cost.pages} page${cost.pages > 1 ? "s" : ""} read` : ""}.
+              </p>
+            )}
           </>
         )}
         {error && <p className="dx-error" role="alert">{error}</p>}

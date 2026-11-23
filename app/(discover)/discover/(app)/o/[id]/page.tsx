@@ -7,7 +7,8 @@ import StatusPicker from "./StatusPicker";
 import Notes from "./Notes";
 import DeleteOpportunity from "./DeleteOpportunity";
 import ResearchProgress from "./ResearchProgress";
-import { STEPS, isPaused, type Job } from "@/lib/engine/research/steps";
+import { STEPS, isPaused, slimJob, type Job } from "@/lib/engine/research/steps";
+import Sources, { type FindingRow } from "./Sources";
 
 export const metadata: Metadata = { title: "Opportunity" };
 
@@ -22,7 +23,7 @@ const fmt = (iso: string, withTime = false) =>
     timeZone: "America/New_York",
   }).format(new Date(iso));
 
-/** Opportunity detail (OE-05): status in one tap, dates, what was captured, notes and history. */
+/** Opportunity detail (OE-05, OE-07): status in one tap, dates, research and sources, what was captured, notes and history. */
 export default async function OpportunityDetail({ params }: Props) {
   const { id } = await params;
   if (!UUID.test(id)) notFound();
@@ -30,14 +31,17 @@ export default async function OpportunityDetail({ params }: Props) {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) redirect("/discover/login");
 
-  const [{ data: o }, { data: history }, { data: photos }, { data: jobRows }] = await Promise.all([
+  const [{ data: o }, { data: history }, { data: photos }, { data: jobRows }, { data: findingRows }] = await Promise.all([
     supabase.from("opportunities").select("*").eq("id", id).maybeSingle(),
     supabase.from("status_history").select("id,from_status,to_status,changed_at").eq("opportunity_id", id).order("changed_at", { ascending: false }).limit(50),
     supabase.from("opportunity_photos").select("id,storage_path").eq("opportunity_id", id),
     supabase.from("research_jobs").select("step,status,attempts,error,result,finished_at").eq("opportunity_id", id),
+    supabase.from("research_findings")
+      .select("id,kind,finding,source_url,verification,confidence,checked_at,source:data->>source,why:data->>why")
+      .eq("opportunity_id", id).order("checked_at").limit(60),
   ]);
   if (!o) notFound();
-  const jobs = ((jobRows ?? []) as Job[]).sort((a, b) => STEPS.indexOf(a.step) - STEPS.indexOf(b.step));
+  const jobs = ((jobRows ?? []) as Job[]).map(slimJob).sort((a, b) => STEPS.indexOf(a.step) - STEPS.indexOf(b.step));
   const paused = o.status === "researching" && isPaused(jobs);
 
   const signed = photos?.length
@@ -74,6 +78,8 @@ export default async function OpportunityDetail({ params }: Props) {
       </dl>
 
       <ResearchProgress id={o.id} initial={jobs} hasPhoto={(photos?.length ?? 0) > 0} />
+
+      <Sources findings={(findingRows ?? []) as FindingRow[]} />
 
       <StatusPicker id={o.id} status={o.status as Status} />
 
