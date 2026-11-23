@@ -140,7 +140,8 @@ Auditada em 23/11/2026. Banco: todas as tabelas com RLS só para a equipe, anon 
 - Auditoria de RLS, rotas de API, payload público e chaves (nenhuma chave secreta no bundle do cliente). Limite de uso nas rotas de pesquisa.
 - Pronto quando: os testes 16 e 17 do brief passam.
 
-### OE-17 · Testes de aceite
+### OE-17 · Testes de aceite ✅ (com pendências de celular e de teste sem login)
+Rodados em 23/11/2026; resultado completo em `docs/ACEITE.md`. O brief com os 18 testes não está no repositório: a lista foi remontada dos critérios de cada tarefa e precisa ser conferida pela Sarah. Passaram hoje: captura, identidade ambígua (teste 6, Buddy Brew Coffee), achados com fonte, insights específicos, preço só do catálogo, catálogo novo sem mudar proposta publicada (US$ 920 para 930 e de volta), aprovação para publicar, página pública sem dado interno e 410 ao revogar, 390px, site institucional intacto (teste 18). Faltam: teste 5 com negócio real sem site, testes 12 a 14 em celular, PWA instalado, e acesso sem login ou fora da equipe (testes 16 e 17). Mudança: X-Frame-Options de DENY para SAMEORIGIN. Nenhuma proposta de teste ficou publicada.
 - Os 18 testes do brief, com negócios reais de teste, sem publicar nenhuma proposta de teste como oferta real (propostas de teste ficam revogadas).
 - Mobile em 390px, desktop em 1440px, e o site institucional intacto (teste 18).
 

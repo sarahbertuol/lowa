@@ -7,9 +7,11 @@ const nextConfig = {
   async headers() {
     const noindex = [{ key: "X-Robots-Tag", value: "noindex, nofollow" }];
     // Private app and public proposals (OE-16): no framing by other sites, no type sniffing.
+    // SAMEORIGIN (not DENY) so our own previews and the 390px test frame still work (OE-17).
     const hardened = [
       ...noindex,
-      { key: "X-Frame-Options", value: "DENY" },
+      { key: "X-Frame-Options", value: "SAMEORIGIN" },
+      { key: "Content-Security-Policy", value: "frame-ancestors 'self'" },
       { key: "X-Content-Type-Options", value: "nosniff" },
     ];
     const app = [
