@@ -22,7 +22,7 @@ type Row = {
 };
 type Service = { slug: string; name: string; category: string; price_type: string; included_pages: number | null; extra_page_cents: number | null; summary: string | null; notes: string | null; exclusions: string[] | null };
 
-const dash = (s: string) => s.replace(/\s*[—–]\s*/g, ", ").replace(/\s+/g, " ").trim();
+const dash = (s: string) => s.replace(/\s*[20142013]\s*/g, ", ").replace(/\s+/g, " ").trim();
 const GENERIC = /could be better|unlock|in today'?s digital|next level|online presence is (key|crucial|essential)|game[- ]changer|elevate your/i;
 const ABSENCE = /\b(no|not|none|never|without|lacks?|missing)\b|n't\b/i;
 const JARGON = /\b(the )?findings?\b|\bsearch results?\b|\bthe research\b/i;
