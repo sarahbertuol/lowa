@@ -7,6 +7,7 @@ import { createUserClient } from "@/lib/engine/supabase/server";
 import { requeueSteps, runResearch, settle } from "@/lib/engine/research/runner";
 import { facebookPage, host, instagramHandle, isPlatform } from "@/lib/engine/research/match";
 import { normalizeWebsite } from "@/lib/engine/capture";
+import { hostCarriesName } from "@/lib/engine/research/handlers";
 import type { Step } from "@/lib/engine/research/steps";
 
 /**
@@ -48,7 +49,7 @@ type Parsed =
   | { kind: "website"; url: string }
   | { kind: "note"; url: string };
 
-function parseSource(raw: string): Parsed | null {
+function parseSource(raw: string, businessName: string): Parsed | null {
   const t = raw.trim();
   if (!t || t.length > 500) return null;
   if (/^@?[A-Za-z0-9._]{2,30}$/.test(t) && t.startsWith("@")) {
@@ -67,6 +68,11 @@ function parseSource(raw: string): Parsed | null {
   const h = host(url);
   if (h === "maps.app.goo.gl" || h === "goo.gl" || h === "maps.google.com" || (h.endsWith("google.com") && /\/maps/.test(url))) return { kind: "google", url };
   if (isPlatform(url)) return { kind: "note", url };
+  // An article or a page on someone else's site (a market's vendor list, a news story) is a link
+  // about the business, not its website. It counts as the website when it is a home page or its
+  // domain carries the business name.
+  const homePage = /^\/?$/.test(new URL(url).pathname);
+  if (!homePage && !hostCarriesName(businessName, url)) return { kind: "note", url };
   return { kind: "website", url: normalizeWebsite(url) };
 }
 
@@ -76,7 +82,9 @@ const LABEL: Record<Parsed["kind"], string> = {
 
 /** Saves a source added by hand. Website and Instagram also become the business's own fields. */
 async function saveSource(db: Db, oppId: string, raw: string): Promise<{ ok: true; steps: Step[] } | { ok: false; error: string }> {
-  const s = parseSource(raw);
+  const { data: opp } = await db.from("opportunities").select("name").eq("id", oppId).maybeSingle();
+  if (!opp) return { ok: false, error: "This opportunity is no longer there." };
+  const s = parseSource(raw, opp.name);
   if (!s) return { ok: false, error: "That doesn't look like a link or @handle." };
   const shown = s.kind === "instagram" ? `@${s.handle}` : s.url.replace(/^https?:\/\/(www\.)?/, "").replace(/\/$/, "");
   const { error } = await db.from("research_findings").insert({

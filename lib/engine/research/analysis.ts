@@ -100,7 +100,7 @@ export async function analysis(ctx: StepContext): Promise<StepResult> {
       "- \"No website found\" means the search found none, not that the business has none. Say \"we couldn't find a website\", never \"you don't have a website\".",
       "- strong_seasonality: true only if a finding shows a strong seasonal driver within the next 3 months (gift product before the holidays, a local event, a season this business depends on) and one of your insights is about it.",
       "- Pick one service from the catalog by its id, following each service's rule. How to choose: a local business that mainly needs to present itself and take inquiries or bookings, with no website found or a weak one, gets the small website; one that clearly needs more than its pages gets the bigger website; a business that sells products and has no working online store found gets ecommerce, never the small website; a business that already has a working website (and store, if it sells) gets growth. extra_pages: only for a service sold by page count, otherwise 0. service_reason: one sentence, no price.",
-      "- needs_online_sales: true when the business sells products people could buy online and no working online store was found.",
+      "- needs_online_sales: true when the business sells products people could buy online and no working online store was found. Taking orders by message, phone, email or at markets still means it sells products.",
       "- American English, short plain sentences, title under 9 words. No em dashes or en dashes; use commas, colons or parentheses. No hype words (unlock, elevate, next level, game changer), no emojis.",
     ].join("\n"),
     content:
@@ -154,7 +154,11 @@ export async function analysis(ctx: StepContext): Promise<StepResult> {
   let service = catalog.find((s) => s.slug === a.service_slug)!;
   let reason = dash(a.service_reason);
   const ecommerce = catalog.find((s) => s.slug === "ecommerce");
-  if (a.needs_online_sales && service.category === "website" && service.price_type !== "custom" && ecommerce) {
+  // Not left to the AI alone: a maker or boutique (the founder's category) with no online store
+  // found counts as selling products too.
+  const hasStore = findings.some((f) => f.kind === "store" && typeof f.data?.platform === "string");
+  const productSeller = a.needs_online_sales || (!hasStore && ["Handmade", "Boutique"].includes(opp?.category ?? ""));
+  if (productSeller && service.category === "website" && service.price_type !== "custom" && ecommerce) {
     service = ecommerce;
     reason = "It sells products and we didn't see a working online store, so it needs an online store, not a brochure site.";
   }
@@ -176,7 +180,7 @@ export async function analysis(ctx: StepContext): Promise<StepResult> {
     version,
     dimensions: {
       items: dimensions, strongSeasonality: a.strong_seasonality, serviceReason: reason,
-      needsOnlineSales: a.needs_online_sales, suggestedSlug: a.service_slug, serviceByFounder: !!picked,
+      needsOnlineSales: a.needs_online_sales, productSeller, suggestedSlug: a.service_slug, serviceByFounder: !!picked,
     },
     insights,
     service_slug: service.slug,
