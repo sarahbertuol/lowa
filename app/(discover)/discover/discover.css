@@ -213,3 +213,18 @@ body:has(.dx){background:var(--cream)}
 .dx-conf.c-medium{color:#8A5A00}.dx-conf.c-medium i{background:#C98A1B}
 .dx-conf.c-low{color:#7A2E0B}.dx-conf.c-low i{background:#B3261E}
 .dx-cost{font-size:13.5px;color:var(--muted)}
+
+/* Needs verification (OE-08): pick the right business */
+.dx-verify h2{font-size:20px;font-weight:500;letter-spacing:-.01em}
+.dx-verify .lead{color:var(--muted);font-size:14.5px}
+.dx-cand{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:start;padding:14px;min-height:56px;border:1.5px solid var(--line);border-radius:16px;background:var(--paper);cursor:pointer}
+.dx-cand input{width:22px;height:22px;margin-top:2px;accent-color:var(--blue)}
+.dx-cand b{font-weight:500}
+.dx-cand p{font-size:14px;color:var(--muted);margin:0;overflow-wrap:anywhere}
+.dx-cand:has(input:checked){border-color:var(--blue);background:#F2F7F9}
+.dx-cand a{color:var(--blue);display:inline-flex;align-items:center;min-height:44px}
+.dx-why{font-size:13.5px;color:var(--muted)}
+.dx-opp-head .dx-row-meta{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center}
+.dx-add{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:end;padding-top:14px;border-top:1px solid var(--line);margin-top:14px}
+.dx-findings .dx-add:first-child{border-top:0;margin-top:0;padding-top:0}
+.dx-finding .rm{justify-self:start;background:none;border:0;padding:0;min-height:44px;color:var(--muted);font:500 14px 'Familjen Grotesk',sans-serif;text-decoration:underline;cursor:pointer}

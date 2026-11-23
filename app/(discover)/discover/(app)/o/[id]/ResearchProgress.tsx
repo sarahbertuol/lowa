@@ -16,6 +16,9 @@ export default function ResearchProgress({ id, initial, hasPhoto }: { id: string
   const wasActive = useRef(isActive(initial));
   const lastKey = useRef<string | null>(null);
 
+  // A fresh server render (for example after confirming the identity) brings new steps.
+  useEffect(() => { setJobs(initial); }, [initial]);
+
   const load = useCallback(async () => {
     try {
       const r = await fetch(`/api/discover/opportunities/${id}/research`, { cache: "no-store" });

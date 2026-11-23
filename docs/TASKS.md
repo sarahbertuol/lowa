@@ -74,7 +74,8 @@ Testada no Chrome em 23/11/2026 com um negócio real (Buddy Brew Coffee, Tampa; 
 - Instagram e Facebook: só o link informado ou o que aparecer em resultado público de busca. Nada de login, raspagem ou contorno de bloqueio.
 - Pronto quando: cada achado salvo tem fonte, data, status de verificação e confiança.
 
-### OE-08 · Identidade e confiança
+### OE-08 · Identidade e confiança ✅
+Testada no Chrome em 23/11/2026 (registros de teste apagados depois). Teste 6 (identidade ambígua): Buddy Brew Coffee, Tampa, 3 perfis do Google com nome e cidade iguais ficaram LOW e "Verify"; a escolha de um deles refez a pesquisa e terminou em HIGH. Teste 5 (sem site identificável): Speckled Mug Pottery, Asheville, nenhum perfil com o mesmo nome; o site aparece como "No website found. Checked …" (nunca "não tem site"), status "Verify" com os 3 perfis próximos; "Neither of these" mais um @ de teste deixou a identidade confirmada e a nota em MEDIUM ("no website found; no contact found"). Adicionar e remover fonte à mão funcionam. Regras em `lib/engine/research/confidence.ts`; tela em `VerifyIdentity.tsx`, `AddSource.tsx`. O texto do brief com os testes 5 e 6 não está no repositório: os testes seguiram a descrição desta tarefa. Falta: repetir o teste 5 com um negócio real sem site na OE-17; ao remover um @ adicionado à mão, o campo Instagram da oportunidade continua preenchido.
 - Regras de `ARQUITETURA.md` (HIGH, MEDIUM, LOW). Homônimo nunca é atribuído sem casar cidade e mais um dado (endereço, telefone, link cruzado).
 - LOW vira status "Needs verification": a tela mostra os candidatos e a fundadora escolhe, corrige ou adiciona fontes à mão.
 - Pronto quando: os testes 5 e 6 do brief passam (sem site identificável e identidade ambígua).

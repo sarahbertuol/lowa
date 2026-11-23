@@ -1,6 +1,7 @@
 import { SOURCE_LABEL, type SourceKind } from "@/lib/engine/research/findings";
+import AddSource, { RemoveSource } from "./AddSource";
 
-/** Sources (docs/referencia/Oportunidade.html): every finding with verification, confidence, date and source. */
+/** Sources (docs/referencia/Oportunidade.html): add a source by hand (OE-08), and every finding with verification, confidence, date and source. */
 
 export type FindingRow = {
   id: string;
@@ -10,6 +11,7 @@ export type FindingRow = {
   verification: "verified" | "unverified" | "rejected";
   confidence: "high" | "medium" | "low";
   checked_at: string;
+  origin: "auto" | "manual";
   source: string | null;
   why: string | null;
 };
@@ -29,8 +31,7 @@ const shortUrl = (u: string) => {
   } catch { return u; }
 };
 
-export default function Sources({ findings }: { findings: FindingRow[] }) {
-  if (!findings.length) return null;
+export default function Sources({ id, findings }: { id: string; findings: FindingRow[] }) {
   const sorted = [...findings].sort((a, b) => ORDER.indexOf(a.kind) - ORDER.indexOf(b.kind));
   return (
     <section className="dx-group" aria-labelledby="h-sources">
@@ -55,9 +56,11 @@ export default function Sources({ findings }: { findings: FindingRow[] }) {
               ) : (
                 src && <span className="src-label">Source: {src}</span>
               )}
+              {f.origin === "manual" && <RemoveSource id={id} findingId={f.id} />}
             </div>
           );
         })}
+        <AddSource id={id} />
       </div>
     </section>
   );

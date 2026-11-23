@@ -1,6 +1,7 @@
 import { createAdminClient } from "@/lib/engine/supabase/admin";
 import { STEPS, type Step } from "./steps";
 import { runStep, type StepResult } from "./handlers";
+import { loadAssessment } from "./confidence";
 
 /**
  * Research queue (OE-06). Server only, runs with the service role after the response (after()).
@@ -32,6 +33,33 @@ export async function resetFailed(opportunityId: string) {
   if (error) throw new Error(`resume: ${error.message}`);
 }
 
+/** Runs these steps again, for example after the founder picks the right business. */
+export async function requeueSteps(opportunityId: string, steps: Step[]) {
+  const db = createAdminClient();
+  const { error } = await db
+    .from("research_jobs")
+    .update({ status: "queued", attempts: 0, error: null, result: null, started_at: null, finished_at: null })
+    .eq("opportunity_id", opportunityId)
+    .in("step", steps);
+  if (error) throw new Error(`requeue: ${error.message}`);
+}
+
+/**
+ * Confidence and status from what was found (OE-08). LOW: "Needs verification" until the founder
+ * picks the right business or adds a source. Until analysis and drafts exist (OE-09, OE-12), a
+ * confirmed lead goes back to "captured"; then the last step will set "draft_ready".
+ */
+export async function settle(opportunityId: string, draftReady = false) {
+  const db = createAdminClient();
+  const { data: opp } = await db.from("opportunities").select("status,identity_confirmed").eq("id", opportunityId).maybeSingle();
+  if (!opp) return;
+  const a = await loadAssessment(db, opportunityId, opp.identity_confirmed);
+  const status = a.level === "low" ? "needs_verification" : draftReady ? "draft_ready" : "captured";
+  await db.from("opportunities")
+    .update({ confidence: a.level, ...(opp.status === "researching" || opp.status === "needs_verification" ? { status } : {}) })
+    .eq("id", opportunityId);
+}
+
 export async function runResearch(opportunityId: string, opts: Options = {}) {
   const db = createAdminClient();
 
@@ -41,7 +69,9 @@ export async function runResearch(opportunityId: string, opts: Options = {}) {
   const { count: photoCount } = await db
     .from("opportunity_photos").select("id", { count: "exact", head: true }).eq("opportunity_id", opportunityId);
 
-  if (opp.status === "captured") await db.from("opportunities").update({ status: "researching" }).eq("id", opportunityId);
+  if (opp.status === "captured" || opp.status === "needs_verification") {
+    await db.from("opportunities").update({ status: "researching" }).eq("id", opportunityId);
+  }
 
   const previous: Partial<Record<Step, StepResult>> = {};
 
@@ -88,11 +118,6 @@ export async function runResearch(opportunityId: string, opts: Options = {}) {
     }
   }
 
-  // All steps done. Until analysis and drafts exist (OE-09, OE-12), the lead goes back to
-  // "captured"; then the last step will set "draft_ready" or "needs_verification".
-  const analysisReady = previous.draft && !previous.draft.skipped;
-  await db.from("opportunities")
-    .update({ status: analysisReady ? "draft_ready" : "captured" })
-    .eq("id", opportunityId)
-    .eq("status", "researching");
+  // All steps done: confidence and the next status.
+  await settle(opportunityId, !!previous.draft && !previous.draft.skipped);
 }

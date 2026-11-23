@@ -9,6 +9,10 @@ import DeleteOpportunity from "./DeleteOpportunity";
 import ResearchProgress from "./ResearchProgress";
 import { STEPS, isPaused, slimJob, type Job } from "@/lib/engine/research/steps";
 import Sources, { type FindingRow } from "./Sources";
+import VerifyIdentity, { type Candidate } from "./VerifyIdentity";
+import { assess, type FindingLite } from "@/lib/engine/research/confidence";
+
+export const maxDuration = 300; // confirming an identity starts the research again in the background
 
 export const metadata: Metadata = { title: "Opportunity" };
 
@@ -37,12 +41,38 @@ export default async function OpportunityDetail({ params }: Props) {
     supabase.from("opportunity_photos").select("id,storage_path").eq("opportunity_id", id),
     supabase.from("research_jobs").select("step,status,attempts,error,result,finished_at").eq("opportunity_id", id),
     supabase.from("research_findings")
-      .select("id,kind,finding,source_url,verification,confidence,checked_at,source:data->>source,why:data->>why")
-      .eq("opportunity_id", id).order("checked_at").limit(60),
+      .select("id,kind,finding,source_url,verification,confidence,checked_at,origin,data")
+      .eq("opportunity_id", id).order("checked_at").limit(80),
   ]);
   if (!o) notFound();
   const jobs = ((jobRows ?? []) as Job[]).map(slimJob).sort((a, b) => STEPS.indexOf(a.step) - STEPS.indexOf(b.step));
   const paused = o.status === "researching" && isPaused(jobs);
+
+  type RawFinding = Omit<FindingRow, "source" | "why"> & { data: Record<string, unknown> | null };
+  const raw = (findingRows ?? []) as RawFinding[];
+  const findings: FindingRow[] = raw.map(({ data, ...f }) => ({
+    ...f,
+    source: typeof data?.source === "string" ? data.source : null,
+    why: typeof data?.why === "string" ? data.why : null,
+  }));
+  const assessment = raw.length ? assess({ identityConfirmed: o.identity_confirmed, findings: raw as FindingLite[] }) : null;
+  const level = (o.confidence ?? assessment?.level ?? null) as "high" | "medium" | "low" | null;
+  const short = (iso: string) => new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric", timeZone: "America/New_York" }).format(new Date(iso));
+  const candidates: Candidate[] = o.status !== "needs_verification" ? [] : raw
+    .filter((f) => f.kind === "google" && f.origin === "auto" && typeof f.data?.candidate === "number" && f.verification !== "rejected")
+    .map((f) => {
+      const p = f.data!.place as { name: string; address: string | null; type: string | null; rating: number | null; reviews: number | null; phone: string | null; nameMatch?: boolean; cityMatch?: boolean };
+      return {
+        index: f.data!.candidate as number,
+        plausible: !!p.nameMatch && !!p.cityMatch,
+        // Google sometimes repeats the name at the start of the address: show the street part.
+        name: [p.name, p.address?.split(",").map((s) => s.trim()).find((s) => /\d/.test(s))].filter(Boolean).join(" · "),
+        detail: ["Google profile", p.type, p.rating != null ? `${p.rating.toFixed(1)} (${p.reviews ?? 0} reviews)` : null, p.phone].filter(Boolean).join(" · "),
+        url: f.source_url,
+        checked: short(f.checked_at),
+      };
+    })
+    .sort((a, b) => a.index - b.index);
 
   const signed = photos?.length
     ? (await supabase.storage.from("opportunity-photos").createSignedUrls(photos.map((p) => p.storage_path), 3600)).data ?? []
@@ -70,7 +100,15 @@ export default async function OpportunityDetail({ params }: Props) {
         <span className={`dx-chip s-${paused ? "paused" : o.status}`}>{paused ? "Paused" : STATUS_LABEL[o.status as Status]}</span>
         <h1>{o.name}</h1>
         <p>{o.city}</p>
+        {level && <span className={`dx-conf c-${level}`}><i aria-hidden="true" />{level} confidence</span>}
+        {assessment && assessment.reasons.length > 0 && level !== "high" && o.status !== "needs_verification" && (
+          <p className="dx-why">Why {level}: {assessment.reasons.join("; ")}.</p>
+        )}
       </section>
+
+      {o.status === "needs_verification" && (
+        <VerifyIdentity id={o.id} candidates={candidates} reasons={assessment?.reasons ?? []} />
+      )}
 
       <dl className="dx-dates">
         <div><dt className="mono">Captured</dt><dd>{fmt(o.captured_at)}</dd></div>
@@ -79,7 +117,7 @@ export default async function OpportunityDetail({ params }: Props) {
 
       <ResearchProgress id={o.id} initial={jobs} hasPhoto={(photos?.length ?? 0) > 0} />
 
-      <Sources findings={(findingRows ?? []) as FindingRow[]} />
+      <Sources id={o.id} findings={findings} />
 
       <StatusPicker id={o.id} status={o.status as Status} />
 
