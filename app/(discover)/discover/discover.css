@@ -12,6 +12,8 @@ body:has(.dx){background:var(--cream)}
 .dx .mono{font-family:'Space Mono',ui-monospace,monospace;font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
 .dx .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 
+/* The site gives main>section a page gutter (globals.css); the app has its own. */
+.dx main>section:not(.dx-card){padding-inline:0}
 .dx-app{max-width:720px;margin:0 auto;padding:0 var(--pad) 120px}
 .dx-top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:18px 0 14px}
 .dx-brand{font-family:'Instrument Serif',Georgia,serif;font-size:24px;line-height:1;text-decoration:none;color:var(--ink)}

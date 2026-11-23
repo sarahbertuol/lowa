@@ -41,7 +41,8 @@ Login testado pela Sarah em 22/11/2026 com hello@lowa-studio.com (código por e-
 - Indicador de rede (online, offline, sincronizando).
 - Pronto quando: instala na tela inicial do iPhone e do Android; abre offline na tela de captura; o site público não registra service worker.
 
-### OE-04 · Nova oportunidade (captura)
+### OE-04 · Nova oportunidade (captura) ✅
+Testada no Chrome em 22/11/2026: validação, foto reduzida a 1600px, aviso de duplicado, captura offline na fila e sincronização sozinha. O botão diz "Save" até a pesquisa existir (OE-06), quando volta a ser "Analyze". "Use my location" depende da chave do Google.
 - Formulário da referência `Nova.html`: obrigatórios nome e cidade; opcionais em "Add details" (site, Instagram, categoria, contato, onde encontrou, observação, foto). Escolha de um toque "Met in person / Found online".
 - Cidade: sugestão pela localização do aparelho (com permissão) e últimas cidades usadas.
 - Foto: comprimida no aparelho (máx. 1600px, JPG) e enviada para o bucket privado.

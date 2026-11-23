@@ -38,3 +38,9 @@ Itens que dependem da Sarah ou do Marco. No código aparecem como `[colchetes]`.
 - [ ] Idioma da interface do app (`/discover`): inglês, como o brief e o site, ou português
 - [ ] Prazo padrão de expiração das propostas (sugestão: 60 dias)
 - [ ] Usar foto real do negócio na proposta só com permissão: confirmar a regra (marcar "OK to use" basta, ou pedir ao dono)
+
+## Testes e endereços (OE-04)
+
+- Preview fixo para testes e para o app instalado: https://lowa-discover-sarah-b-s-projects.vercel.app/discover (aponta para o último deploy de preview do Engine)
+- [ ] "Use my location": a chave do Google precisa ter também a Geocoding API ligada (além da Places API)
+- [ ] Apagar os registros de teste "LoWa test capture" e "Lowa test captures" (Tampa) quando o painel tiver exclusão (OE-05), ou no Supabase
