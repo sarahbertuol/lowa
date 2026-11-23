@@ -12,6 +12,9 @@ export const metadata: Metadata = {
   alternates: { canonical: null },
   openGraph: null,
   twitter: null,
+  manifest: "/discover/manifest.webmanifest",
+  icons: { icon: "/discover/app-icon/192", apple: "/discover/app-icon/180" },
+  appleWebApp: { capable: true, title: "Discover", statusBarStyle: "default" },
 };
 
 export const viewport: Viewport = {

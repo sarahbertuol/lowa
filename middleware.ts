@@ -8,9 +8,12 @@ import { createServerClient } from "@supabase/ssr";
  * - No session: pages go to /discover/login, the API answers 401.
  */
 const PUBLIC_PATHS = ["/discover/login", "/discover/auth/"];
+// App install files: no private data, needed before sign-in (manifest, icons, service worker).
+const INSTALL_FILES = ["/discover/manifest.webmanifest", "/discover/sw.js", "/discover/app-icon/"];
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
+  if (INSTALL_FILES.some((p) => pathname === p || pathname.startsWith(p))) return NextResponse.next();
   const isApi = pathname.startsWith("/api/discover");
   const isPublic = PUBLIC_PATHS.some((p) => pathname === p || pathname.startsWith(p));
 
