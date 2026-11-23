@@ -229,6 +229,11 @@ async function website(ctx: StepContext): Promise<StepResult> {
   const reading = data<PhotoData>(ctx.previous.photo)?.reading;
   const id = data<IdentityData>(ctx.previous.identity);
   const best = id?.best != null ? id.candidates[id.best] : null;
+  // Several locations of one business (ambiguous on Google) can still share one official site.
+  const plausible = (id?.candidates ?? []).filter((c) => c.nameMatch && c.cityMatch);
+  const sharedSite = plausible.length > 0 && plausible.every((c) => c.website && sameHost(c.website, plausible[0].website)) ? plausible[0].website : null;
+  const googleSite = best?.website ?? sharedSite;
+  const googlePhones = (best ? [best] : plausible).map((c) => c.phone).filter(Boolean) as string[];
   let usage = emptyUsage();
 
   let url: string | null = null;
@@ -236,7 +241,7 @@ async function website(ctx: StepContext): Promise<StepResult> {
   let search: SearchResult[] | undefined;
   const norm = (u: string) => (/^https?:\/\//i.test(u) ? u : `https://${u}`);
   if (o.website) { url = norm(o.website); origin = "capture"; }
-  else if (best?.website && !isPlatform(best.website)) { url = best.website; origin = "google"; }
+  else if (googleSite && !isPlatform(googleSite)) { url = googleSite; origin = "google"; }
   else if (reading?.website && !isPlatform(norm(reading.website))) { url = norm(reading.website); origin = "photo"; }
   else {
     const r = await webSearch.search({
@@ -276,7 +281,7 @@ async function website(ctx: StepContext): Promise<StepResult> {
   // Up to 3 inside pages that say the most about the business.
   const siteHost = host(home.page.url);
   const inner = home.page.links
-    .filter((l) => host(l.href) === siteHost && l.href.replace(/[#?].*$/, "") !== home.page.url.replace(/[#?].*$/, "") && PAGE_HINTS.test(`${l.href} ${l.text}`))
+    .filter((l) => host(l.href) === siteHost && l.href.replace(/[#?].*$/, "") !== home.page.url.replace(/[#?].*$/, "") && PAGE_HINTS.test(`${l.href} ${l.text}`) && !/\/(cart|checkout|account|login|search)\b/i.test(l.href))
     .map((l) => l.href.replace(/#.*$/, ""))
     .filter((v, i, a) => a.indexOf(v) === i)
     .slice(0, 3);
@@ -290,8 +295,8 @@ async function website(ctx: StepContext): Promise<StepResult> {
 
   // Verified: you entered it, it is on the matching Google profile, or the site shows the profile's phone.
   const sitePhones = [...s.phones, ...pages.flatMap((p) => [...p.text.matchAll(/\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}/g)].map((m) => m[0]))];
-  const phoneMatch = !!best?.phone && sitePhones.some((p) => samePhone(p, best.phone));
-  const googleMatch = !!best?.website && sameHost(best.website, home.page.url);
+  const phoneMatch = sitePhones.some((p) => googlePhones.some((g) => samePhone(p, g)));
+  const googleMatch = !!googleSite && sameHost(googleSite, home.page.url);
   const verified = origin === "capture" || googleMatch || phoneMatch;
   const why = origin === "capture" ? "You entered it" : googleMatch ? "Linked from the Google profile" : phoneMatch ? "Shows the Google profile's phone" : "Not linked from another source yet";
   const confidence: Confidence = verified ? (origin === "capture" || (googleMatch && phoneMatch) ? "high" : "medium") : "low";

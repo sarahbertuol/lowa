@@ -6,7 +6,7 @@ Itens que dependem da Sarah ou do Marco. No código aparecem como `[colchetes]`.
 
 - [x] Projeto no Supabase criado pela Vercel (22/11/2026), chaves só em Preview e Production
 - [x] Chave da API da Anthropic na Vercel (`ANTHROPIC_API_KEY`, Preview e Production, Secret) em 23/11/2026. Custo medido na OE-07: cerca de US$ 0,15 por oportunidade (US$ 10 dão umas 60 pesquisas). Conferir: limite de gasto mensal no console e, se a chave usada for a de usuário que expira em 22/12/2026, trocar por uma de service account sem validade antes disso
-- [ ] Chave do Google no Google Cloud com Places API (New) e Geocoding API, restrita a essas duas, com limite diário (deve ficar na cota gratuita). Na Vercel: `GOOGLE_PLACES_API_KEY`, Preview e Production, Sensitive
+- [x] Chave do Google (projeto lowa-discover) com Places API (New) e Geocoding API, restrita a essas duas, na Vercel como `GOOGLE_PLACES_API_KEY` (Preview e Production) em 23/11/2026. Conferir: limite diário em Quotas (sugestão: 200 por dia)
 - [x] Login do app: hello@lowa-studio.com (conta única da Sarah e do Marco), cadastrado em `team_members`
 - [ ] Vercel: confirmar se a `main` deste repositório publica direto em lowa-studio.com
 
@@ -42,5 +42,5 @@ Itens que dependem da Sarah ou do Marco. No código aparecem como `[colchetes]`.
 ## Testes e endereços (OE-04)
 
 - Preview fixo para testes e para o app instalado: https://lowa-discover-sarah-b-s-projects.vercel.app/discover (aponta para o último deploy de preview do Engine)
-- [ ] "Use my location": a chave do Google precisa ter também a Geocoding API ligada (além da Places API)
+- [x] "Use my location": Geocoding API ligada e testada em 23/11/2026
 - [x] Registros de teste da OE-04 apagados pelo próprio app em 22/11/2026
