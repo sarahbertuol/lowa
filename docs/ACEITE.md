@@ -30,7 +30,7 @@ Legenda: ✅ passou hoje · ☑️ passou na tarefa de origem, não repetido hoj
 | | Revogar responde 410 | ✅ Buddy Brew e Tampa Property Care revogadas, 410 |
 | 12 a 14 | Mensagens Personal, Instagram DM e Email: editar, copiar, compartilhar, marcar contato | ✅ no Chrome (OE-15); ⏳ iPhone e Android reais |
 | | **Segurança** | |
-| 16 e 17 | Sem login nada abre; fora da equipe nada roda; nenhuma chave no navegador; limite de uso | ✅ chaves (varredura dos arquivos do navegador) e cabeçalhos; ⏳ sem login e fora da equipe (a Vercel pede login no preview: testar em produção ou com chave de bypass) |
+| 16 e 17 | Sem login nada abre; fora da equipe nada roda; nenhuma chave no navegador; limite de uso | ✅ em produção, 23/11/2026, sem login: /discover e telas internas vão para o login; /api/discover (me, geocode, pesquisa, captura) responde 401; server action vai para o login; token desconhecido 404; cabeçalhos presentes. Chaves fora do navegador (varredura). ⏳ conta fora da equipe (não existe nenhuma para testar) |
 | | **Telas e site** | |
 | | 390px: painel, nova oportunidade, catálogo, oportunidade, prévia, sem rolagem lateral, alvos de 44px | ✅ (interruptores do catálogo ficam dentro de linhas de 48px) |
 | | 1440px | ✅ nas OE-14 e OE-15 (a janela de teste ficou maior, 1920px, mesmo layout de duas colunas) |
