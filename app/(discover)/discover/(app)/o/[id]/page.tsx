@@ -12,6 +12,7 @@ import Sources, { type FindingRow } from "./Sources";
 import VerifyIdentity, { type Candidate } from "./VerifyIdentity";
 import { assess, type FindingLite } from "@/lib/engine/research/confidence";
 import Analysis, { type AnalysisRow } from "./Analysis";
+import { SERVICE_COLUMNS, type Service } from "@/lib/engine/catalog";
 import Regenerate from "./Regenerate";
 
 export const maxDuration = 300; // confirming an identity starts the research again in the background
@@ -50,9 +51,10 @@ export default async function OpportunityDetail({ params }: Props) {
   ]);
   if (!o) notFound();
   const analysis = analysisRow as AnalysisRow | null;
-  const { data: service } = analysis?.service_slug
-    ? await supabase.from("services").select("name,summary").eq("slug", analysis.service_slug).maybeSingle()
+  const { data: serviceRows } = analysis
+    ? await supabase.from("services").select(SERVICE_COLUMNS).order("sort_order")
     : { data: null };
+  const services = (serviceRows ?? []) as Service[];
   const jobs = ((jobRows ?? []) as Job[]).map(slimJob).sort((a, b) => STEPS.indexOf(a.step) - STEPS.indexOf(b.step));
   const paused = o.status === "researching" && isPaused(jobs);
 
@@ -130,7 +132,7 @@ export default async function OpportunityDetail({ params }: Props) {
 
       <ResearchProgress id={o.id} initial={jobs} hasPhoto={(photos?.length ?? 0) > 0} />
 
-      {analysis && <Analysis id={o.id} analysis={analysis} service={service} sourceLabel={sourceLabel} />}
+      {analysis && <Analysis id={o.id} analysis={analysis} services={services} sourceLabel={sourceLabel} />}
       {!analysis && jobs.length > 0 && !isActive(jobs) && !paused && level !== "low" && (
         <section className="dx-group" aria-labelledby="h-noticed">
           <h2 id="h-noticed" className="dx-h2">What we noticed</h2>

@@ -115,6 +115,33 @@ export async function addSource(oppId: string, raw: string): Promise<Result> {
   return { ok: true };
 }
 
+/**
+ * "Change service" (OE-11): the founder's pick replaces the suggestion on the latest analysis
+ * and stays when the analysis runs again. Only the id and page count are saved: the price is
+ * always computed from the catalog.
+ */
+export async function chooseService(oppId: string, slug: string, extraPages: number): Promise<Result> {
+  if (!uuid.safeParse(oppId).success || !/^[a-z0-9-]{1,80}$/.test(slug) || !Number.isInteger(extraPages) || extraPages < 0 || extraPages > 20) {
+    return { ok: false, error: "Pick a service from the list." };
+  }
+  const db = await client();
+  if (!db) return { ok: false, error: "Sign in again to change the service." };
+  const { data: service } = await db.from("services").select("slug,active,price_type,extra_page_cents").eq("slug", slug).maybeSingle();
+  if (!service?.active) return { ok: false, error: "That service is no longer offered. Reload and pick another." };
+  const { data: a } = await db.from("analyses").select("id,dimensions").eq("opportunity_id", oppId)
+    .order("version", { ascending: false }).limit(1).maybeSingle();
+  if (!a) return { ok: false, error: "Run the analysis first." };
+  const perPage = service.extra_page_cents != null && service.price_type !== "custom";
+  const { error } = await db.from("analyses").update({
+    service_slug: slug,
+    extra_pages: perPage ? extraPages : 0,
+    dimensions: { ...(a.dimensions as Record<string, unknown>), serviceByFounder: true, serviceReason: "You chose this service." },
+  }).eq("id", a.id);
+  if (error) return { ok: false, error: "Couldn't save. Try again." };
+  refresh(oppId);
+  return { ok: true };
+}
+
 /** "Regenerate" (OE-09): a new analysis version from the same findings. Earlier versions stay. */
 export async function regenerateAnalysis(oppId: string): Promise<Result> {
   if (!uuid.safeParse(oppId).success) return { ok: false, error: "Invalid opportunity." };

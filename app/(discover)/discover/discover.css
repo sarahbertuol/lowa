@@ -274,3 +274,11 @@ body:has(.dx){background:var(--cream)}
 .dx-saved{font-size:14px;color:#24562E;font-weight:500}
 textarea.dx-input{min-height:96px;resize:vertical}
 select.dx-input{appearance:auto}
+
+/* Price (OE-11) */
+.dx-quote{display:grid;gap:6px}
+.dx-quote .row{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}
+.dx-quote .row .dx-svc{margin:0}
+.dx-quote .price{font-size:28px;line-height:1}
+.dx-quote .lines{margin:0;padding:0;list-style:none;font-size:14.5px;color:var(--muted)}
+.dx-row-btns{display:flex;gap:8px;flex-wrap:wrap}

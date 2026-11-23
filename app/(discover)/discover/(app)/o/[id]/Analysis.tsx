@@ -3,6 +3,9 @@ import {
   type DimensionRow, type Insight, type Sentence, type Template,
 } from "@/lib/engine/research/insights";
 import Regenerate from "./Regenerate";
+import ChangeService from "./ChangeService";
+import { quote } from "@/lib/engine/pricing";
+import type { Service } from "@/lib/engine/catalog";
 
 /** What we noticed and the suggestion (docs/referencia/Oportunidade.html, OE-09). Only for the team. */
 
@@ -28,13 +31,16 @@ const TEMPLATE_WHY: Record<Template, string> = {
 const when = (iso: string) =>
   new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric", hour: "numeric", minute: "2-digit", timeZone: "America/New_York" }).format(new Date(iso));
 
-export default function Analysis({ id, analysis, service, sourceLabel }: {
+export default function Analysis({ id, analysis, services, sourceLabel }: {
   id: string;
   analysis: AnalysisRow;
-  service: { name: string; summary: string | null } | null;
+  services: Service[];
   sourceLabel: Record<string, string>;
 }) {
   const dims = analysis.dimensions?.items ?? [];
+  const service = services.find((s) => s.slug === analysis.service_slug) ?? null;
+  // The price is always computed here from the catalog row, never stored from the AI.
+  const q = service ? quote(service, analysis.extra_pages) : null;
   return (
     <>
       <section className="dx-group" aria-labelledby="h-noticed">
@@ -90,16 +96,31 @@ export default function Analysis({ id, analysis, service, sourceLabel }: {
       <section className="dx-group" aria-labelledby="h-reco">
         <h2 id="h-reco" className="dx-h2">Recommendation</h2>
         <div className="dx-card dx-stack">
-          {service ? (
-            <div>
-              <b className="dx-svc">{service.name}{analysis.extra_pages > 0 ? ` + ${analysis.extra_pages} extra page${analysis.extra_pages > 1 ? "s" : ""}` : ""}</b>
+          {service && q ? (
+            <div className="dx-quote">
+              <div className="row">
+                <b className="dx-svc">{service.name}</b>
+                <span className="price">{q.label}</span>
+              </div>
+              {q.lines.length > 0 && <ul className="lines">{q.lines.map((l) => <li key={l}>{l}</li>)}</ul>}
               {service.summary && <p className="dx-why">{service.summary}</p>}
               {analysis.dimensions?.serviceReason && <p>{analysis.dimensions.serviceReason}</p>}
-              <p className="mono dim">Price comes from the catalog (OE-11)</p>
+              {!service.active && <p className="dx-field-err">This service is turned off in the catalog. Choose another one.</p>}
+              {service.active && service.price_type !== "custom" && service.price_cents == null && (
+                <p className="dx-field-err">This service has no price yet. Set it in the catalog.</p>
+              )}
+              <p className="mono dim">Price from the catalog{service.updated_at ? `, updated ${when(service.updated_at)}` : ""}</p>
             </div>
           ) : (
-            <p className="dx-empty">The suggested service is no longer in the catalog.</p>
+            <p className="dx-empty">The suggested service is no longer in the catalog. Choose another one.</p>
           )}
+          <ChangeService
+            id={id}
+            current={analysis.service_slug}
+            extraPages={analysis.extra_pages}
+            options={services.filter((s) => s.active).map((s) => ({ slug: s.slug, name: s.name, label: quote(s).label, perPage: s.extra_page_cents != null && s.price_type !== "custom" }))}
+          />
+          <a className="dx-link" href="/discover/catalog">Edit catalog</a>
           {analysis.template && (
             <div>
               <p className="mono dim">Proposal template</p>
