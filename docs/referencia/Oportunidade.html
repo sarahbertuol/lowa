@@ -1,0 +1,256 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>LoWa Discover · Opportunity</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Familjen+Grotesk:wght@300..700&family=Space+Mono:wght@400;700&display=swap">
+<link rel="stylesheet" href="engine.css">
+<style>
+.state-switch{margin:4px 0 18px}
+.head h1{font-size:clamp(30px,8vw,46px);line-height:1.04}
+.head .sub{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;margin-top:10px;color:var(--muted);font-size:14.5px}
+.view{display:none}.view.on{display:block}
+.card h2{font-size:20px;margin-bottom:4px}
+.card + .card{margin-top:12px}
+.kv{display:grid;grid-template-columns:auto 1fr;gap:8px 16px;font-size:15px;margin-top:10px}
+.kv dt{color:var(--muted)}.kv dd{margin:0}
+.cand{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:start;padding:14px;border:1.5px solid var(--line);border-radius:16px;background:var(--paper);cursor:pointer}
+.cand input{width:22px;height:22px;margin-top:2px;accent-color:var(--blue)}
+.cand b{font-weight:500}
+.cand p{font-size:14px;color:var(--muted)}
+.cand:has(input:checked){border-color:var(--blue);background:#F2F7F9}
+.ins{padding:14px 0;border-bottom:1px solid var(--line);display:grid;gap:6px}
+.ins:last-child{border-bottom:0}
+.ins .n{font-family:'Instrument Serif',serif;font-size:28px;line-height:1;color:var(--blue)}
+.ins b{font-weight:500}
+.ins p{font-size:15px}
+.svc{display:grid;grid-template-columns:1fr auto;gap:8px 16px;align-items:center}
+.svc .price{font-size:30px;line-height:1}
+.msg textarea{min-height:190px;font-size:16px;line-height:1.5}
+.msg .row{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.msg .row .btn{flex:1 1 140px}
+.empty{padding:12px 14px;border-radius:14px;background:var(--cream);font-size:14.5px;color:var(--muted)}
+.preview{display:grid;grid-template-columns:auto 1fr auto;gap:14px;align-items:center;text-decoration:none;color:var(--ink)}
+.preview .mini{width:60px;height:78px;border-radius:10px;background:var(--sunset);display:grid;place-items:center;font-family:'Instrument Serif',serif;font-size:13px;padding:6px;text-align:center;line-height:1.1}
+.paused{background:#F6D3BE;color:#7A2E0B;border-color:#EFC2A6}
+.hist{list-style:none;margin:8px 0 0;padding:0;font-size:14.5px}
+.hist li{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-bottom:1px solid var(--line)}
+.hist li:last-child{border-bottom:0}
+@media (min-width:1100px){.split > div + div{margin-top:0}}
+</style>
+</head>
+<body>
+<div class="proto-note">PROTOTYPE · fictional sample · pick a state below · <a href="README.md">all screens</a></div>
+<div class="app wide">
+  <header class="top">
+    <a class="back" href="Discover.html"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M15 5 8 12l7 7"/></svg>Opportunities</a>
+    <button class="icon-btn" aria-label="More actions" type="button"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="19" cy="12" r="1.8"/></svg></button>
+  </header>
+
+  <div class="seg state-switch" role="tablist" aria-label="Prototype state">
+    <button role="tab" data-v="researching">Researching</button>
+    <button role="tab" data-v="verify">Needs verification</button>
+    <button role="tab" data-v="review">Review</button>
+  </div>
+
+  <!-- STATE 1 · Researching -->
+  <section class="view" id="v-researching" aria-label="Researching">
+    <div class="head">
+      <p class="mono">Captured 1 min ago · Met in person</p>
+      <h1>Bloom Row <em>Florist</em></h1>
+      <div class="sub"><span>Savannah, GA</span><span class="chip s-researching"><span class="dot pulse"></span>Researching</span></div>
+    </div>
+    <div class="card" style="margin-top:20px">
+      <h2>Research</h2>
+      <p style="color:var(--muted);font-size:14.5px">You can close the app. We'll keep going and it will be here when you're back.</p>
+      <ol class="steps" style="margin-top:8px">
+        <li class="done"><span class="mk"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="m5 12 5 5 9-10"/></svg></span><div><b>Business identity</b><p>Google profile matched: name, city and phone.</p></div></li>
+        <li class="done"><span class="mk"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="m5 12 5 5 9-10"/></svg></span><div><b>Official website</b><p>bloomrow-example.com, 6 pages read.</p></div></li>
+        <li class="run"><span class="mk"></span><div><b>Social and store</b><p>Checking Instagram and Facebook links.</p></div></li>
+        <li class="wait"><span class="mk"></span><div><b>Local context</b><p>Competitors and seasonal demand.</p></div></li>
+        <li class="wait"><span class="mk"></span><div><b>Opportunities</b><p>Up to three, specific to this business.</p></div></li>
+        <li class="wait"><span class="mk"></span><div><b>Proposal and messages</b></div></li>
+      </ol>
+    </div>
+    <div class="card paused" style="margin-top:12px">
+      <b style="font-weight:600">Example of a paused step</b>
+      <p style="font-size:14.5px;margin-top:4px">The website didn't respond after 3 tries. Everything else is saved.</p>
+      <button class="btn small" type="button" style="margin-top:12px">Resume research</button>
+    </div>
+  </section>
+
+  <!-- STATE 2 · Needs verification -->
+  <section class="view" id="v-verify" aria-label="Needs verification">
+    <div class="head">
+      <p class="mono">Captured 6 min ago · Found online</p>
+      <h1>Casa Norte <em>Coffee</em></h1>
+      <div class="sub"><span>Asheville, NC</span><span class="chip s-verify">Needs verification</span><span class="conf c-low"><i></i>Low confidence</span></div>
+    </div>
+    <div class="card" style="margin-top:20px">
+      <h2>Which one did you find?</h2>
+      <p style="color:var(--muted);font-size:14.5px">Two businesses match this name. We won't use either until you pick.</p>
+      <div class="stack" style="margin-top:14px">
+        <label class="cand"><input type="radio" name="c"><div><b>Casa Norte Coffee · West Asheville</b><p>Google profile · coffee shop · 4.7 (212 reviews)</p><p class="mono" style="margin-top:4px">maps.google.com/… · checked Nov 20</p></div></label>
+        <label class="cand"><input type="radio" name="c"><div><b>Casa Norte Coffee Roasters</b><p>Website · wholesale roaster, 9 miles away</p><p class="mono" style="margin-top:4px">casanorte-example.com · checked Nov 20</p></div></label>
+        <label class="cand"><input type="radio" name="c"><div><b>Neither of these</b><p>Add a link you trust below.</p></div></label>
+      </div>
+      <div class="field" style="margin-top:14px"><label for="src">Add a source</label><input class="input" id="src" inputmode="url" placeholder="Website, Instagram or Google link"></div>
+    </div>
+    <div class="bar" style="position:sticky;margin:16px calc(-1 * var(--pad)) 0">
+      <div class="bar-in"><button class="btn block" type="button">Confirm and continue</button></div>
+    </div>
+  </section>
+
+  <!-- STATE 3 · Review and approval -->
+  <section class="view" id="v-review" aria-label="Review">
+    <div class="head">
+      <p class="mono">Captured Nov 20, 10:42 · Met in person · River Arts market</p>
+      <h1>Juniper &amp; <em>Clay</em></h1>
+      <div class="sub"><span>Asheville, NC</span><span class="chip s-draft">Draft ready</span><span class="conf c-med"><i></i>Medium confidence</span></div>
+    </div>
+
+    <div class="split" style="margin-top:20px">
+      <div>
+        <div class="card">
+          <h2>Identity</h2>
+          <dl class="kv">
+            <dt>Google</dt><dd>Verified · 4.9 (37 reviews)</dd>
+            <dt>Instagram</dt><dd>@juniperandclay · verified (linked from Google profile)</dd>
+            <dt>Website</dt><dd>None found (Google, search, Instagram bio)</dd>
+            <dt>Email</dt><dd>Not found</dd>
+          </dl>
+          <p class="mono" style="margin-top:12px">Why medium: no website or email to confirm</p>
+        </div>
+
+        <div class="card">
+          <div class="sec-head" style="margin:0"><h2>Sources</h2><button class="btn small quiet" type="button">Add source</button></div>
+          <div class="finding">
+            <div class="meta"><span class="tag fact">Verified</span><span class="conf c-high"><i></i>High</span><span class="mono">Nov 20, 10:44</span></div>
+            <p>Google profile lists the studio at the River Arts District, open Thu to Sun, no website link.</p>
+            <a href="#">maps.google.com/?cid=…</a>
+          </div>
+          <div class="finding">
+            <div class="meta"><span class="tag fact">Verified</span><span class="conf c-high"><i></i>High</span><span class="mono">Nov 20, 10:45</span></div>
+            <p>Instagram bio says "DM to order" and links nowhere else.</p>
+            <a href="#">instagram.com/juniperandclay</a>
+          </div>
+          <div class="finding">
+            <div class="meta"><span class="tag obs">Your note</span><span class="mono">Nov 20, 10:42</span></div>
+            <p>"Speckled mugs sold out by noon. Owner said people ask where to buy after the market."</p>
+          </div>
+          <div class="finding">
+            <div class="meta"><span class="tag hyp">Hypothesis</span><span class="conf c-med"><i></i>Medium</span><span class="mono">Nov 20, 10:46</span></div>
+            <p>Holiday gift demand for handmade ceramics peaks in late November and December.</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="sec-head" style="margin:0"><h2>What we noticed</h2><button class="btn small quiet" type="button">Regenerate</button></div>
+          <div class="ins"><span class="n">01</span><b>Customers can't buy after the market.</b><p>Orders depend on Instagram DMs, and the owner hears "where can I buy this?" every weekend. A simple shop page turns that question into an order.</p><span class="tag fact" style="justify-self:start">Based on verified + your note</span></div>
+          <div class="ins"><span class="n">02</span><b>Great reviews lead nowhere.</b><p>37 reviews at 4.9 on Google, but the profile has no website, so people who search the name can't see the collection.</p><span class="tag fact" style="justify-self:start">Verified</span></div>
+          <div class="ins"><span class="n">03</span><b>A holiday gift page could arrive in time.</b><p>A small gift collection page before December could reach people looking for handmade gifts in Asheville.</p><span class="tag hyp" style="justify-self:start">Hypothesis</span></div>
+        </div>
+
+        <div class="card">
+          <h2>History</h2>
+          <ul class="hist">
+            <li><span>Draft ready</span><span class="mono">Nov 20, 10:47</span></li>
+            <li><span>Researching</span><span class="mono">Nov 20, 10:43</span></li>
+            <li><span>Captured</span><span class="mono">Nov 20, 10:42</span></li>
+          </ul>
+          <div class="field" style="margin-top:12px"><label for="notes">Notes</label><textarea id="notes" placeholder="Private. Never shown to the client."></textarea></div>
+        </div>
+      </div>
+
+      <div>
+        <div class="card">
+          <h2>Recommendation</h2>
+          <div class="svc" style="margin-top:8px">
+            <div><b style="font-weight:500">Small website</b><p style="font-size:14px;color:var(--muted)">Home, About, Contact · CMS · from catalog</p></div>
+            <div class="price">$920</div>
+          </div>
+          <div style="display:flex;gap:8px;margin-top:14px;flex-wrap:wrap">
+            <button class="btn small quiet" type="button">Change service</button>
+            <a class="btn small quiet" href="Catalogo.html">Edit catalog</a>
+          </div>
+          <p class="mono" style="margin-top:16px">Proposal template</p>
+          <div class="seg" role="radiogroup" aria-label="Template" style="margin-top:8px">
+            <button role="radio" aria-pressed="true" type="button">A · Missing website</button>
+            <button role="radio" aria-pressed="false" type="button">B · Growth</button>
+            <button role="radio" aria-pressed="false" type="button">C · Seasonal</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <a class="preview" href="Proposta.html#a">
+            <span class="mini">Juniper &amp; Clay</span>
+            <div><b style="font-weight:500">Proposal preview</b><p style="font-size:14px;color:var(--muted)">Draft v2 · about 90 seconds to read</p></div>
+            <span class="chev" aria-hidden="true">&rarr;</span>
+          </a>
+        </div>
+
+        <div class="card msg">
+          <h2>Outreach</h2>
+          <div class="seg" role="tablist" aria-label="Message type" style="margin-top:10px">
+            <button role="tab" aria-selected="true" data-m="p" type="button">Personal</button>
+            <button role="tab" aria-selected="false" data-m="d" type="button">Instagram DM</button>
+            <button role="tab" aria-selected="false" data-m="e" type="button">Email</button>
+          </div>
+          <div class="m" id="m-p" style="margin-top:12px">
+            <label class="sr" for="tp">Personal message</label>
+<textarea id="tp">Hi Maya, it was lovely meeting you at the River Arts market today. I kept thinking about your speckled mugs (and how fast they sold out).
+
+I put together a short idea for how Juniper &amp; Clay could take orders beyond the weekend market:
+lowa-studio.com/opportunity/k7Qm2xR9vT4nBw8LpZ3s1A
+
+No pressure at all. Happy to chat if it's useful.
+Sarah, LoWa Studio</textarea>
+          </div>
+          <div class="m" id="m-d" style="margin-top:12px" hidden>
+            <label class="sr" for="td">Instagram DM</label>
+<textarea id="td">Hi! I came across Juniper &amp; Clay and love the speckled glaze series. I run a small web studio and noticed a simple way your shop could take orders outside of DMs.
+
+Would it be okay if I sent you a short one-page idea? Totally fine if not.</textarea>
+            <p class="mono" style="margin:10px 0 6px">Follow-up, after they say yes</p>
+<textarea style="min-height:110px">Thank you! Here it is, it takes about a minute to read:
+lowa-studio.com/opportunity/k7Qm2xR9vT4nBw8LpZ3s1A</textarea>
+          </div>
+          <div class="m" id="m-e" style="margin-top:12px" hidden>
+            <p class="empty">No verified business email yet. Add one to use this message.</p>
+            <div class="field" style="margin-top:10px"><label for="em">Business email</label><input class="input" id="em" type="email" inputmode="email" placeholder="name@business.com"></div>
+          </div>
+          <div class="row">
+            <button class="btn small" type="button" id="copy">Copy</button>
+            <button class="btn small ghost" type="button">Share</button>
+            <a class="btn small ghost" href="#">WhatsApp</a>
+          </div>
+          <p class="mono" style="margin-top:10px">Nothing is sent automatically</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<div class="bar" id="reviewbar">
+  <div class="bar-in">
+    <a class="btn ghost" href="Proposta.html#a" style="flex:0 0 auto">Preview</a>
+    <button class="btn" type="button" id="pub">Publish proposal</button>
+  </div>
+</div>
+<div class="toast" id="t" role="status">Copied</div>
+<script>
+const tabs=document.querySelectorAll('.state-switch [role=tab]');
+function show(v){tabs.forEach(t=>t.setAttribute('aria-selected',t.dataset.v===v));document.querySelectorAll('.view').forEach(x=>x.classList.toggle('on',x.id==='v-'+v));document.getElementById('reviewbar').hidden=v!=='review'}
+tabs.forEach(t=>t.addEventListener('click',()=>{history.replaceState(null,'','#'+t.dataset.v);show(t.dataset.v)}));
+show(['researching','verify','review'].includes(location.hash.slice(1))?location.hash.slice(1):'review');
+document.querySelectorAll('[data-m]').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('[data-m]').forEach(x=>x.setAttribute('aria-selected',x===b));document.querySelectorAll('.m').forEach(m=>m.hidden=m.id!=='m-'+b.dataset.m)}));
+document.querySelectorAll('[role=radio]').forEach(b=>b.addEventListener('click',()=>{b.parentElement.querySelectorAll('[role=radio]').forEach(x=>x.setAttribute('aria-pressed',x===b))}));
+const t=document.getElementById('t');
+function toast(s){t.textContent=s;t.classList.add('on');setTimeout(()=>t.classList.remove('on'),2400)}
+document.getElementById('copy').addEventListener('click',()=>toast('Copied. Mark as contacted?'));
+document.getElementById('pub').addEventListener('click',()=>{if(confirm('Publish this proposal? The link will work for anyone who has it.'))toast('Published')});
+</script>
+</body>
+</html>

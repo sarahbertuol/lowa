@@ -42,6 +42,14 @@ Static marketing site for LoWa Studio, a US-only production studio that sells AI
 - Email: hello@lowa-studio.com should forward to Sarah's Gmail (Cloudflare Email Routing; the DNS is on GoDaddy today). Resend domain lowa-studio.com to verify, then the env vars on Vercel.
 - Trademark search for LoWa Studio (US classes 35 and 42) before launch.
 
+## Opportunity Engine (`/discover` e `/opportunity/[token]`)
+
+App interno para captar negócios e gerar propostas. Antes de qualquer código dele, leia: `docs/TASKS.md` (uma tarefa por vez, códigos OE-xx), `docs/ARQUITETURA.md`, `docs/DESIGN.md`, `docs/INTERACOES.md`, `docs/PENDENCIAS.md` e só o protótipo da tarefa em `docs/referencia/`.
+- Não altera o site público nem as propostas de agência em `/proposal/[slug]`.
+- Trabalhar em branch `engine/...`; a `main` publica em lowa-studio.com. Deploy só de preview.
+- Preço vem só do catálogo (tabela `services`), nunca da IA. Nada é publicado ou enviado sem aprovação da fundadora.
+- Interface e propostas em inglês americano; docs e commits em português.
+
 ## Contexto de negócio
 
 - Foco do site: vender para AGÊNCIAS. A agência parceira usa a LoWa Studio para criar sites para os clientes dela.

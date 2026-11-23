@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>LoWa Discover · Home</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Familjen+Grotesk:wght@300..700&family=Space+Mono:wght@400;700&display=swap">
+<link rel="stylesheet" href="engine.css">
+<style>
+.hello{padding:8px 0 4px}
+.hello h1{font-size:clamp(34px,9vw,52px);line-height:1.02}
+.hello p{color:var(--muted);margin-top:8px}
+.big-new{display:grid;grid-template-columns:1fr auto;align-items:center;gap:16px;margin-top:22px;padding:22px 22px 22px 24px;border-radius:24px;background:var(--blue);color:#FBF7F1;text-decoration:none;min-height:104px}
+.big-new b{display:block;font-weight:500;font-size:22px;line-height:1.15}
+.big-new span{font-size:14px;opacity:.85}
+.big-new .plus{width:56px;height:56px;border-radius:50%;background:var(--butter);color:var(--blue);display:grid;place-items:center}
+.big-new:active{transform:scale(.98)}
+.counts{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:14px}
+.counts a{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:12px;text-decoration:none;color:var(--ink);min-height:72px}
+.counts b{display:block;font-size:26px;font-weight:400;line-height:1.1}
+.counts span{font-size:12.5px;color:var(--muted)}
+.prog{height:4px;border-radius:4px;background:var(--line);margin-top:10px;overflow:hidden}
+.prog i{display:block;height:100%;width:60%;background:var(--blue);border-radius:inherit}
+.filter{margin-top:16px}
+</style>
+</head>
+<body>
+<div class="proto-note">PROTOTYPE · fictional sample businesses · <a href="README.md">all screens</a></div>
+<div class="app">
+  <header class="top">
+    <a class="brand" href="Discover.html">LoWa<small>Discover</small></a>
+    <div style="display:flex;align-items:center;gap:10px">
+      <span class="net"><i></i>Online</span>
+      <a class="icon-btn" href="Catalogo.html" aria-label="Service catalog"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h10"/></svg></a>
+    </div>
+  </header>
+
+  <section class="hello">
+    <p class="mono">Friday, November 20</p>
+    <h1>Found something <em>good?</em></h1>
+  </section>
+
+  <a class="big-new" href="Nova.html">
+    <div><b>New opportunity</b><span>Name and city. That's enough.</span></div>
+    <div class="plus" aria-hidden="true"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></div>
+  </a>
+
+  <div class="counts">
+    <a href="#processing"><b>2</b><span>Processing</span></a>
+    <a href="#ready"><b>1</b><span>Ready to share</span></a>
+    <a href="#all"><b>14</b><span>All time</span></a>
+  </div>
+
+  <section class="sec" id="processing" aria-labelledby="h-proc">
+    <div class="sec-head"><h2 id="h-proc">Processing</h2></div>
+    <div class="stack">
+      <a class="card opp" href="Oportunidade.html#researching">
+        <div class="thumb t2" aria-hidden="true">B</div>
+        <div><b>Bloom Row Florist</b><span>Savannah, GA · 1 min ago</span>
+          <div class="prog" aria-label="Research step 3 of 6"><i></i></div></div>
+        <span class="chip s-researching"><span class="dot pulse"></span>Researching</span>
+      </a>
+      <a class="card opp" href="Oportunidade.html#verify">
+        <div class="thumb t4" aria-hidden="true">C</div>
+        <div><b>Casa Norte Coffee</b><span>Asheville, NC · 2 found with this name</span></div>
+        <span class="chip s-verify">Verify</span>
+      </a>
+    </div>
+  </section>
+
+  <section class="sec" id="ready" aria-labelledby="h-ready">
+    <div class="sec-head"><h2 id="h-ready">Ready to share</h2></div>
+    <div class="stack">
+      <a class="card opp" href="Oportunidade.html#review">
+        <div class="thumb" aria-hidden="true">J</div>
+        <div><b>Juniper &amp; Clay</b><span>Asheville, NC · The missing website · $920</span></div>
+        <span class="chip s-draft">Draft ready</span>
+      </a>
+    </div>
+  </section>
+
+  <section class="sec" id="all" aria-labelledby="h-all">
+    <div class="sec-head"><h2 id="h-all">All opportunities</h2><span class="mono">14</span></div>
+    <div class="seg filter" role="tablist" aria-label="Filter by status">
+      <button role="tab" aria-selected="true">All</button>
+      <button role="tab" aria-selected="false">Published</button>
+      <button role="tab" aria-selected="false">Contacted</button>
+      <button role="tab" aria-selected="false">Follow-up</button>
+      <button role="tab" aria-selected="false">Won</button>
+      <button role="tab" aria-selected="false">Lost</button>
+    </div>
+    <div class="stack" style="margin-top:12px">
+      <a class="card opp" href="Oportunidade.html#review">
+        <div class="thumb t3" aria-hidden="true">S</div>
+        <div><b>Saltmarsh Candle Co.</b><span>Charleston, SC · contacted Nov 12</span></div>
+        <span class="chip s-interested">Interested</span>
+      </a>
+      <a class="card opp" href="Oportunidade.html#review">
+        <div class="thumb t2" aria-hidden="true">H</div>
+        <div><b>Harbor Street Tailors</b><span>Portland, ME · published Nov 9</span></div>
+        <span class="chip s-published">Published</span>
+      </a>
+      <a class="card opp" href="Oportunidade.html#review">
+        <div class="thumb" aria-hidden="true">W</div>
+        <div><b>Wildflour Bakehouse</b><span>Burlington, VT · Oct 28</span></div>
+        <span class="chip s-won">Won</span>
+      </a>
+      <a class="card opp" href="Nova.html">
+        <div class="thumb t4" aria-hidden="true">P</div>
+        <div><b>Pinecone Print Shop</b><span>Saved offline · will sync</span></div>
+        <span class="chip s-captured">Waiting</span>
+      </a>
+    </div>
+  </section>
+</div>
+
+<nav class="bar" aria-label="App">
+  <div class="tabbar">
+    <a href="Discover.html" aria-current="page"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 11 12 4l8 7v9H4z"/></svg>Home</a>
+    <a href="#all"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M5 7h14M5 12h14M5 17h9"/></svg>All</a>
+    <a class="new" href="Nova.html" aria-label="New opportunity"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></a>
+    <a href="#ready"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M4 12 20 4l-5 16-3-7z"/></svg>Share</a>
+    <a href="Catalogo.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M8 9h8M8 13h8M8 17h5"/></svg>Catalog</a>
+  </div>
+</nav>
+<script>
+document.querySelectorAll('.seg [role=tab]').forEach(t=>t.addEventListener('click',()=>{t.parentElement.querySelectorAll('[role=tab]').forEach(x=>x.setAttribute('aria-selected',x===t))}));
+</script>
+</body>
+</html>
