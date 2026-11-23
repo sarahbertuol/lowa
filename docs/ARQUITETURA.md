@@ -129,7 +129,7 @@ LOW: status "Needs verification", publicação bloqueada até a fundadora escolh
 | `ANTHROPIC_API_KEY` | só servidor | IA, visão e busca na web |
 | `AI_MODEL` | só servidor | modelo padrão (`claude-sonnet-5-5`) |
 | `GOOGLE_PLACES_API_KEY` | só servidor | perfil do Google |
-| `PUBLIC_BASE_URL` | só servidor | domínio usado nos links das propostas |
+| `PUBLIC_BASE_URL` | não usada | o link da proposta usa o domínio em que o app está rodando (preview ou lowa-studio.com) |
 
 Ficam na Vercel (Preview e Production), criadas pela integração do Supabase. A Vercel não libera essas chaves para Development, então o Engine é testado nos deploys de preview, não em `npm run dev`. Nunca no código.
 

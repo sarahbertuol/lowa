@@ -31,7 +31,7 @@ export function toPublic(c: ProposalContent, business: { name: string; city: str
     contactEmail: PROPOSAL_EMAIL,
     hero: { headline: c.hero.headline, subline: c.hero.subline },
     opportunity: { title: c.opportunity.title, body: [...c.opportunity.body] },
-    noticed: c.noticed.map((n) => ({ title: n.title, saw: n.saw, why: n.why, opportunity: n.opportunity, ...(n.source ? { source: n.source } : {}) })),
+    noticed: c.noticed.map((n) => ({ title: n.title, saw: n.saw, why: n.why, opportunity: n.opportunity, ...(n.source ? { source: n.source } : {}), ...(n.season ? { season: true } : {}) })),
     recommendation: { title: c.recommendation.title, service: c.recommendation.service, description: c.recommendation.description, bullets: [...c.recommendation.bullets] },
     investment: { ...c.investment, notIncluded: [...c.investment.notIncluded] },
     nextStep: { title: c.nextStep.title, body: c.nextStep.body },

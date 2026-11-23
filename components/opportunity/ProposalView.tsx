@@ -51,7 +51,7 @@ export default function ProposalView({ c, preparedAt, validUntil }: { c: PublicP
           </div>
           {t === "a" && <SiteFrame name={c.business.name} />}
           {t === "b" && c.noticed.length > 0 && <ReadCard items={c.noticed.map((n) => n.title)} />}
-          {t === "c" && <Season iso={preparedAt} caption={c.noticed[0]?.title} />}
+          {t === "c" && <Season iso={preparedAt} caption={(c.noticed.find((n) => n.season) ?? c.noticed[0])?.title} />}
         </div>
       </header>
 

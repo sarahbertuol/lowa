@@ -22,7 +22,7 @@ const t = (max: number) => z.string().trim().max(max);
 const editable = z.object({
   hero: z.object({ headline: t(140).min(1), subline: t(240) }),
   opportunity: z.object({ title: t(100).min(1), body: z.array(t(700)).max(3) }),
-  noticed: z.array(z.object({ title: t(120).min(1), saw: t(400), why: t(400), opportunity: t(400), source: t(160).optional() })).max(3),
+  noticed: z.array(z.object({ title: t(120).min(1), saw: t(400), why: t(400), opportunity: t(400), source: t(160).optional(), season: z.boolean().optional() })).max(3),
   recommendation: z.object({ title: t(100).min(1), service: t(100), description: t(400), bullets: z.array(t(160)).max(6) }),
   nextStep: z.object({ title: t(100).min(1), body: t(400) }),
 });

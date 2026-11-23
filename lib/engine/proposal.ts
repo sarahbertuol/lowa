@@ -11,6 +11,8 @@ export type Noticed = {
   opportunity: string;
   /** "Source: your Contact page, checked Nov 20" (template B), optional. */
   source?: string;
+  /** Came from the seasonality insight: the caption under the calendar in template C. */
+  season?: boolean;
 };
 
 export type ProposalContent = {

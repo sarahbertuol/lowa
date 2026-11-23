@@ -145,6 +145,7 @@ Rodados em 23/11/2026; resultado completo em `docs/ACEITE.md`. O brief com os 18
 - Os 18 testes do brief, com negócios reais de teste, sem publicar nenhuma proposta de teste como oferta real (propostas de teste ficam revogadas).
 - Mobile em 390px, desktop em 1440px, e o site institucional intacto (teste 18).
 
-### OE-18 · Entrega
+### OE-18 · Entrega ✅ (produção espera o "publish" da Sarah)
+Em 23/11/2026. Preview final no ar com as variáveis conferidas por nome (Supabase, Anthropic e Google em Preview e Production; AI_MODEL usa o padrão; PUBLIC_BASE_URL não é usada, o link sai do domínio em que o app roda). Guia curto em `docs/GUIA-ENGINE.md`. Ajuste pedido na OE-17: no modelo C a legenda do calendário passa a ser o insight sazonal (campo `season` em cada item de "What we noticed"; rascunhos antigos continuam com o primeiro item até serem regenerados); testado na Buddy Brew Coffee, v2. Para produção: juntar as branches engine/oe-12 a oe-18 na main e fazer o push (a main publica lowa-studio.com), só com o "publish" da Sarah. Registros de teste ainda no banco, à espera da confirmação dela para apagar.
 - Preview final com variáveis configuradas, guia curto de uso para a Sarah e o Marco.
 - Produção só quando a Sarah disser "publish".

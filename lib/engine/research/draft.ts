@@ -102,7 +102,8 @@ export async function draft(ctx: StepContext): Promise<StepResult> {
       .slice(0, 3)
       .map((n) => {
         const source = sourceLine(insights[n.insight - 1]);
-        return { title: dash(n.title).replace(/\.$/, ""), saw: dash(n.saw), why: dash(n.why), opportunity: dash(n.opportunity), ...(source ? { source } : {}) };
+        const season = insights[n.insight - 1]?.dimension === "seasonality";
+        return { title: dash(n.title).replace(/\.$/, ""), saw: dash(n.saw), why: dash(n.why), opportunity: dash(n.opportunity), ...(source ? { source } : {}), ...(season ? { season } : {}) };
       }),
     recommendation: {
       title: dash(d.recommendation.title), service: service.name,
