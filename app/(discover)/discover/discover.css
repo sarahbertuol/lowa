@@ -26,7 +26,7 @@ body:has(.dx){background:var(--cream)}
 .dx-btn.small{min-height:44px;padding:0 18px;font-size:14.5px}
 .dx-btn.block{width:100%}
 .dx-btn:disabled{opacity:.55;cursor:progress}
-.dx-link{background:none;border:0;padding:0;min-height:44px;font:500 15px 'Familjen Grotesk',sans-serif;color:var(--blue);text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+.dx-link{display:inline-flex;align-items:center;background:none;border:0;padding:0;min-height:44px;font:500 15px 'Familjen Grotesk',sans-serif;color:var(--blue);text-decoration:underline;text-underline-offset:3px;cursor:pointer}
 
 .dx-card{background:var(--paper);border:1px solid var(--line);border-radius:20px;padding:18px}
 .dx-field{display:grid;gap:6px}
@@ -44,7 +44,8 @@ body:has(.dx){background:var(--cream)}
 .dx-sheet{background:var(--cream);border-radius:28px;padding:24px;display:grid;gap:16px;animation:dxUp .5s var(--ease) both}
 .dx-sheet h1{font-size:30px;line-height:1.1}
 .dx-sheet p{color:var(--muted);font-size:15px}
-.dx-row{display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center}
+.dx-row{display:flex;flex-wrap:wrap;gap:8px 24px;align-items:center}
+.dx-sheet .dx-row{justify-content:center}
 
 @keyframes dxUp{from{opacity:0;transform:translateY(16px)}}
 @media (prefers-reduced-motion:reduce){.dx *,.dx *::before,.dx *::after{animation:none!important;transition:none!important}}

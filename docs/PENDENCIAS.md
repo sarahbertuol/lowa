@@ -28,10 +28,10 @@ Itens que dependem da Sarah ou do Marco. No código aparecem como `[colchetes]`.
 
 ## Configuração do login no Supabase (OE-02)
 
-- [ ] Authentication > URL Configuration: Site URL `https://www.lowa-studio.com`; Redirect URLs `https://www.lowa-studio.com/discover/**` e `https://*-sarah-b-s-projects.vercel.app/discover/**`
-- [ ] Authentication > Emails > Magic Link: assunto e corpo de `docs/supabase/email-magic-link.html` (código de 6 dígitos + link)
-- [ ] Authentication > Sign In / Providers: desligar "Allow new users to sign up" (o app cria a conta da equipe sozinho)
-- [ ] Se o e-mail não chegar: o envio padrão do Supabase tem limite baixo e pode recusar endereços de fora da organização. Configurar SMTP próprio (Resend) em Authentication > Emails > SMTP
+- [x] Authentication > URL Configuration: Site URL `https://www.lowa-studio.com`; Redirect URLs `https://www.lowa-studio.com/discover/**` e `https://*-sarah-b-s-projects.vercel.app/discover/**`
+- [x] Authentication > Emails > Magic Link: assunto e corpo de `docs/supabase/email-magic-link.html` (código de 8 dígitos, como o Supabase está configurado, + link)
+- [x] Authentication > Sign In / Providers: desligar "Allow new users to sign up" (o app cria a conta da equipe sozinho)
+- [x] SMTP próprio (Resend) configurado em Authentication > Emails > SMTP
 
 ## Produto
 
