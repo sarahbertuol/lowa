@@ -102,7 +102,8 @@ Testada no Chrome em 23/11/2026. Serviço local: Tampa Property Care (Tampa, faz
 - E-commerce nunca é apresentado como o pacote de US$920.
 - Pronto quando: teste com loja online recomenda e-commerce sob consulta; teste de serviço local recomenda o Small website com US$920.
 
-### OE-12 · Conteúdo da proposta e versões
+### OE-12 · Conteúdo da proposta e versões ✅
+Testada no Chrome em 23/11/2026 com a Colleen Crafthouse (Tampa, sem site, vende por Instagram): a etapa "Proposal and messages" agora escreve o rascunho e deixa a oportunidade em "Draft ready". v1 saiu com 437 palavras (mais de 2 min); o pedido à IA foi encurtado e a v2 ("Regenerate draft") ficou com 331 palavras, cerca de 2 min, falando de loja online (serviço E-commerce). A IA escreve só as palavras: o bloco Investment vem do catálogo (aqui "Custom quote" com a nota de escopo, prazo e pagamento entre [colchetes] porque o catálogo ainda não tem, e o plano de manutenção de US$ 180/mês). Verificação de copy ao vivo no editor: travessão, "guarantee", "trusted by", porcentagem, "#1", prazo em horas, prêmio, emoji, palavras de hype e US$ fora do Investment. Teste: título com travessão, "Guaranteed" e "trusted by 500 clients" mostrou 3 problemas; corrigido, passou e salvou como v3 (versões anteriores guardadas, lista "3 versions"). Edição de duas pessoas: quem salva sobre versão velha recebe aviso para recarregar. Tela em 390px e 1440px sem rolagem lateral. Código: `lib/engine/proposal.ts` (formato, verificação de copy, tempo de leitura), `research/draft.ts` (etapa), `proposal-actions.ts` e `ProposalDraft.tsx`. Não testado: modelos B e C com o texto novo; oportunidade antiga com análise e sem rascunho só ganha rascunho pelo "Regenerate" da análise.
 - Gera as 6 seções do brief em inglês americano, curtas (leitura de 1 a 2 min). Cada edição salva nova versão.
 - Pronto quando: texto passa nas regras de copy (sem travessão, sem promessa sem dado, sem depoimento ou logo inventado).
 

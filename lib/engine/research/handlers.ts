@@ -12,11 +12,12 @@ import { pageReader } from "@/lib/engine/providers/reader";
 import { claudeVision } from "@/lib/engine/providers/vision";
 import { structured } from "@/lib/engine/providers/ai";
 import { analysis } from "./analysis";
+import { draft } from "./draft";
 
 /**
  * What each step does (OE-07). Each step saves its findings (replacing its own earlier ones) and
- * returns a short summary plus the data the next steps need. Analysis and drafts arrive in
- * OE-09 and OE-12. A handler must be idempotent: running it twice gives the same saved result.
+ * returns a short summary plus the data the next steps need. The analysis is in analysis.ts
+ * (OE-09) and the proposal draft in draft.ts (OE-12). Re-running a step gives the same saved result.
  */
 
 export type StepContext = {
@@ -49,7 +50,7 @@ export async function runStep(step: Step, ctx: StepContext): Promise<StepResult>
     case "social": return social(ctx);
     case "context": return context(ctx);
     case "analysis": return analysis(ctx);
-    case "draft": return { summary: "Proposal draft arrives in OE-12.", skipped: true };
+    case "draft": return draft(ctx);
   }
 }
 

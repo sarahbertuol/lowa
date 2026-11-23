@@ -14,6 +14,8 @@ import { assess, type FindingLite } from "@/lib/engine/research/confidence";
 import Analysis, { type AnalysisRow } from "./Analysis";
 import { SERVICE_COLUMNS, type Service } from "@/lib/engine/catalog";
 import Regenerate from "./Regenerate";
+import ProposalDraft, { type VersionRow } from "./ProposalDraft";
+import type { ProposalContent } from "@/lib/engine/proposal";
 
 export const maxDuration = 300; // confirming an identity starts the research again in the background
 
@@ -30,7 +32,7 @@ const fmt = (iso: string, withTime = false) =>
     timeZone: "America/New_York",
   }).format(new Date(iso));
 
-/** Opportunity detail (OE-05, OE-07, OE-09): status in one tap, dates, research, analysis and sources, what was captured, notes and history. */
+/** Opportunity detail (OE-05, OE-07, OE-09, OE-12): status in one tap, dates, research, analysis, proposal draft and sources, what was captured, notes and history. */
 export default async function OpportunityDetail({ params }: Props) {
   const { id } = await params;
   if (!UUID.test(id)) notFound();
@@ -38,7 +40,7 @@ export default async function OpportunityDetail({ params }: Props) {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) redirect("/discover/login");
 
-  const [{ data: o }, { data: history }, { data: photos }, { data: jobRows }, { data: findingRows }, { data: analysisRow }] = await Promise.all([
+  const [{ data: o }, { data: history }, { data: photos }, { data: jobRows }, { data: findingRows }, { data: analysisRow }, { data: proposalRows }] = await Promise.all([
     supabase.from("opportunities").select("*").eq("id", id).maybeSingle(),
     supabase.from("status_history").select("id,from_status,to_status,changed_at").eq("opportunity_id", id).order("changed_at", { ascending: false }).limit(50),
     supabase.from("opportunity_photos").select("id,storage_path").eq("opportunity_id", id),
@@ -48,6 +50,8 @@ export default async function OpportunityDetail({ params }: Props) {
       .eq("opportunity_id", id).order("checked_at").limit(80),
     supabase.from("analyses").select("version,created_at,insights,dimensions,service_slug,extra_pages,template")
       .eq("opportunity_id", id).order("version", { ascending: false }).limit(1).maybeSingle(),
+    supabase.from("proposals").select("version,created_at,status,template,content")
+      .eq("opportunity_id", id).order("version", { ascending: false }).limit(30),
   ]);
   if (!o) notFound();
   const analysis = analysisRow as AnalysisRow | null;
@@ -55,6 +59,8 @@ export default async function OpportunityDetail({ params }: Props) {
     ? await supabase.from("services").select(SERVICE_COLUMNS).order("sort_order")
     : { data: null };
   const services = (serviceRows ?? []) as Service[];
+  const proposals = (proposalRows ?? []) as (VersionRow & { template: string; content: ProposalContent })[];
+  const proposal = proposals[0] ?? null;
   const jobs = ((jobRows ?? []) as Job[]).map(slimJob).sort((a, b) => STEPS.indexOf(a.step) - STEPS.indexOf(b.step));
   const paused = o.status === "researching" && isPaused(jobs);
 
@@ -141,6 +147,11 @@ export default async function OpportunityDetail({ params }: Props) {
             <div><Regenerate id={o.id} label="Run the analysis" /></div>
           </div>
         </section>
+      )}
+
+      {proposal && (
+        <ProposalDraft key={proposal.version} id={o.id} version={proposal.version} template={proposal.template}
+          content={proposal.content} versions={proposals.map(({ version, created_at, status }) => ({ version, created_at, status }))} />
       )}
 
       <Sources id={o.id} findings={findings} />

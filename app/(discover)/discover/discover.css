@@ -282,3 +282,18 @@ select.dx-input{appearance:auto}
 .dx-quote .price{font-size:28px;line-height:1}
 .dx-quote .lines{margin:0;padding:0;list-style:none;font-size:14.5px;color:var(--muted)}
 .dx-row-btns{display:flex;gap:8px;flex-wrap:wrap}
+
+/* Proposal draft (OE-12) */
+.dx-prop-hl{font-family:'Instrument Serif',Georgia,serif;font-size:clamp(26px,6.4vw,34px);line-height:1.1;margin:0}
+.dx-issues{border:1px solid #EBC5BE;background:#F6DEDA;color:#5E2409;border-radius:14px;padding:12px 14px;font-size:14.5px}
+.dx-issues ul{margin:6px 0 0;padding-left:18px;display:grid;gap:4px}
+.dx-issues .mono{color:#5E2409}
+.dx-prop-ed>summary,.dx-prop-ver>summary{min-height:44px;display:flex;align-items:center;cursor:pointer;font-weight:500;color:var(--blue)}
+.dx-prop-ed[open]>summary{margin-bottom:8px}
+.dx-prop fieldset{border:1px solid var(--line);border-radius:16px;padding:12px 14px 14px;margin:0;display:grid;gap:12px;min-width:0}
+.dx-prop legend{font-family:'Space Mono',monospace;font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);padding:0 6px}
+.dx-prop-inv{background:var(--cream)}
+.dx-prop-inv p{margin:0;font-size:15px}
+.dx-prop-inv .mono{margin-right:6px}
+.dx-prop-ver ol{margin:4px 0 0;padding:0;list-style:none;display:grid;gap:6px}
+.dx-prop-ver li{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}

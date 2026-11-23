@@ -37,7 +37,7 @@ async function rerun(db: Db, oppId: string, steps: Step[]) {
   if (!count) return false;
   await requeueSteps(oppId, steps);
   // Researching right away, so the screen that comes back shows the progress, not the old state.
-  await db.from("opportunities").update({ status: "researching" }).eq("id", oppId).in("status", ["captured", "needs_verification"]);
+  await db.from("opportunities").update({ status: "researching" }).eq("id", oppId).in("status", ["captured", "needs_verification", "draft_ready"]);
   after(() => runResearch(oppId));
   return true;
 }
