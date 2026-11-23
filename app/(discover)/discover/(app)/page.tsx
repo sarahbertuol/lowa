@@ -1,11 +1,14 @@
+import { Suspense } from "react";
 import { redirect } from "next/navigation";
 import { createUserClient } from "@/lib/engine/supabase/server";
 import { NetDot } from "@/components/discover/Network";
 import SignOut from "@/components/discover/SignOut";
+import QueuedList from "@/components/discover/QueuedList";
+import SavedToast from "@/components/discover/SavedToast";
 
 /**
- * Home of LoWa Discover. Until OE-05 (dashboard) it shows who is signed in and checks,
- * through row level security, that this account really reaches the team data.
+ * Home of LoWa Discover. OE-04: big "New" button, captures waiting on the phone and the latest
+ * saved ones. The full dashboard (groups, filters, detail) arrives in OE-05.
  */
 type Props = { searchParams: Promise<{ view?: string }> };
 
@@ -14,18 +17,35 @@ const VIEWS: Record<string, string> = {
   ready: "Proposals ready to share arrive in OE-05.",
 };
 
+const STATUS_LABEL: Record<string, string> = {
+  captured: "Captured",
+  researching: "Researching",
+  needs_verification: "Verify",
+  draft_ready: "Draft ready",
+  published: "Published",
+  contacted: "Contacted",
+  interested: "Interested",
+  follow_up: "Follow-up",
+  won: "Won",
+  lost: "Lost",
+};
+
+type Row = { id: string; name: string; city: string; status: string; captured_at: string };
+
 export default async function DiscoverHome({ searchParams }: Props) {
   const { view } = await searchParams;
   const supabase = await createUserClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) redirect("/discover/login");
 
-  const [team, services] = await Promise.all([
-    supabase.from("team_members").select("email", { count: "exact", head: true }),
-    supabase.from("services").select("slug", { count: "exact", head: true }).eq("active", true),
-  ]);
-  const hasAccess = !team.error && (team.count ?? 0) > 0;
+  const { data: recent, error } = await supabase
+    .from("opportunities")
+    .select("id,name,city,status,captured_at")
+    .order("captured_at", { ascending: false })
+    .limit(20);
+
   const today = new Intl.DateTimeFormat("en-US", { weekday: "long", month: "long", day: "numeric", timeZone: "America/New_York" }).format(new Date());
+  const day = (iso: string) => new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric", timeZone: "America/New_York" }).format(new Date(iso));
 
   return (
     <main className="dx-app">
@@ -52,21 +72,40 @@ export default async function DiscoverHome({ searchParams }: Props) {
             </span>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14" /></svg>
           </a>
-          <section className="dx-card dx-stack" style={{ marginTop: 16 }}>
-            <p className="mono">Signed in</p>
-            <p>{user.email}</p>
-            <p className={hasAccess ? "dx-note" : "dx-error"} role="status">
-              {hasAccess
-                ? `Team access verified · ${services.count ?? 0} active services in the catalog`
-                : "This account can't read team data. Check the team_members table in Supabase."}
-            </p>
-            <div className="dx-row">
-              <SignOut />
-              <span className="mono">The dashboard arrives in OE-05</span>
-            </div>
+
+          <QueuedList />
+
+          <section className="dx-group" aria-labelledby="dx-recent">
+            <h2 id="dx-recent" className="mono">Recent</h2>
+            {error ? (
+              <p className="dx-error" role="alert">Couldn&apos;t load your opportunities. Try again in a moment.</p>
+            ) : !recent?.length ? (
+              <p className="dx-empty">Nothing captured yet. Tap New when you meet a business.</p>
+            ) : (
+              <ul className="dx-list">
+                {(recent as Row[]).map((o) => (
+                  <li key={o.id} className="dx-item">
+                    <span className="dx-thumb" aria-hidden="true">{o.name.trim().charAt(0).toUpperCase()}</span>
+                    <span className="dx-item-txt">
+                      <b>{o.name}</b>
+                      <span>{o.city} · {day(o.captured_at)}</span>
+                    </span>
+                    <span className={`dx-chip s-${o.status}`}>{STATUS_LABEL[o.status] ?? o.status}</span>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </section>
+
+          <section className="dx-account">
+            <span className="mono">Signed in as {user.email}</span>
+            <SignOut />
           </section>
         </>
       )}
+      <Suspense fallback={null}>
+        <SavedToast />
+      </Suspense>
     </main>
   );
 }

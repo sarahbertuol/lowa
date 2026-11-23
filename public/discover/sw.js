@@ -3,7 +3,7 @@
  * - Next.js static files and Google Fonts: cache first (they are versioned).
  * - API, sign-in, sign-out and anything outside /discover: never cached.
  * Bump VERSION when this file changes. */
-const VERSION = "v1";
+const VERSION = "v2";
 const PAGES = `dx-pages-${VERSION}`;
 const ASSETS = `dx-assets-${VERSION}`;
 const OFFLINE_URL = "/discover/new";

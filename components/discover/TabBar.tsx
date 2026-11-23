@@ -12,6 +12,8 @@ export default function TabBar() {
     const here = path === p && (q ? view === q : !view);
     return here ? ("page" as const) : undefined;
   };
+  // The capture screen has its own bottom bar (Save).
+  if (path === "/discover/new") return null;
 
   return (
     <nav className="dx-bar" aria-label="App">
