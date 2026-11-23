@@ -8,7 +8,8 @@ const nextConfig = {
     const noindex = [{ key: "X-Robots-Tag", value: "noindex, nofollow" }];
     return [
       { source: "/proposal/:path*", headers: noindex },
-      { source: "/opportunity/:path*", headers: noindex },
+      // The token is the key: never send it to other sites as a referrer.
+      { source: "/opportunity/:path*", headers: [...noindex, { key: "Referrer-Policy", value: "no-referrer" }] },
       { source: "/discover", headers: noindex },
       { source: "/discover/:path*", headers: noindex },
       { source: "/api/discover/:path*", headers: noindex },

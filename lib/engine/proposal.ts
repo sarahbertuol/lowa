@@ -93,3 +93,6 @@ export function readingTime(c: ProposalContent) {
   const label = half < 1 ? "under a minute" : `about ${half} minute${half > 1 ? "s" : ""}`;
   return { words, seconds, label };
 }
+
+/** Text still waiting on the founder, like "[payment terms]". */
+export const pendingItems = (c: ProposalContent) => [...new Set(JSON.stringify(c).match(/\[[^\]"]{2,60}\]/g) ?? [])];

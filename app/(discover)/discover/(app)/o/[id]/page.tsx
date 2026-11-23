@@ -15,7 +15,9 @@ import Analysis, { type AnalysisRow } from "./Analysis";
 import { SERVICE_COLUMNS, type Service } from "@/lib/engine/catalog";
 import Regenerate from "./Regenerate";
 import ProposalDraft, { type VersionRow } from "./ProposalDraft";
-import type { ProposalContent } from "@/lib/engine/proposal";
+import { copyCheck, pendingItems, type ProposalContent } from "@/lib/engine/proposal";
+import PublishBox, { type LiveLink } from "./PublishBox";
+import { liveSnapshot } from "@/lib/engine/publish";
 
 export const maxDuration = 300; // confirming an identity starts the research again in the background
 
@@ -50,7 +52,7 @@ export default async function OpportunityDetail({ params }: Props) {
       .eq("opportunity_id", id).order("checked_at").limit(80),
     supabase.from("analyses").select("version,created_at,insights,dimensions,service_slug,extra_pages,template")
       .eq("opportunity_id", id).order("version", { ascending: false }).limit(1).maybeSingle(),
-    supabase.from("proposals").select("version,created_at,status,template,content")
+    supabase.from("proposals").select("id,version,created_at,status,template,content")
       .eq("opportunity_id", id).order("version", { ascending: false }).limit(30),
   ]);
   if (!o) notFound();
@@ -59,8 +61,12 @@ export default async function OpportunityDetail({ params }: Props) {
     ? await supabase.from("services").select(SERVICE_COLUMNS).order("sort_order")
     : { data: null };
   const services = (serviceRows ?? []) as Service[];
-  const proposals = (proposalRows ?? []) as (VersionRow & { template: string; content: ProposalContent })[];
+  const proposals = (proposalRows ?? []) as (VersionRow & { id: string; template: string; content: ProposalContent })[];
   const proposal = proposals[0] ?? null;
+  const snap = proposal ? await liveSnapshot(supabase, id) : null;
+  const live: LiveLink | null = snap
+    ? { token: snap.token, publishedAt: snap.published_at, expiresAt: snap.expires_at, version: proposals.find((p) => p.id === snap.proposal_id)?.version ?? null }
+    : null;
   const jobs = ((jobRows ?? []) as Job[]).map(slimJob).sort((a, b) => STEPS.indexOf(a.step) - STEPS.indexOf(b.step));
   const paused = o.status === "researching" && isPaused(jobs);
 
@@ -152,6 +158,11 @@ export default async function OpportunityDetail({ params }: Props) {
       {proposal && (
         <ProposalDraft key={proposal.version} id={o.id} version={proposal.version} template={proposal.template}
           content={proposal.content} versions={proposals.map(({ version, created_at, status }) => ({ version, created_at, status }))} />
+      )}
+      {proposal && (
+        <PublishBox id={o.id} version={proposal.version} live={live} pending={pendingItems(proposal.content)}
+          blocked={level === "low" || o.status === "needs_verification" ? "Confirm which business this is before publishing."
+            : copyCheck(proposal.content).length ? "Fix the copy issues in the draft before publishing." : null} />
       )}
 
       <Sources id={o.id} findings={findings} />

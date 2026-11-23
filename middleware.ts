@@ -1,9 +1,11 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { createServerClient } from "@supabase/ssr";
+import { createClient } from "@supabase/supabase-js";
+import { goneHtml } from "@/lib/engine/gone";
 
 /**
- * Guards the Opportunity Engine only (see `config.matcher`): the public site, the agency
- * proposals and /opportunity/[token] never run this code.
+ * Guards the Opportunity Engine only (see `config.matcher`): the public site and the agency
+ * proposals never run this code. /opportunity/[token] only gets the revoked/expired check (410).
  * - Refreshes the Supabase session cookie on every request.
  * - No session: pages go to /discover/login, the API answers 401.
  */
@@ -13,6 +15,7 @@ const INSTALL_FILES = ["/discover/manifest.webmanifest", "/discover/sw.js", "/di
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
+  if (pathname.startsWith("/opportunity/")) return proposalGate(pathname.slice("/opportunity/".length));
   if (INSTALL_FILES.some((p) => pathname === p || pathname.startsWith(p))) return NextResponse.next();
   const isApi = pathname.startsWith("/api/discover");
   const isPublic = PUBLIC_PATHS.some((p) => pathname === p || pathname.startsWith(p));
@@ -53,6 +56,24 @@ export async function middleware(request: NextRequest) {
   return response;
 }
 
+/**
+ * A revoked or expired proposal answers 410 with a short page (OE-13). Valid and unknown tokens go
+ * on to the page, which reads the snapshot again and shows it or a 404.
+ */
+async function proposalGate(token: string) {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  if (!/^[A-Za-z0-9_-]{22}$/.test(token) || !url || !key) return NextResponse.next();
+  const db = createClient(url, key, { auth: { persistSession: false, autoRefreshToken: false } });
+  const { data } = await db.from("proposal_snapshots").select("expires_at,revoked_at").eq("token", token).maybeSingle();
+  const why = !data ? null : data.revoked_at ? "revoked" : new Date(data.expires_at).getTime() <= Date.now() ? "expired" : null;
+  if (!why) return NextResponse.next();
+  return new NextResponse(goneHtml(why, "hello@lowa-studio.com"), {
+    status: 410,
+    headers: { "content-type": "text/html; charset=utf-8", "cache-control": "no-store", "x-robots-tag": "noindex, nofollow", "referrer-policy": "no-referrer" },
+  });
+}
+
 export const config = {
-  matcher: ["/discover", "/discover/:path*", "/api/discover/:path*"],
+  matcher: ["/discover", "/discover/:path*", "/api/discover/:path*", "/opportunity/:token"],
 };

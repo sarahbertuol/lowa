@@ -15,6 +15,11 @@ import type { StepContext, StepResult } from "./handlers";
 
 const dash = (s: string) => s.replace(/\s*[\u2014\u2013]\s*/g, ", ").replace(/\s+/g, " ").trim();
 
+const PUBLIC_SOURCE: Record<string, string> = {
+  website: "your website", google: "your Google profile", instagram: "your Instagram", facebook: "your Facebook page",
+  store: "your online store", review: "your reviews", catalog: "your catalog",
+};
+
 const TEMPLATE_BRIEF: Record<Template, string> = {
   missing_website: "Template A, The missing website: we couldn't find a website. Show what a simple site would do for them. Never say they have no website; say people can't find one.",
   growth: "Template B, The growth opportunity: they have a website. Point to specific pages or paths we read and what to change.",
@@ -39,6 +44,18 @@ export async function draft(ctx: StepContext): Promise<StepResult> {
   const service = catalog.find((s) => s.slug === a.service_slug);
   if (!service) throw new Error("The suggested service is no longer in the catalog.");
   const care = catalog.find((s) => s.slug === "maintenance" && s.active);
+
+  // "Source: your website, checked Nov 23" under an insight (public wording, no internal detail).
+  const ids = [...new Set(insights.flatMap((i) => i.sources))];
+  const { data: found } = ids.length
+    ? await db.from("research_findings").select("id,kind,checked_at,verification").in("id", ids)
+    : { data: [] as { id: string; kind: string; checked_at: string; verification: string }[] };
+  const sourceLine = (i: Insight | undefined) => {
+    const f = (found ?? []).find((x) => i?.sources.includes(x.id) && x.verification !== "rejected" && PUBLIC_SOURCE[x.kind]);
+    if (!f) return undefined;
+    const day = new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric", timeZone: "America/New_York" }).format(new Date(f.checked_at));
+    return `Source: ${PUBLIC_SOURCE[f.kind]}, checked ${day}`;
+  };
 
   const schema = z.object({
     hero: z.object({ headline: z.string(), subline: z.string() }),
