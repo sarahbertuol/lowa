@@ -91,7 +91,8 @@ Testada no Chrome em 23/11/2026 com 3 negócios reais: Oxford Exchange (Tampa), 
 
 ## Fase 3 · Catálogo e proposta (Etapa 4)
 
-### OE-10 · Catálogo editável
+### OE-10 · Catálogo editável ✅
+Testada no Chrome em 23/11/2026: o Small website foi de US$ 920 para 950, salvo e conferido depois de recarregar, e voltou para 920 (catálogo igual ao do início). Ativar a Landing page sem preço é bloqueado com "Add a price, or turn the service off until it has one." Tela em 390px e 1440px sem rolagem lateral, alvos de 44px. Código: `lib/engine/catalog.ts` (rótulos e formato do preço, usados também na OE-11), `catalog/actions.ts`, `ServiceCard.tsx`. O id (slug) de um serviço nunca muda e serviço não se apaga, só desativa. Duas pessoas editando o mesmo serviço: o segundo a salvar recebe aviso para recarregar, em vez de apagar a edição do outro. Travessão no texto é recusado. O campo "Rules for proposals" (notas internas) orienta a análise e nunca aparece para o cliente. A análise (OE-09) já lê o catálogo na hora em que roda. Que proposta publicada não muda fica garantido pelo snapshot da OE-13. Não testado: "Add service" (cada teste deixaria um serviço inativo que não se apaga pelo app) e o aviso de edição simultânea.
 - `/discover/catalog` (`Catalogo.html`): nome, tipo de preço (fixo, a partir de, mensal, sob consulta), valor, pagamento, inclusões, exclusões, prazo, ativo.
 - Pronto quando: a Sarah muda um preço pelo celular e a próxima proposta já usa o novo valor; propostas publicadas não mudam.
 
