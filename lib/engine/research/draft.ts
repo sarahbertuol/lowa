@@ -3,12 +3,13 @@ import { structured } from "@/lib/engine/providers/ai";
 import { addUsage, emptyUsage } from "@/lib/engine/providers/types";
 import { SERVICE_COLUMNS, type Service } from "@/lib/engine/catalog";
 import { buildInvestment } from "@/lib/engine/investment";
+import { writeMessages } from "./outreach";
 import { copyCheck, readingTime, type ProposalContent } from "@/lib/engine/proposal";
 import type { Insight, Template } from "./insights";
 import type { StepContext, StepResult } from "./handlers";
 
 /**
- * Proposal draft (OE-12). Writes the six sections from the latest analysis, in American English,
+ * Proposal draft (OE-12) and outreach messages (OE-15). Writes the six sections from the latest analysis, in American English,
  * for a 1 to 2 minute read. The AI writes words only: the price block comes from the catalog.
  * Each run saves a new version; nothing is published (that is the founder's tap, OE-14).
  */
@@ -120,11 +121,15 @@ export async function draft(ctx: StepContext): Promise<StepResult> {
   });
   if (error) throw new Error(`draft: ${error.message}`);
 
+  // Messages (OE-15): written from this draft; the ones the founder edited stay.
+  const msg = await writeMessages(db, o.id, content);
+
   const issues = copyCheck(content);
   const read = readingTime(content);
+  const usage = addUsage(emptyUsage(), ex.usage);
   return {
-    summary: `Proposal draft v${version} ready, ${read.label} to read${issues.length ? `, ${issues.length} copy issue${issues.length > 1 ? "s" : ""} to fix` : ""}. Messages arrive in OE-15.`,
+    summary: `Proposal draft v${version} ready, ${read.label} to read${issues.length ? `, ${issues.length} copy issue${issues.length > 1 ? "s" : ""} to fix` : ""}. ${msg?.kept ? `Messages updated (${msg.kept} you edited kept).` : "3 messages ready."}`,
     data: { version, issues: issues.length, words: read.words },
-    usage: addUsage(emptyUsage(), ex.usage),
+    usage: msg ? addUsage(usage, msg.usage) : usage,
   };
 }

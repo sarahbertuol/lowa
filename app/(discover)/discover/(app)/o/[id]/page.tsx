@@ -20,6 +20,8 @@ import { checkPublish } from "@/lib/engine/publish-check";
 import Identity, { identityRows } from "./Identity";
 import PublishBox, { type LiveLink } from "./PublishBox";
 import { liveSnapshot } from "@/lib/engine/publish";
+import Outreach, { type MessageRow } from "./Outreach";
+import { headers } from "next/headers";
 
 export const maxDuration = 300; // confirming an identity starts the research again in the background
 
@@ -37,8 +39,8 @@ const fmt = (iso: string, withTime = false) =>
   }).format(new Date(iso));
 
 /**
- * Opportunity detail and review (OE-05 to OE-14): status, research, identity, analysis, offer,
- * proposal draft, public link, sources, notes and history. On desktop the review opens in two
+ * Opportunity detail and review (OE-05 to OE-15): status, research, identity, analysis, offer,
+ * proposal draft, public link, outreach messages, sources, notes and history. On desktop the review opens in two
  * columns (findings on the left, the offer and the proposal on the right); on the phone, one
  * column in the order of the work.
  */
@@ -49,7 +51,7 @@ export default async function OpportunityDetail({ params }: Props) {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) redirect("/discover/login");
 
-  const [{ data: o }, { data: history }, { data: photos }, { data: jobRows }, { data: findingRows }, { data: analysisRow }, { data: proposalRows }] = await Promise.all([
+  const [{ data: o }, { data: history }, { data: photos }, { data: jobRows }, { data: findingRows }, { data: analysisRow }, { data: proposalRows }, { data: messageRows }] = await Promise.all([
     supabase.from("opportunities").select("*").eq("id", id).maybeSingle(),
     supabase.from("status_history").select("id,from_status,to_status,changed_at").eq("opportunity_id", id).order("changed_at", { ascending: false }).limit(50),
     supabase.from("opportunity_photos").select("id,storage_path").eq("opportunity_id", id),
@@ -61,6 +63,7 @@ export default async function OpportunityDetail({ params }: Props) {
       .eq("opportunity_id", id).order("version", { ascending: false }).limit(1).maybeSingle(),
     supabase.from("proposals").select("id,version,created_at,status,template,content")
       .eq("opportunity_id", id).order("version", { ascending: false }).limit(30),
+    supabase.from("outreach_messages").select("kind,body,edited,copied_at").eq("opportunity_id", id),
   ]);
   if (!o) notFound();
   const analysis = analysisRow as AnalysisRow | null;
@@ -74,6 +77,10 @@ export default async function OpportunityDetail({ params }: Props) {
   const live: LiveLink | null = snap
     ? { token: snap.token, publishedAt: snap.published_at, expiresAt: snap.expires_at, version: proposals.find((p) => p.id === snap.proposal_id)?.version ?? null }
     : null;
+  // Live proposal link for the messages (the same host this screen is served from).
+  const h = await headers();
+  const origin = `${h.get("x-forwarded-proto") ?? "https"}://${h.get("x-forwarded-host") ?? h.get("host")}`;
+  const liveUrl = snap ? `${origin}/opportunity/${snap.token}` : null;
   const jobs = ((jobRows ?? []) as Job[]).map(slimJob).sort((a, b) => STEPS.indexOf(a.step) - STEPS.indexOf(b.step));
   const paused = o.status === "researching" && isPaused(jobs);
 
@@ -90,6 +97,9 @@ export default async function OpportunityDetail({ params }: Props) {
     contact: "contact details", review: "reviews", catalog: "catalog", competitor: "competitors", context: "local context", photo: "your photo", note: "your source",
   };
   const sourceLabel = Object.fromEntries(raw.map((f) => [f.id, KIND_LABEL[f.kind] ?? f.kind]));
+  // Email message only with an address we can trust: verified, from the business or the founder.
+  const trustedEmail = raw.filter((f) => f.kind === "contact" && f.verification === "verified" && typeof f.data?.email === "string")
+    .map((f) => f.data!.email as string).pop() ?? null;
   const level = (o.confidence ?? assessment?.level ?? null) as "high" | "medium" | "low" | null;
   const short = (iso: string) => new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric", timeZone: "America/New_York" }).format(new Date(iso));
   const candidates: Candidate[] = o.status !== "needs_verification" ? [] : raw
@@ -215,6 +225,12 @@ export default async function OpportunityDetail({ params }: Props) {
           {proposal && check && (
             <div className="o-publish">
               <PublishBox id={o.id} version={proposal.version} live={live} pending={check.pending} blocked={check.blocked} />
+            </div>
+          )}
+          {proposal && (
+            <div className="o-outreach">
+              <Outreach id={o.id} messages={(messageRows ?? []) as MessageRow[]} url={liveUrl} metInPerson={o.found_via === "in_person"}
+                email={trustedEmail} contacted={!!o.contacted_at} hasDraft={!!proposal} />
             </div>
           )}
           {proposal && (

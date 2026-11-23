@@ -319,3 +319,9 @@ select.dx-input{appearance:auto}
   .dx-split{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:0 40px;align-items:start}
   .dx-col{display:flex;flex-direction:column;min-width:0}
 }
+
+/* Outreach (OE-15) */
+.o-outreach{order:5}
+textarea.dx-msg-text{min-height:180px}
+.dx-msg-issues{margin:0;padding-left:18px;color:#8A4B12;font-size:14px;display:grid;gap:2px}
+.dx-btn.off{opacity:.5;pointer-events:none}
