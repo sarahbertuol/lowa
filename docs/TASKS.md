@@ -60,7 +60,8 @@ Testado no Chrome em 22/11/2026: grupos, aba All com filtro, status em 1 toque c
 
 ## Fase 2 · Pesquisa e análise (Etapa 3)
 
-### OE-06 · Fila de pesquisa
+### OE-06 · Fila de pesquisa ✅
+Testada no Chrome em 22/11/2026: a captura dispara a pesquisa em segundo plano; falha proposital em "Official website" deixou "Paused" e o Resume concluiu sem repetir "Business identity". As etapas ainda são provisórias (dizem em que tarefa chegam); as reais entram na OE-07 a OE-12. Teste em preview: abrir o detalhe com `?test=fail-website` (nunca funciona em produção).
 - Tabela `research_jobs` com etapas (identidade, Google, site, redes, concorrentes e contexto, análise). Cada etapa é idempotente e salva o resultado ao terminar.
 - Execução em segundo plano na Vercel (`after()` na rota que cria o job), até 3 tentativas por etapa; botão "Resume" retoma da etapa que falhou.
 - Tela de andamento (`Oportunidade.html`, estado Researching) com etapas e resultados parciais.

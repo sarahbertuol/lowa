@@ -26,4 +26,6 @@ export type Job = {
 
 /** Paused = at least one step failed after its tries. */
 export const isPaused = (jobs: Pick<Job, "status">[]) => jobs.some((j) => j.status === "failed");
-export const isActive = (jobs: Pick<Job, "status">[]) => jobs.some((j) => j.status === "queued" || j.status === "running");
+/** Active = something running, or queued and not stopped by a failed step. */
+export const isActive = (jobs: Pick<Job, "status">[]) =>
+  jobs.some((j) => j.status === "running") || (!isPaused(jobs) && jobs.some((j) => j.status === "queued"));
