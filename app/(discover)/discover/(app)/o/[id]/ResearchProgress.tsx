@@ -14,15 +14,19 @@ export default function ResearchProgress({ id, initial, hasPhoto }: { id: string
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
   const wasActive = useRef(isActive(initial));
+  const lastKey = useRef<string | null>(null);
 
   const load = useCallback(async () => {
     try {
       const r = await fetch(`/api/discover/opportunities/${id}/research`, { cache: "no-store" });
       if (!r.ok) return;
-      const j = (await r.json()) as { jobs: Job[] };
+      const j = (await r.json()) as { status: string; jobs: Job[] };
       setJobs(j.jobs);
       const active = isActive(j.jobs);
-      if (wasActive.current && !active) router.refresh(); // status chip and history changed
+      // Status chip and history live in the server page: refresh when they change.
+      const key = `${j.status}|${isPaused(j.jobs)}|${active}`;
+      if (lastKey.current && key !== lastKey.current) router.refresh();
+      lastKey.current = key;
       wasActive.current = active;
     } catch {
       /* offline: keep what we have */
