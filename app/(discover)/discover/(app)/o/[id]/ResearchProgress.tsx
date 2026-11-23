@@ -52,6 +52,11 @@ export default function ResearchProgress({ id, initial, hasPhoto }: { id: string
         headers: { "content-type": "application/json" },
         body: JSON.stringify(failStep ? { failStep } : {}),
       });
+      if (r.status === 429) {
+        const j = (await r.json().catch(() => ({}))) as { message?: string };
+        setError(j.message ?? "Research limit reached. Try again later.");
+        return;
+      }
       if (!r.ok) throw new Error();
       wasActive.current = true;
       await load();

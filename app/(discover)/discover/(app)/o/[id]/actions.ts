@@ -2,7 +2,7 @@
 
 import { z } from "zod";
 import { revalidatePath } from "next/cache";
-import { createUserClient } from "@/lib/engine/supabase/server";
+import { teamClient } from "@/lib/engine/supabase/team";
 import { MANUAL_STATUSES, type Status } from "@/lib/engine/status";
 
 /** Detail actions (OE-05). Run as the signed-in user: row level security applies. */
@@ -10,11 +10,8 @@ import { MANUAL_STATUSES, type Status } from "@/lib/engine/status";
 const id = z.uuid();
 type Result = { ok: true } | { ok: false; error: string };
 
-async function client() {
-  const supabase = await createUserClient();
-  const { data: { user } } = await supabase.auth.getUser();
-  return user ? supabase : null;
-}
+/** Only team members (OE-16): a session alone is not enough. */
+const client = teamClient;
 
 function refresh(oppId: string) {
   revalidatePath("/discover");

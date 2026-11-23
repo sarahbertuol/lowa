@@ -6,13 +6,24 @@ const nextConfig = {
   // keep them out of search engines.
   async headers() {
     const noindex = [{ key: "X-Robots-Tag", value: "noindex, nofollow" }];
+    // Private app and public proposals (OE-16): no framing by other sites, no type sniffing.
+    const hardened = [
+      ...noindex,
+      { key: "X-Frame-Options", value: "DENY" },
+      { key: "X-Content-Type-Options", value: "nosniff" },
+    ];
+    const app = [
+      ...hardened,
+      { key: "Referrer-Policy", value: "same-origin" },
+      { key: "Permissions-Policy", value: "camera=(self), geolocation=(self), microphone=()" },
+    ];
     return [
       { source: "/proposal/:path*", headers: noindex },
       // The token is the key: never send it to other sites as a referrer.
-      { source: "/opportunity/:path*", headers: [...noindex, { key: "Referrer-Policy", value: "no-referrer" }] },
-      { source: "/discover", headers: noindex },
-      { source: "/discover/:path*", headers: noindex },
-      { source: "/api/discover/:path*", headers: noindex },
+      { source: "/opportunity/:path*", headers: [...hardened, { key: "Referrer-Policy", value: "no-referrer" }] },
+      { source: "/discover", headers: app },
+      { source: "/discover/:path*", headers: app },
+      { source: "/api/discover/:path*", headers: app },
       {
         // The worker lives in /discover/ but also controls /discover itself.
         source: "/discover/sw.js",

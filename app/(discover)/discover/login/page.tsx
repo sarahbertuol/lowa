@@ -17,6 +17,7 @@ export default async function LoginPage({ searchParams }: Props) {
           next={safeNext(next)}
           configured={supabaseConfigured()}
           linkError={error === "link"}
+          accessError={error === "access"}
         />
       </div>
     </main>

@@ -2,7 +2,7 @@
 
 import { z } from "zod";
 import { revalidatePath } from "next/cache";
-import { createUserClient } from "@/lib/engine/supabase/server";
+import { teamClient } from "@/lib/engine/supabase/team";
 import { createAdminClient } from "@/lib/engine/supabase/admin";
 import { KINDS } from "@/lib/engine/messages";
 import { writeMessages } from "@/lib/engine/research/outreach";
@@ -18,11 +18,8 @@ type Result = { ok: true } | { ok: false; error: string };
 const uuid = z.uuid();
 const kind = z.enum(KINDS);
 
-async function client() {
-  const supabase = await createUserClient();
-  const { data: { user } } = await supabase.auth.getUser();
-  return user ? supabase : null;
-}
+/** Only team members (OE-16): a session alone is not enough. */
+const client = teamClient;
 
 export async function saveMessage(oppId: string, k: string, body: string): Promise<Result> {
   const v = z.object({ oppId: uuid, k: kind, body: z.string().trim().min(1).max(2000) }).safeParse({ oppId, k, body });
@@ -83,6 +80,9 @@ export async function generateMessages(oppId: string): Promise<Result> {
   const { data: p } = await db.from("proposals").select("content").eq("opportunity_id", oppId)
     .order("version", { ascending: false }).limit(1).maybeSingle();
   if (!p) return { ok: false, error: "Write the proposal draft first." };
+  // Only for drafts made before OE-15: later the messages come with each draft (and its limit).
+  const { count } = await db.from("outreach_messages").select("id", { count: "exact", head: true }).eq("opportunity_id", oppId);
+  if (count) return { ok: false, error: "The messages are already written. Regenerate the draft to rewrite them." };
   try {
     await writeMessages(createAdminClient(), oppId, p.content as ProposalContent);
   } catch {

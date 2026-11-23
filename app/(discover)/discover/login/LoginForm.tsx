@@ -3,9 +3,9 @@
 import { useActionState, useEffect, useRef } from "react";
 import { requestCode, verifyCode, type LoginState } from "./actions";
 
-type Props = { next: string; configured: boolean; linkError: boolean };
+type Props = { next: string; configured: boolean; linkError: boolean; accessError?: boolean };
 
-export default function LoginForm({ next, configured, linkError }: Props) {
+export default function LoginForm({ next, configured, linkError, accessError }: Props) {
   const [emailState, sendAction, sending] = useActionState<LoginState, FormData>(requestCode, { step: "email" });
   const [codeState, verifyAction, verifying] = useActionState<LoginState, FormData>(verifyCode, { step: "email" });
   const codeRef = useRef<HTMLInputElement>(null);
@@ -23,6 +23,9 @@ export default function LoginForm({ next, configured, linkError }: Props) {
         <h1>LoWa <em>Discover</em></h1>
         <p>For Sarah and Marco. We&apos;ll email you a sign-in code.</p>
         {!configured && <p className="dx-note" role="status">Discover isn&apos;t connected to the database yet.</p>}
+        {accessError && !emailState.error && (
+          <p className="dx-error" role="alert">This account no longer has access to Discover. Ask Sarah if that's a mistake.</p>
+        )}
         {linkError && !emailState.error && (
           <p className="dx-error" role="alert">That sign-in link expired or was already used. Send a new code.</p>
         )}

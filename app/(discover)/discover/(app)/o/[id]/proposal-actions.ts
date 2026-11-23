@@ -3,7 +3,8 @@
 import { z } from "zod";
 import { after } from "next/server";
 import { revalidatePath } from "next/cache";
-import { createUserClient } from "@/lib/engine/supabase/server";
+import { teamClient } from "@/lib/engine/supabase/team";
+import { aiRunAllowed } from "@/lib/engine/limits";
 import { requeueSteps, runResearch } from "@/lib/engine/research/runner";
 import { copyCheck, type CopyIssue, type ProposalContent } from "@/lib/engine/proposal";
 import { liveSnapshot, newToken } from "@/lib/engine/publish";
@@ -26,11 +27,8 @@ const editable = z.object({
   nextStep: z.object({ title: t(100).min(1), body: t(400) }),
 });
 
-async function client() {
-  const supabase = await createUserClient();
-  const { data: { user } } = await supabase.auth.getUser();
-  return user ? supabase : null;
-}
+/** Only team members (OE-16): a session alone is not enough. */
+const client = teamClient;
 
 export async function saveProposal(oppId: string, baseVersion: number, input: unknown): Promise<Result> {
   if (!z.uuid().safeParse(oppId).success || !Number.isInteger(baseVersion)) return { ok: false, error: "Invalid proposal." };
@@ -68,6 +66,8 @@ export async function regenerateDraft(oppId: string): Promise<{ ok: true } | { o
   if (!z.uuid().safeParse(oppId).success) return { ok: false, error: "Invalid opportunity." };
   const db = await client();
   if (!db) return { ok: false, error: "Sign in again." };
+  const lim = await aiRunAllowed();
+  if (!lim.ok) return lim;
   const { data: busy } = await db.from("research_jobs").select("id").eq("opportunity_id", oppId).in("status", ["running", "queued"]).limit(1);
   if (busy?.length) return { ok: false, error: "The research is still running. Try again when it's done." };
   await requeueSteps(oppId, ["draft"]);
@@ -85,7 +85,8 @@ export async function regenerateDraft(oppId: string): Promise<{ ok: true } | { o
  */
 export async function publishProposal(oppId: string, baseVersion: number): Promise<{ ok: true; token: string } | { ok: false; error: string }> {
   if (!z.uuid().safeParse(oppId).success || !Number.isInteger(baseVersion)) return { ok: false, error: "Invalid proposal." };
-  const supabase = await createUserClient();
+  const supabase = await client();
+  if (!supabase) return { ok: false, error: "Sign in again to publish." };
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return { ok: false, error: "Sign in again to publish." };
 

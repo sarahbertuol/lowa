@@ -2,7 +2,7 @@
 
 import { z } from "zod";
 import { revalidatePath } from "next/cache";
-import { createUserClient } from "@/lib/engine/supabase/server";
+import { teamClient } from "@/lib/engine/supabase/team";
 import { PRICE_TYPES, centsFrom } from "@/lib/engine/catalog";
 
 /**
@@ -37,11 +37,8 @@ const schema = z.object({
 
 export type ServiceInput = z.infer<typeof schema>;
 
-async function client() {
-  const supabase = await createUserClient();
-  const { data: { user } } = await supabase.auth.getUser();
-  return user ? supabase : null;
-}
+/** Only team members (OE-16): a session alone is not enough. */
+const client = teamClient;
 
 export async function saveService(input: ServiceInput): Promise<SaveResult> {
   const p = schema.safeParse(input);

@@ -4,6 +4,9 @@ Itens que dependem da Sarah ou do Marco. No código aparecem como `[colchetes]`.
 
 ## Contas e chaves (só a Sarah pode criar)
 
+- [ ] Confirmar o limite de uso do Engine (OE-16): hoje 20 pesquisas por hora e 60 por dia para a equipe (cerca de US$ 9 por dia no máximo). Mudar em `lib/engine/limits.ts` se quiser outro número
+- [ ] Teste sem login no preview (testes 16 e 17): abrir o link do preview numa janela anônima depois de entrar na Vercel não dá (a Vercel pede login). Opções: testar em produção depois do publish, ou autorizar uma chave de bypass de proteção na Vercel para testes automáticos
+
 - [x] Projeto no Supabase criado pela Vercel (22/11/2026), chaves só em Preview e Production
 - [x] Chave da API da Anthropic na Vercel (`ANTHROPIC_API_KEY`, Preview e Production, Secret) em 23/11/2026. Custo medido na OE-07: cerca de US$ 0,15 por oportunidade (US$ 10 dão umas 60 pesquisas). Conferir: limite de gasto mensal no console e, se a chave usada for a de usuário que expira em 22/12/2026, trocar por uma de service account sem validade antes disso
 - [x] Chave do Google (projeto lowa-discover) com Places API (New) e Geocoding API, restrita a essas duas, na Vercel como `GOOGLE_PLACES_API_KEY` (Preview e Production) em 23/11/2026. Conferir: limite diário em Quotas (sugestão: 200 por dia)

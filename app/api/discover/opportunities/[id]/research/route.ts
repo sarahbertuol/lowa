@@ -1,5 +1,6 @@
 import { after, NextResponse, type NextRequest } from "next/server";
-import { createUserClient } from "@/lib/engine/supabase/server";
+import { teamClient } from "@/lib/engine/supabase/team";
+import { aiRunAllowed } from "@/lib/engine/limits";
 import { queueResearch, resetFailed, runResearch } from "@/lib/engine/research/runner";
 import { STEPS, slimJob, type Step } from "@/lib/engine/research/steps";
 
@@ -15,9 +16,8 @@ type Ctx = { params: Promise<{ id: string }> };
 
 async function allowed(id: string) {
   if (!UUID.test(id)) return null;
-  const supabase = await createUserClient();
-  const { data: { user } } = await supabase.auth.getUser();
-  if (!user) return null;
+  const supabase = await teamClient();
+  if (!supabase) return null;
   const { data } = await supabase.from("opportunities").select("id,status").eq("id", id).maybeSingle();
   return data ? { supabase, opp: data } : null;
 }
@@ -38,6 +38,8 @@ export async function POST(request: NextRequest, { params }: Ctx) {
   const { id } = await params;
   const ok = await allowed(id);
   if (!ok) return NextResponse.json({ error: "not_found" }, { status: 404 });
+  const lim = await aiRunAllowed();
+  if (!lim.ok) return NextResponse.json({ error: "limit", message: lim.error }, { status: 429 });
 
   const body = (await request.json().catch(() => ({}))) as { failStep?: string };
   // Test hook, never in production: forces one step to fail to check pause and resume.

@@ -9,6 +9,7 @@
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
     "test:db": "node supabase/tests/engine.test.mjs",
+    "test:bundle": "node scripts/check-bundle.mjs",
     "db:migrate": "node scripts/db-migrate.mjs"
   },
   "dependencies": {

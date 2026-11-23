@@ -1,6 +1,7 @@
 import { after, NextResponse } from "next/server";
 import { queueResearch, runResearch } from "@/lib/engine/research/runner";
-import { createUserClient } from "@/lib/engine/supabase/server";
+import { teamClient } from "@/lib/engine/supabase/team";
+import { aiRunAllowed } from "@/lib/engine/limits";
 import { captureSchema, plausibleCaptureTime } from "@/lib/engine/capture";
 
 /**
@@ -14,9 +15,8 @@ const MAX_PHOTO = 4 * 1024 * 1024;
 const BUCKET = "opportunity-photos";
 
 export async function POST(request: Request) {
-  const supabase = await createUserClient();
-  const { data: { user } } = await supabase.auth.getUser();
-  if (!user) return NextResponse.json({ error: "unauthorized" }, { status: 401 });
+  const supabase = await teamClient();
+  if (!supabase) return NextResponse.json({ error: "unauthorized" }, { status: 401 });
 
   let form: FormData;
   try {
@@ -64,6 +64,9 @@ export async function POST(request: Request) {
 
   // Research starts right away, after the response (OE-06). A retried sync doesn't restart it:
   // steps already queued or done are kept.
+  // Over the usage limit (OE-16): the lead is saved; Start research on its page runs it later.
+  const lim = await aiRunAllowed().catch(() => ({ ok: false as const, error: "limit check failed" }));
+  if (!lim.ok) return NextResponse.json({ id: opp.id, research: "limited" }, { status: 201, headers: { "Cache-Control": "no-store" } });
   try {
     await queueResearch(opp.id);
     after(() => runResearch(opp.id).catch((e) => console.error("research", opp.id, e)));

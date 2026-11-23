@@ -8,6 +8,7 @@ import { goneHtml } from "@/lib/engine/gone";
  * proposals never run this code. /opportunity/[token] only gets the revoked/expired check (410).
  * - Refreshes the Supabase session cookie on every request.
  * - No session: pages go to /discover/login, the API answers 401.
+ * - Signed in but not on the team: the API answers 403, pages sign out and go to the login.
  */
 const PUBLIC_PATHS = ["/discover/login", "/discover/auth/"];
 // App install files: no private data, needed before sign-in (manifest, icons, service worker).
@@ -49,6 +50,17 @@ export async function middleware(request: NextRequest) {
     const login = new URL("/discover/login", request.url);
     if (pathname !== "/discover") login.searchParams.set("next", pathname);
     return NextResponse.redirect(login);
+  }
+  // On the team, not just signed in (OE-16): someone taken off team_members is signed out.
+  if (user && !isPublic) {
+    const { data: team, error: teamError } = await supabase.rpc("is_team");
+    if (!teamError && team === false) {
+      if (isApi) return NextResponse.json({ error: "forbidden" }, { status: 403 });
+      await supabase.auth.signOut();
+      const out = NextResponse.redirect(new URL("/discover/login?error=access", request.url));
+      for (const c of response.cookies.getAll()) out.cookies.set(c);
+      return out;
+    }
   }
   if (user && pathname === "/discover/login") {
     return NextResponse.redirect(new URL("/discover", request.url));

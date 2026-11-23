@@ -3,7 +3,8 @@
 import { z } from "zod";
 import { after } from "next/server";
 import { revalidatePath } from "next/cache";
-import { createUserClient } from "@/lib/engine/supabase/server";
+import { teamClient } from "@/lib/engine/supabase/team";
+import { aiRunAllowed } from "@/lib/engine/limits";
 import { requeueSteps, runResearch, settle } from "@/lib/engine/research/runner";
 import { facebookPage, host, instagramHandle, isPlatform } from "@/lib/engine/research/match";
 import { normalizeWebsite } from "@/lib/engine/capture";
@@ -19,11 +20,8 @@ import type { Step } from "@/lib/engine/research/steps";
 const uuid = z.uuid();
 type Result = { ok: true } | { ok: false; error: string };
 
-async function client() {
-  const supabase = await createUserClient();
-  const { data: { user } } = await supabase.auth.getUser();
-  return user ? supabase : null;
-}
+/** Only team members (OE-16): a session alone is not enough. */
+const client = teamClient;
 type Db = NonNullable<Awaited<ReturnType<typeof client>>>;
 
 function refresh(oppId: string) {
@@ -114,6 +112,8 @@ export async function addSource(oppId: string, raw: string): Promise<Result> {
   if (!uuid.safeParse(oppId).success) return { ok: false, error: "Invalid opportunity." };
   const db = await client();
   if (!db) return { ok: false, error: "Sign in again to add a source." };
+  const lim = await aiRunAllowed();
+  if (!lim.ok) return lim;
   const saved = await saveSource(db, oppId, raw);
   if (!saved.ok) return saved;
   // A new source can change the analysis (OE-09), so it runs again too.
@@ -161,6 +161,8 @@ export async function chooseTemplate(oppId: string, template: string): Promise<R
   if (!uuid.safeParse(oppId).success || !t.success) return { ok: false, error: "Pick a template." };
   const db = await client();
   if (!db) return { ok: false, error: "Sign in again to change the template." };
+  const lim = await aiRunAllowed();
+  if (!lim.ok) return lim;
   const { data: running } = await db.from("research_jobs").select("id").eq("opportunity_id", oppId).in("status", ["running", "queued"]).limit(1);
   if (running?.length) return { ok: false, error: "The research is still running. Try again when it's done." };
   const { data: a } = await db.from("analyses").select("id,dimensions,template").eq("opportunity_id", oppId)
@@ -184,6 +186,8 @@ export async function regenerateAnalysis(oppId: string): Promise<Result> {
   if (!uuid.safeParse(oppId).success) return { ok: false, error: "Invalid opportunity." };
   const db = await client();
   if (!db) return { ok: false, error: "Sign in again to regenerate." };
+  const lim = await aiRunAllowed();
+  if (!lim.ok) return lim;
   const { data: running } = await db.from("research_jobs").select("id").eq("opportunity_id", oppId).in("status", ["running", "queued"]).limit(1);
   if (running?.length) return { ok: false, error: "The research is still running. Try again when it's done." };
   const reran = await rerun(db, oppId, ["analysis", "draft"]);
@@ -219,6 +223,8 @@ export async function confirmIdentity(oppId: string, input: { candidate: number 
   if (candidate === null && !source?.trim()) return { ok: false, error: "Pick one of them, or choose “Neither” and add a link you trust." };
   const db = await client();
   if (!db) return { ok: false, error: "Sign in again to confirm." };
+  const lim = await aiRunAllowed();
+  if (!lim.ok) return lim;
 
   if (candidate !== null) {
     const { data: job } = await db.from("research_jobs").select("id,result").eq("opportunity_id", oppId).eq("step", "identity").maybeSingle();

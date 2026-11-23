@@ -109,6 +109,9 @@ LOW: status "Needs verification", publicação bloqueada até a fundadora escolh
 ## Segurança e privacidade
 
 - Login só para e-mails da tabela `team_members` (a Sarah edita no painel do Supabase); cadastro público desligado. A mesma tabela alimenta a RLS (`is_team()`).
+- Sessão não basta (OE-16): middleware, rotas e ações conferem `is_team()` a cada pedido (`lib/engine/supabase/team.ts`). Quem sai da equipe é deslogado no próximo acesso. Tudo que usa a chave de serviço passa por essa checagem antes.
+- Limite de uso da pesquisa paga (`lib/engine/limits.ts`): 20 por hora e 60 por dia para a equipe, contados nas entradas "researching" de `status_history`.
+- Cabeçalhos: X-Frame-Options DENY, nosniff, Referrer-Policy e Permissions-Policy em `/discover`, `/api/discover` e `/opportunity` (`next.config.mjs`). `npm run test:bundle` confere que nenhuma chave secreta vai para o navegador.
 - Token da proposta: 128 bits aleatórios em base64url (22 caracteres). Expira em 60 dias por padrão; revogar responde 410.
 - Página pública: `noindex, nofollow`, sem pesquisa, notas, confiança, contato pessoal ou observação da fundadora.
 - Leitor de páginas: só `http`/`https`, bloqueia IPs privados e locais, tempo limite de 8 s, máximo de 2 MB, respeita robots.txt.
