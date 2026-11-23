@@ -228,3 +228,26 @@ body:has(.dx){background:var(--cream)}
 .dx-add{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:end;padding-top:14px;border-top:1px solid var(--line);margin-top:14px}
 .dx-findings .dx-add:first-child{border-top:0;margin-top:0;padding-top:0}
 .dx-finding .rm{justify-self:start;background:none;border:0;padding:0;min-height:44px;color:var(--muted);font:500 14px 'Familjen Grotesk',sans-serif;text-decoration:underline;cursor:pointer}
+
+/* Analysis (OE-09): What we noticed, dimensions, recommendation */
+.dx-sec-row{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.dx-regen{display:grid;justify-items:start;gap:4px}
+.dx-sec-row .dx-regen{justify-items:end}
+.dx-tag.rec{background:#E3EEF2;border-color:#C9DDE4;color:#1F4E60}
+.dx-ins{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;padding:4px 0 16px;border-bottom:1px solid var(--line)}
+.dx-ins:last-of-type{border-bottom:0}
+.dx-ins .n{font-family:'Instrument Serif',Georgia,serif;font-size:30px;line-height:1;color:var(--blue)}
+.dx-ins h3{font-size:17px;font-weight:500;line-height:1.3;margin:2px 0 2px}
+.dx-ins dl{display:grid;gap:10px;margin:12px 0 0}
+.dx-ins dd{margin:2px 0 0;font-size:15px;line-height:1.45}
+.dx-ins dd .dx-tag{display:inline-block;margin-left:4px;vertical-align:1px;white-space:nowrap}
+.dx-ins .src{margin-top:10px;text-transform:none;letter-spacing:.02em}
+.dx .mono.dim{display:block}
+.dx-dims summary{min-height:44px;display:flex;align-items:center;cursor:pointer;font-weight:500;color:var(--blue)}
+.dx-dims dl{display:grid;gap:10px;margin:4px 0 0}
+.dx-dims dt{font-weight:500;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.dx-dims dd{margin:2px 0 0;font-size:14.5px;color:var(--muted)}
+.dx-dims .r{font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.05em;text-transform:uppercase;padding:2px 7px;border-radius:6px;border:1px solid var(--line);background:var(--cream);font-weight:400}
+.dx-dims .r-strong{background:#DDEBDC;border-color:#C5DCC3;color:#24562E}
+.dx-dims .r-weak{background:#F6DEDA;border-color:#EBC5BE;color:#7A2E0B}
+.dx-svc{display:block;font-size:19px;font-weight:500;margin-bottom:4px}

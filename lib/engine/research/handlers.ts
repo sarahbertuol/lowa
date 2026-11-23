@@ -11,6 +11,7 @@ import { webSearch } from "@/lib/engine/providers/search";
 import { pageReader } from "@/lib/engine/providers/reader";
 import { claudeVision } from "@/lib/engine/providers/vision";
 import { structured } from "@/lib/engine/providers/ai";
+import { analysis } from "./analysis";
 
 /**
  * What each step does (OE-07). Each step saves its findings (replacing its own earlier ones) and
@@ -47,7 +48,7 @@ export async function runStep(step: Step, ctx: StepContext): Promise<StepResult>
     case "website": return website(ctx);
     case "social": return social(ctx);
     case "context": return context(ctx);
-    case "analysis": return { summary: "Opportunity analysis arrives in OE-09.", skipped: true };
+    case "analysis": return analysis(ctx);
     case "draft": return { summary: "Proposal draft arrives in OE-12.", skipped: true };
   }
 }

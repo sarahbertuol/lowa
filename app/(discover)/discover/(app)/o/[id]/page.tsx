@@ -7,10 +7,12 @@ import StatusPicker from "./StatusPicker";
 import Notes from "./Notes";
 import DeleteOpportunity from "./DeleteOpportunity";
 import ResearchProgress from "./ResearchProgress";
-import { STEPS, isPaused, slimJob, type Job } from "@/lib/engine/research/steps";
+import { STEPS, isActive, isPaused, slimJob, type Job } from "@/lib/engine/research/steps";
 import Sources, { type FindingRow } from "./Sources";
 import VerifyIdentity, { type Candidate } from "./VerifyIdentity";
 import { assess, type FindingLite } from "@/lib/engine/research/confidence";
+import Analysis, { type AnalysisRow } from "./Analysis";
+import Regenerate from "./Regenerate";
 
 export const maxDuration = 300; // confirming an identity starts the research again in the background
 
@@ -27,7 +29,7 @@ const fmt = (iso: string, withTime = false) =>
     timeZone: "America/New_York",
   }).format(new Date(iso));
 
-/** Opportunity detail (OE-05, OE-07): status in one tap, dates, research and sources, what was captured, notes and history. */
+/** Opportunity detail (OE-05, OE-07, OE-09): status in one tap, dates, research, analysis and sources, what was captured, notes and history. */
 export default async function OpportunityDetail({ params }: Props) {
   const { id } = await params;
   if (!UUID.test(id)) notFound();
@@ -35,7 +37,7 @@ export default async function OpportunityDetail({ params }: Props) {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) redirect("/discover/login");
 
-  const [{ data: o }, { data: history }, { data: photos }, { data: jobRows }, { data: findingRows }] = await Promise.all([
+  const [{ data: o }, { data: history }, { data: photos }, { data: jobRows }, { data: findingRows }, { data: analysisRow }] = await Promise.all([
     supabase.from("opportunities").select("*").eq("id", id).maybeSingle(),
     supabase.from("status_history").select("id,from_status,to_status,changed_at").eq("opportunity_id", id).order("changed_at", { ascending: false }).limit(50),
     supabase.from("opportunity_photos").select("id,storage_path").eq("opportunity_id", id),
@@ -43,8 +45,14 @@ export default async function OpportunityDetail({ params }: Props) {
     supabase.from("research_findings")
       .select("id,kind,finding,source_url,verification,confidence,checked_at,origin,data")
       .eq("opportunity_id", id).order("checked_at").limit(80),
+    supabase.from("analyses").select("version,created_at,insights,dimensions,service_slug,extra_pages,template")
+      .eq("opportunity_id", id).order("version", { ascending: false }).limit(1).maybeSingle(),
   ]);
   if (!o) notFound();
+  const analysis = analysisRow as AnalysisRow | null;
+  const { data: service } = analysis?.service_slug
+    ? await supabase.from("services").select("name,summary").eq("slug", analysis.service_slug).maybeSingle()
+    : { data: null };
   const jobs = ((jobRows ?? []) as Job[]).map(slimJob).sort((a, b) => STEPS.indexOf(a.step) - STEPS.indexOf(b.step));
   const paused = o.status === "researching" && isPaused(jobs);
 
@@ -56,6 +64,11 @@ export default async function OpportunityDetail({ params }: Props) {
     why: typeof data?.why === "string" ? data.why : null,
   }));
   const assessment = raw.length ? assess({ identityConfirmed: o.identity_confirmed, findings: raw as FindingLite[] }) : null;
+  const KIND_LABEL: Record<string, string> = {
+    website: "website", google: "Google profile", instagram: "Instagram", facebook: "Facebook", store: "online store",
+    contact: "contact details", review: "reviews", catalog: "catalog", competitor: "competitors", context: "local context", photo: "your photo", note: "your source",
+  };
+  const sourceLabel = Object.fromEntries(raw.map((f) => [f.id, KIND_LABEL[f.kind] ?? f.kind]));
   const level = (o.confidence ?? assessment?.level ?? null) as "high" | "medium" | "low" | null;
   const short = (iso: string) => new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric", timeZone: "America/New_York" }).format(new Date(iso));
   const candidates: Candidate[] = o.status !== "needs_verification" ? [] : raw
@@ -116,6 +129,17 @@ export default async function OpportunityDetail({ params }: Props) {
       </dl>
 
       <ResearchProgress id={o.id} initial={jobs} hasPhoto={(photos?.length ?? 0) > 0} />
+
+      {analysis && <Analysis id={o.id} analysis={analysis} service={service} sourceLabel={sourceLabel} />}
+      {!analysis && jobs.length > 0 && !isActive(jobs) && !paused && level !== "low" && (
+        <section className="dx-group" aria-labelledby="h-noticed">
+          <h2 id="h-noticed" className="dx-h2">What we noticed</h2>
+          <div className="dx-card dx-stack">
+            <p className="dx-why">No analysis yet for this opportunity.</p>
+            <div><Regenerate id={o.id} label="Run the analysis" /></div>
+          </div>
+        </section>
+      )}
 
       <Sources id={o.id} findings={findings} />
 

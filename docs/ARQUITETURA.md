@@ -96,6 +96,8 @@ LOW: status "Needs verification", publicação bloqueada até a fundadora escolh
 - **B, The growth opportunity**: site oficial verificado.
 - **C, The seasonal opportunity**: a análise marca sazonalidade forte (produto de presente, data comemorativa próxima, evento local) e ela é um dos 3 insights.
 - A fundadora pode trocar na revisão.
+- Ordem quando mais de uma regra vale (OE-09): sem site verificado é sempre A; com site, C se a sazonalidade forte estiver entre os insights; senão B. A IA só diz se a sazonalidade é forte; a escolha é do servidor.
+- Em `analyses`, a coluna `dimensions` guarda `{ items: [6 dimensões com nota strong/fair/weak/unknown], strongSeasonality, serviceReason }`.
 
 ## Preço
 

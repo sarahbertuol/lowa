@@ -8,7 +8,9 @@ export const tokens = (s: string) =>
 
 /** Same business name: most distinctive words in common, or one name inside the other. */
 export function sameName(a: string, b: string) {
-  const ta = tokens(a), tb = tokens(b);
+  // Plurals count as the same word ("Chocolates" and "Chocolate Lounge").
+  const stem = (t: string) => (t.length > 3 && t.endsWith("s") && !t.endsWith("ss") ? t.slice(0, -1) : t);
+  const ta = tokens(a).map(stem), tb = tokens(b).map(stem);
   if (!ta.length || !tb.length) return false;
   const ja = ta.join(""), jb = tb.join("");
   if (ja === jb || (ja.length >= 4 && jb.includes(ja)) || (jb.length >= 4 && ja.includes(jb))) return true;

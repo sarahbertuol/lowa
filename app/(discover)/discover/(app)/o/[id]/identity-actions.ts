@@ -108,8 +108,22 @@ export async function addSource(oppId: string, raw: string): Promise<Result> {
   if (!db) return { ok: false, error: "Sign in again to add a source." };
   const saved = await saveSource(db, oppId, raw);
   if (!saved.ok) return saved;
-  const reran = saved.steps.length ? await rerun(db, oppId, saved.steps) : false;
+  // A new source can change the analysis (OE-09), so it runs again too.
+  const reran = await rerun(db, oppId, [...saved.steps, "analysis", "draft"]);
   if (!reran) await settle(oppId);
+  refresh(oppId);
+  return { ok: true };
+}
+
+/** "Regenerate" (OE-09): a new analysis version from the same findings. Earlier versions stay. */
+export async function regenerateAnalysis(oppId: string): Promise<Result> {
+  if (!uuid.safeParse(oppId).success) return { ok: false, error: "Invalid opportunity." };
+  const db = await client();
+  if (!db) return { ok: false, error: "Sign in again to regenerate." };
+  const { data: running } = await db.from("research_jobs").select("id").eq("opportunity_id", oppId).in("status", ["running", "queued"]).limit(1);
+  if (running?.length) return { ok: false, error: "The research is still running. Try again when it's done." };
+  const reran = await rerun(db, oppId, ["analysis", "draft"]);
+  if (!reran) return { ok: false, error: "Run the research first." };
   refresh(oppId);
   return { ok: true };
 }

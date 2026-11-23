@@ -69,12 +69,12 @@ export function assertFinished(stop: string | null) {
 }
 
 /**
- * One call with a validated JSON answer (structured outputs). Low effort: these are short
- * extraction tasks. Throws when the answer does not match the schema.
+ * One call with a validated JSON answer (structured outputs). Low effort by default: most are
+ * short extraction tasks; the analysis asks for more. Throws when the answer does not match the schema.
  */
 export async function structured<S extends z.ZodType>(
   schema: S,
-  input: { system: string; content: Anthropic.Beta.BetaContentBlockParam[] | string; maxTokens?: number },
+  input: { system: string; content: Anthropic.Beta.BetaContentBlockParam[] | string; maxTokens?: number; effort?: "low" | "medium" | "high" },
 ): Promise<{ data: z.infer<S>; usage: Partial<Usage> }> {
   const { client, model } = claude();
   const res = await client.beta.messages.parse({
@@ -82,7 +82,7 @@ export async function structured<S extends z.ZodType>(
     max_tokens: input.maxTokens ?? 8000,
     system: input.system,
     messages: [{ role: "user", content: input.content }],
-    output_config: { effort: "low", format: betaZodOutputFormat(schema) },
+    output_config: { effort: input.effort ?? "low", format: betaZodOutputFormat(schema) },
     ...fallbackParams(model),
   });
   assertFinished(res.stop_reason);
