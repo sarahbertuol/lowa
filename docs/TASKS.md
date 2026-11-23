@@ -50,7 +50,8 @@ Testada no Chrome em 22/11/2026: validação, foto reduzida a 1600px, aviso de d
 - Aviso de possível duplicado (nome parecido na mesma cidade), sem bloquear.
 - Pronto quando: captura com só nome e cidade em menos de 30 s em 390px; captura offline aparece no painel como "Waiting for connection" e sincroniza sozinha.
 
-### OE-05 · Painel e histórico
+### OE-05 · Painel e histórico ✅
+Testado no Chrome em 22/11/2026: grupos, aba All com filtro, status em 1 toque com data de contato e histórico, notas, exclusão com confirmação (apaga também as fotos). Tempo com servidor aquecido: resposta em 0,6 s e tela em 1 s com 3 itens; o teste com 100 itens fica para a OE-17.
 - `/discover`: botão grande "New opportunity", grupos Processing, Ready to share, Recent; aba "All" com filtro por status.
 - Detalhe com status (lista do brief), datas (captura, contato), notas e histórico de status.
 - Pronto quando: troca de status em 1 toque e registra data; lista carrega em menos de 1 s com 100 itens.

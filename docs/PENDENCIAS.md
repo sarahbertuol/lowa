@@ -43,4 +43,4 @@ Itens que dependem da Sarah ou do Marco. No código aparecem como `[colchetes]`.
 
 - Preview fixo para testes e para o app instalado: https://lowa-discover-sarah-b-s-projects.vercel.app/discover (aponta para o último deploy de preview do Engine)
 - [ ] "Use my location": a chave do Google precisa ter também a Geocoding API ligada (além da Places API)
-- [ ] Apagar os registros de teste "LoWa test capture" e "Lowa test captures" (Tampa) quando o painel tiver exclusão (OE-05), ou no Supabase
+- [x] Registros de teste da OE-04 apagados pelo próprio app em 22/11/2026

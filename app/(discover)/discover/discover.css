@@ -16,7 +16,7 @@ body:has(.dx){background:var(--cream)}
 .dx main>section:not(.dx-card){padding-inline:0}
 .dx-app{max-width:720px;margin:0 auto;padding:0 var(--pad) 120px}
 .dx-top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:18px 0 14px}
-.dx-brand{font-family:'Instrument Serif',Georgia,serif;font-size:24px;line-height:1;text-decoration:none;color:var(--ink)}
+.dx-brand{display:inline-flex;align-items:center;min-height:44px;font-family:'Instrument Serif',Georgia,serif;font-size:24px;line-height:1;text-decoration:none;color:var(--ink)}
 .dx-brand small{font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-left:6px;vertical-align:3px}
 
 /* Buttons: blue pill, butter sweep on hover (same as the site) */
