@@ -1,0 +1,391 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>LoWa Briefing</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@400;500;600&family=Instrument+Serif:ital@0;1&family=Space+Mono:wght@400;700&display=swap">
+<style>
+/* Prototype (SITE-01): the "Get started" section of /business with a 3-minute briefing in a pop-up.
+   One question per screen, mostly taps. Site tokens from app/globals.css, light only. */
+:root{
+  --sunset:#EDB08A; --cream:#F7F0E6; --paper:#FFFFFF; --butter:#F4DFA4; --brown:#4A2415;
+  --sky:#B5D6DF; --ink:#3A1E12; --muted:#7A5A4C; --blue:#2F6F86; --line:#E7D6C6;
+  --display:'Instrument Serif',Georgia,serif;
+  --body:'Familjen Grotesk',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --mono:'Space Mono',ui-monospace,Menlo,Consolas,monospace;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+body{background:var(--cream);color:var(--ink);font:400 17px/1.55 var(--body);margin:0}
+p{margin:0}
+.proto{background:#111;color:#fff;font:400 11px/1.3 var(--mono);letter-spacing:.1em;text-align:center;padding:8px 16px}
+.in{max-width:1120px;margin:0 auto;padding-inline:max(16px,env(safe-area-inset-left,0px))}
+.mono{font:400 12px/1.2 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+h2{font:400 clamp(36px,5.5vw,60px)/1 var(--display);margin:12px 0 0;text-wrap:balance}
+h2 em,h3 em{font-style:italic}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:52px;padding:0 26px;border-radius:999px;border:0;background:var(--blue);color:#fff;font:600 17px/1 var(--body);text-decoration:none;cursor:pointer}
+.btn-ghost{display:inline-flex;align-items:center;justify-content:center;min-height:52px;padding:0 22px;border-radius:999px;border:1.5px solid var(--blue);background:none;color:var(--blue);font:600 16px/1 var(--body);cursor:pointer}
+:focus-visible{outline:3px solid var(--blue);outline-offset:3px}
+
+/* The section on the page */
+.start{padding-block:clamp(56px,8vw,96px);display:grid;gap:36px}
+.start .lead{font-size:19px;max-width:40ch;margin-top:16px}
+.facts{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px;padding:0;list-style:none}
+.facts li{background:var(--paper);border:1px solid var(--line);border-radius:999px;padding:8px 14px;font-size:15px}
+.start .btn{margin-top:26px}
+.talk{background:var(--paper);border-radius:24px;padding:24px;display:grid;gap:8px;align-content:start}
+.talk a{color:var(--blue);display:inline-flex;align-items:center;min-height:44px}
+@media (min-width:900px){.start{grid-template-columns:1.3fr .7fr;align-items:end}}
+
+/* The pop-up */
+.bf{border:0;padding:0;background:var(--cream);color:var(--ink);width:100%;max-width:100%;height:100%;max-height:100%;margin:0}
+.bf::backdrop{background:rgba(58,30,18,.55)}
+@media (min-width:700px){.bf{width:min(680px,calc(100vw - 48px));height:min(760px,calc(100vh - 48px));margin:auto;border-radius:30px;box-shadow:0 30px 60px -20px rgba(0,0,0,.5)}}
+.bf[open]{display:grid;grid-template-rows:auto 1fr auto}
+.bf-head{padding:16px 16px 0;display:grid;gap:12px}
+.bf-top{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.bf-x{width:44px;height:44px;border-radius:50%;border:0;background:rgba(74,36,21,.08);color:var(--brown);font-size:24px;line-height:1;cursor:pointer}
+.bar{height:6px;border-radius:999px;background:var(--line);overflow:clip}
+.bar i{display:block;height:100%;width:100%;background:var(--blue);transform-origin:left;transform:scaleX(var(--p,0));transition:transform .4s cubic-bezier(.2,.8,.2,1)}
+.bf-body{overflow-y:auto;padding:22px 16px 8px}
+.step{display:none}
+.step.on{display:block;animation:in .35s ease both}
+@keyframes in{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.step h3{font:400 clamp(32px,6vw,44px)/1.02 var(--display);margin:0;text-wrap:balance}
+.step .hint{color:var(--muted);margin-top:8px;font-size:16px}
+.bf-foot{display:flex;gap:10px;justify-content:space-between;align-items:center;padding:12px 16px 16px;border-top:1px solid var(--line);background:var(--cream)}
+.bf-foot .btn{flex:1;max-width:280px;margin-left:auto}
+@media (min-width:700px){.bf-head,.bf-body,.bf-foot{padding-inline:32px}.bf-head{padding-top:22px}}
+@media (prefers-reduced-motion:reduce){.step.on{animation:none}.bar i{transition:none}}
+
+/* Fields */
+.fields{display:grid;gap:14px;margin-top:22px}
+.f{display:grid;gap:6px}
+.f label{font-weight:600;font-size:15.5px}
+.f input,.f textarea,.pre input{font:400 17px/1.4 var(--body);color:var(--ink);background:var(--paper);border:1.5px solid var(--line);border-radius:14px;padding:12px 14px;min-height:50px;width:100%}
+.f textarea{min-height:96px;resize:vertical}
+.f .err{color:#A3341A;font-size:14.5px;display:none}
+.f.bad input{border-color:#A3341A}.f.bad .err{display:block}
+.pre{display:flex;align-items:center;gap:10px}
+.pre span{flex:0 0 112px;font-weight:600;font-size:15px}
+@media (min-width:700px){.two{display:grid;grid-template-columns:1fr 1fr;gap:14px}}
+
+/* Tap choices: real radios and checkboxes inside labels */
+.q{margin-top:22px}
+.q>p{font-weight:600;font-size:15.5px;margin-bottom:10px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{position:relative}
+.chip input,.card input{position:absolute;opacity:0;inset:0;margin:0;cursor:pointer}
+.chip span{display:inline-flex;align-items:center;gap:8px;min-height:46px;padding:0 16px;border-radius:999px;background:var(--paper);border:1.5px solid var(--line);font-weight:500;font-size:16px}
+.chip input:checked+span{background:var(--brown);border-color:var(--brown);color:var(--butter)}
+.chip input:focus-visible+span,.card input:focus-visible+.inner{outline:3px solid var(--blue);outline-offset:3px}
+.cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+@media (min-width:700px){.cards.three{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.card{position:relative}
+.card .inner{display:grid;gap:6px;height:100%;padding:14px;border-radius:18px;background:var(--paper);border:1.5px solid var(--line)}
+.card b{font-weight:600;font-size:16px;line-height:1.25}
+.card small{color:var(--muted);font-size:14px;line-height:1.35}
+.card input:checked+.inner{border-color:var(--brown);box-shadow:inset 0 0 0 2px var(--brown)}
+.card input:checked+.inner::after{content:"✓";position:absolute;top:10px;right:12px;width:26px;height:26px;border-radius:50%;background:var(--brown);color:var(--butter);display:grid;place-items:center;font-size:14px}
+.ico{font-size:24px;line-height:1}
+
+/* Style cards: a tiny drawn website for each look */
+.look .mock{height:96px;border-radius:12px;padding:10px;display:grid;align-content:space-between;overflow:clip}
+.mock .t{height:12px;border-radius:3px;width:70%}
+.mock .l{height:5px;border-radius:3px;width:90%;opacity:.5}
+.mock .r{display:flex;gap:5px}.mock .r i{flex:1;height:22px;border-radius:5px}
+.m1{background:#FAFAF7;border:1px solid #E6E6E0}.m1 .t{background:#222;width:55%}.m1 .l{background:#999}.m1 .r i{background:#EDEDE8}
+.m2{background:#F3E3D3}.m2 .t{background:#8A4B2D;border-radius:10px}.m2 .l{background:#8A4B2D}.m2 .r i{background:#E2B996;border-radius:12px}
+.m3{background:#FF5A36}.m3 .t{background:#1A1A1A;height:18px;width:85%}.m3 .l{background:#fff}.m3 .r i{background:#FFD23F}
+.m4{background:#151515}.m4 .t{background:#D9BE85;height:9px;width:45%}.m4 .l{background:#888}.m4 .r i{background:#2A2A2A;border:1px solid #D9BE85}
+.m5{background:#FFE9F3}.m5 .t{background:#7B4BFF;border-radius:999px}.m5 .l{background:#FF6FB1}.m5 .r i{background:#7FE0C3;border-radius:999px}
+.m6{background:#E8EEDF}.m6 .t{background:#3F5A36}.m6 .l{background:#3F5A36}.m6 .r i{background:#B7C9A4;border-radius:999px 999px 6px 6px}
+
+/* Colour palettes */
+.pal{display:flex;height:34px;border-radius:10px;overflow:clip}
+.pal i{flex:1}
+
+/* Done */
+.done{text-align:center;padding-top:8vh}
+.done .ok{width:72px;height:72px;border-radius:50%;background:var(--brown);color:var(--butter);display:grid;place-items:center;font-size:34px;margin:0 auto 18px}
+.done p{max-width:36ch;margin:12px auto 0;color:var(--muted)}
+.note{margin-top:14px;font-size:14.5px;color:var(--muted)}
+.included{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.included span{display:inline-flex;align-items:center;gap:6px;min-height:40px;padding:0 14px;border-radius:999px;background:var(--butter);color:var(--brown);font-weight:600;font-size:15px}
+</style>
+</head>
+<body>
+<div class="proto">PROTÓTIPO · seção "Get started" da /business com o briefing em pop-up</div>
+
+<main class="in">
+  <section class="start" id="start">
+    <div>
+      <div class="mono">Get started</div>
+      <h2>Tell us about <em>your business.</em></h2>
+      <p class="lead">A few quick taps so we can design something great for you, fast. No long texts, promise.</p>
+      <ul class="facts">
+        <li>About 3 minutes</li>
+        <li>Mostly taps</li>
+        <li>No payment now</li>
+      </ul>
+      <button class="btn" type="button" id="open">Fill in the 3-minute briefing <span aria-hidden="true">→</span></button>
+    </div>
+    <aside class="talk">
+      <p class="mono">Rather talk?</p>
+      <p><b>WhatsApp</b> <a href="#">+55 54 98149-0779</a></p>
+      <p><b>Email</b> <a href="#">hello@lowa-studio.com</a></p>
+    </aside>
+  </section>
+</main>
+
+<dialog class="bf" id="bf" aria-labelledby="bf-title">
+  <div class="bf-head">
+    <div class="bf-top">
+      <span class="mono" id="bf-count">Step 1 of 9</span>
+      <button class="bf-x" type="button" id="x" aria-label="Close the briefing">×</button>
+    </div>
+    <div class="bar" aria-hidden="true"><i id="bar"></i></div>
+  </div>
+
+  <form class="bf-body" id="form" novalidate>
+    <h2 class="sr-only" id="bf-title" style="position:absolute;left:-9999px">Website briefing</h2>
+
+    <!-- 1 -->
+    <section class="step on" data-step>
+      <h3>First, <em>who are we talking to?</em></h3>
+      <div class="fields">
+        <div class="two">
+          <div class="f" id="f-name"><label for="name">Your name</label><input id="name" autocomplete="name" required><span class="err">Please add your name.</span></div>
+          <div class="f" id="f-biz"><label for="biz">Business name</label><input id="biz" autocomplete="organization" required><span class="err">Please add the business name.</span></div>
+        </div>
+        <div class="two">
+          <div class="f" id="f-email"><label for="email">Email</label><input id="email" type="email" autocomplete="email" required><span class="err">Please add a valid email.</span></div>
+          <div class="f"><label for="phone">WhatsApp (optional)</label><input id="phone" type="tel" autocomplete="tel"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2 -->
+    <section class="step" data-step>
+      <h3>What kind of <em>business is it?</em></h3>
+      <div class="q chips" role="radiogroup" aria-label="Kind of business">
+        <label class="chip"><input type="radio" name="kind" value="Food and drinks"><span>🍰 Food and drinks</span></label>
+        <label class="chip"><input type="radio" name="kind" value="Beauty and wellness"><span>💅 Beauty and wellness</span></label>
+        <label class="chip"><input type="radio" name="kind" value="Health"><span>🩺 Health</span></label>
+        <label class="chip"><input type="radio" name="kind" value="Shop or handmade"><span>🛍️ Shop or handmade</span></label>
+        <label class="chip"><input type="radio" name="kind" value="Home services"><span>🔧 Home services</span></label>
+        <label class="chip"><input type="radio" name="kind" value="Professional services"><span>💼 Professional services</span></label>
+        <label class="chip"><input type="radio" name="kind" value="Events and creative"><span>🎉 Events and creative</span></label>
+        <label class="chip"><input type="radio" name="kind" value="Other"><span>✨ Other</span></label>
+      </div>
+      <div class="fields"><div class="f"><label for="oneline">In one line, what do you do? (optional)</label><input id="oneline" placeholder="Custom cakes for birthdays in St. Pete"></div></div>
+    </section>
+
+    <!-- 3 -->
+    <section class="step" data-step>
+      <h3>What should the website <em>do for you?</em></h3>
+      <p class="hint">Pick all that apply.</p>
+      <div class="q cards three">
+        <label class="card"><input type="checkbox" name="goal" value="Get calls and messages"><span class="inner"><span class="ico">📞</span><b>Get calls and messages</b></span></label>
+        <label class="card"><input type="checkbox" name="goal" value="Take bookings"><span class="inner"><span class="ico">📅</span><b>Take bookings</b></span></label>
+        <label class="card"><input type="checkbox" name="goal" value="Show services and prices"><span class="inner"><span class="ico">📋</span><b>Show services, menu or prices</b></span></label>
+        <label class="card"><input type="checkbox" name="goal" value="Look more professional"><span class="inner"><span class="ico">⭐</span><b>Look more professional</b></span></label>
+        <label class="card"><input type="checkbox" name="goal" value="Be found on Google"><span class="inner"><span class="ico">🔎</span><b>Be found on Google</b></span></label>
+        <label class="card"><input type="checkbox" name="goal" value="Sell online"><span class="inner"><span class="ico">🛒</span><b>Sell online</b><small>Quoted separately</small></span></label>
+      </div>
+    </section>
+
+    <!-- 4 -->
+    <section class="step" data-step>
+      <h3>Which look <em>feels like you?</em></h3>
+      <p class="hint">Pick up to two.</p>
+      <div class="q cards three" id="looks">
+        <label class="card look"><input type="checkbox" name="look" value="Clean and minimal"><span class="inner"><span class="mock m1"><i class="t"></i><i class="l"></i><span class="r"><i></i><i></i><i></i></span></span><b>Clean and minimal</b></span></label>
+        <label class="card look"><input type="checkbox" name="look" value="Warm and cozy"><span class="inner"><span class="mock m2"><i class="t"></i><i class="l"></i><span class="r"><i></i><i></i><i></i></span></span><b>Warm and cozy</b></span></label>
+        <label class="card look"><input type="checkbox" name="look" value="Bold and colorful"><span class="inner"><span class="mock m3"><i class="t"></i><i class="l"></i><span class="r"><i></i><i></i><i></i></span></span><b>Bold and colorful</b></span></label>
+        <label class="card look"><input type="checkbox" name="look" value="Elegant and premium"><span class="inner"><span class="mock m4"><i class="t"></i><i class="l"></i><span class="r"><i></i><i></i><i></i></span></span><b>Elegant and premium</b></span></label>
+        <label class="card look"><input type="checkbox" name="look" value="Playful and fun"><span class="inner"><span class="mock m5"><i class="t"></i><i class="l"></i><span class="r"><i></i><i></i><i></i></span></span><b>Playful and fun</b></span></label>
+        <label class="card look"><input type="checkbox" name="look" value="Natural and organic"><span class="inner"><span class="mock m6"><i class="t"></i><i class="l"></i><span class="r"><i></i><i></i><i></i></span></span><b>Natural and organic</b></span></label>
+      </div>
+    </section>
+
+    <!-- 5 -->
+    <section class="step" data-step>
+      <h3>Colors and <em>your logo</em></h3>
+      <div class="q">
+        <p>Which colors do you like?</p>
+        <div class="cards three">
+          <label class="card"><input type="radio" name="colors" value="My logo colors"><span class="inner"><span class="pal" style="background:repeating-linear-gradient(45deg,#eee 0 8px,#fff 8px 16px)"></span><b>Use my logo colors</b></span></label>
+          <label class="card"><input type="radio" name="colors" value="Warm earth"><span class="inner"><span class="pal"><i style="background:#8A4B2D"></i><i style="background:#D08B5B"></i><i style="background:#F3E3D3"></i></span><b>Warm earth</b></span></label>
+          <label class="card"><input type="radio" name="colors" value="Ocean blues"><span class="inner"><span class="pal"><i style="background:#1F4F61"></i><i style="background:#4F9DB5"></i><i style="background:#DCEFF4"></i></span><b>Ocean blues</b></span></label>
+          <label class="card"><input type="radio" name="colors" value="Fresh greens"><span class="inner"><span class="pal"><i style="background:#3F5A36"></i><i style="background:#8DB36B"></i><i style="background:#EEF4E4"></i></span><b>Fresh greens</b></span></label>
+          <label class="card"><input type="radio" name="colors" value="Soft pastels"><span class="inner"><span class="pal"><i style="background:#F7C6D9"></i><i style="background:#C9D8F5"></i><i style="background:#FFF1C9"></i></span><b>Soft pastels</b></span></label>
+          <label class="card"><input type="radio" name="colors" value="Black and white"><span class="inner"><span class="pal"><i style="background:#151515"></i><i style="background:#8A8A8A"></i><i style="background:#FAFAFA"></i></span><b>Black and white</b></span></label>
+        </div>
+      </div>
+      <div class="q chips" role="radiogroup" aria-label="Do you have a logo?">
+        <p style="width:100%">Do you have a logo?</p>
+        <label class="chip"><input type="radio" name="logo" value="Yes"><span>Yes</span></label>
+        <label class="chip"><input type="radio" name="logo" value="Sort of"><span>Sort of, it needs love</span></label>
+        <label class="chip"><input type="radio" name="logo" value="No"><span>Not yet</span></label>
+      </div>
+    </section>
+
+    <!-- 6 -->
+    <section class="step" data-step>
+      <h3>Where can we <em>see your business?</em></h3>
+      <p class="hint">We take your texts and photos from here, so you write less. All optional.</p>
+      <div class="fields">
+        <div class="pre"><span>Instagram</span><input name="instagram" placeholder="@yourbusiness" aria-label="Instagram"></div>
+        <div class="pre"><span>Facebook</span><input name="facebook" placeholder="Page name or link" aria-label="Facebook"></div>
+        <div class="pre"><span>Google Maps</span><input name="google" placeholder="Business name or link" aria-label="Google Maps"></div>
+        <div class="pre"><span>Current site</span><input name="site" type="url" placeholder="yourbusiness.com" aria-label="Current website"></div>
+        <div class="pre"><span>Other</span><input name="other" placeholder="TikTok, Etsy, Yelp…" aria-label="Other link"></div>
+      </div>
+      <div class="q chips" role="radiogroup" aria-label="Photos">
+        <p style="width:100%">Do you have photos we can use?</p>
+        <label class="chip"><input type="radio" name="photos" value="Good photos"><span>📸 Yes, good ones</span></label>
+        <label class="chip"><input type="radio" name="photos" value="Phone photos"><span>📱 Phone photos</span></label>
+        <label class="chip"><input type="radio" name="photos" value="None"><span>Not really</span></label>
+      </div>
+    </section>
+
+    <!-- 7 -->
+    <section class="step" data-step>
+      <h3>Any websites <em>you love?</em></h3>
+      <p class="hint">Any business, any country. Optional, but it helps a lot.</p>
+      <div class="fields">
+        <div class="f"><label for="ref1">Link 1</label><input id="ref1" type="url" placeholder="https://"></div>
+        <div class="f"><label for="ref2">Link 2</label><input id="ref2" type="url" placeholder="https://"></div>
+        <div class="f"><label for="ref3">Link 3</label><input id="ref3" type="url" placeholder="https://"></div>
+      </div>
+      <div class="q chips">
+        <p style="width:100%">What do you like in them?</p>
+        <label class="chip"><input type="checkbox" name="likes" value="Colors"><span>Colors</span></label>
+        <label class="chip"><input type="checkbox" name="likes" value="Photos"><span>Photos</span></label>
+        <label class="chip"><input type="checkbox" name="likes" value="Layout"><span>Layout</span></label>
+        <label class="chip"><input type="checkbox" name="likes" value="Fonts"><span>Fonts</span></label>
+        <label class="chip"><input type="checkbox" name="likes" value="Simplicity"><span>How simple it is</span></label>
+      </div>
+    </section>
+
+    <!-- 8 -->
+    <section class="step" data-step>
+      <h3>What goes <em>on the site?</em></h3>
+      <div class="q">
+        <p>Already in your price</p>
+        <div class="included"><span>✓ Home</span><span>✓ About</span><span>✓ Contact</span><span>✓ Editing panel</span></div>
+      </div>
+      <div class="q chips">
+        <p style="width:100%">Anything you'd like to show? Pick all that apply.</p>
+        <label class="chip"><input type="checkbox" name="extras" value="Services or menu"><span>Services or menu</span></label>
+        <label class="chip"><input type="checkbox" name="extras" value="Prices"><span>Prices</span></label>
+        <label class="chip"><input type="checkbox" name="extras" value="Gallery"><span>Photo gallery</span></label>
+        <label class="chip"><input type="checkbox" name="extras" value="Reviews"><span>Reviews</span></label>
+        <label class="chip"><input type="checkbox" name="extras" value="FAQ"><span>FAQ</span></label>
+        <label class="chip"><input type="checkbox" name="extras" value="Booking"><span>Booking</span></label>
+        <label class="chip"><input type="checkbox" name="extras" value="Map and hours"><span>Map and hours</span></label>
+        <label class="chip"><input type="checkbox" name="extras" value="WhatsApp button"><span>WhatsApp button</span></label>
+      </div>
+      <p class="note">We tell you what fits in your price before we start. Extra pages are $250 each, only if you want them.</p>
+    </section>
+
+    <!-- 9 -->
+    <section class="step" data-step>
+      <h3>Last bits, <em>almost there!</em></h3>
+      <div class="q chips" role="radiogroup" aria-label="When">
+        <p style="width:100%">When would you like it live?</p>
+        <label class="chip"><input type="radio" name="when" value="As soon as possible"><span>As soon as possible</span></label>
+        <label class="chip"><input type="radio" name="when" value="In 2 weeks"><span>In 2 weeks</span></label>
+        <label class="chip"><input type="radio" name="when" value="This month"><span>This month</span></label>
+        <label class="chip"><input type="radio" name="when" value="No rush"><span>No rush</span></label>
+      </div>
+      <div class="q chips" role="radiogroup" aria-label="Domain">
+        <p style="width:100%">Do you have a domain (yourbusiness.com)?</p>
+        <label class="chip"><input type="radio" name="domain" value="Yes"><span>Yes, I have one</span></label>
+        <label class="chip"><input type="radio" name="domain" value="Need one"><span>No, help me buy one</span></label>
+        <label class="chip"><input type="radio" name="domain" value="Not sure"><span>Not sure</span></label>
+      </div>
+      <div class="fields"><div class="f"><label for="more">Anything else? (optional)</label><textarea id="more" placeholder="Ideas, must-haves, things you don't like…"></textarea></div></div>
+    </section>
+
+    <!-- Done -->
+    <section class="step done" data-done>
+      <div class="ok" aria-hidden="true">✓</div>
+      <h3>Got it, <em id="who">thank you!</em></h3>
+      <p>Sarah will look at everything and get back to you with an idea for your site and the fixed price.</p>
+      <button class="btn" type="button" id="close2" style="margin-top:26px">Back to the page</button>
+    </section>
+  </form>
+
+  <div class="bf-foot" id="foot">
+    <button class="btn-ghost" type="button" id="back">Back</button>
+    <button class="btn" type="button" id="next">Next <span aria-hidden="true">→</span></button>
+  </div>
+</dialog>
+
+<script>
+(() => {
+  const d = document.getElementById("bf");
+  const steps = [...document.querySelectorAll("[data-step]")];
+  const done = document.querySelector("[data-done]");
+  const next = document.getElementById("next"), back = document.getElementById("back");
+  const count = document.getElementById("bf-count"), bar = document.getElementById("bar");
+  let i = 0;
+
+  function show(n) {
+    i = n;
+    steps.forEach((s, k) => s.classList.toggle("on", k === n));
+    done.classList.remove("on");
+    document.getElementById("foot").style.display = "";
+    back.style.visibility = n === 0 ? "hidden" : "visible";
+    next.innerHTML = n === steps.length - 1 ? "Send briefing" : 'Next <span aria-hidden="true">→</span>';
+    count.textContent = `Step ${n + 1} of ${steps.length}`;
+    bar.style.setProperty("--p", (n + 1) / steps.length);
+    document.querySelector(".bf-body").scrollTop = 0;
+    const first = steps[n].querySelector("h3");
+    first.setAttribute("tabindex", "-1"); first.focus({ preventScroll: true });
+  }
+
+  function valid() {
+    if (i !== 0) return true;
+    let ok = true;
+    [["f-name", "name"], ["f-biz", "biz"], ["f-email", "email"]].forEach(([w, id]) => {
+      const el = document.getElementById(id);
+      const bad = !el.value.trim() || (el.type === "email" && !/^\S+@\S+\.\S+$/.test(el.value));
+      document.getElementById(w).classList.toggle("bad", bad);
+      if (bad && ok) { el.focus(); ok = false; }
+    });
+    return ok;
+  }
+
+  next.onclick = () => {
+    if (!valid()) return;
+    if (i < steps.length - 1) return show(i + 1);
+    steps.forEach((s) => s.classList.remove("on"));
+    done.classList.add("on");
+    document.getElementById("who").textContent = (document.getElementById("name").value.trim().split(" ")[0] || "thank you") + "!";
+    document.getElementById("foot").style.display = "none";
+    count.textContent = "Sent"; bar.style.setProperty("--p", 1);
+  };
+  back.onclick = () => i > 0 && show(i - 1);
+
+  // Up to two looks
+  document.getElementById("looks").addEventListener("change", (e) => {
+    const on = [...document.querySelectorAll('[name="look"]:checked')];
+    if (on.length > 2) e.target.checked = false;
+  });
+
+  document.getElementById("open").onclick = () => { d.showModal(); show(0); };
+  document.getElementById("x").onclick = () => d.close();
+  document.getElementById("close2").onclick = () => d.close();
+  d.addEventListener("click", (e) => { if (e.target === d) d.close(); });
+  document.getElementById("form").addEventListener("submit", (e) => e.preventDefault());
+})();
+</script>
+</body>
+</html>
