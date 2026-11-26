@@ -7,7 +7,7 @@ const WHATSAPP = "5554981490779";
 
 export type Pairs = [label: string, value: string][];
 
-export async function sendForm(kind: "agency" | "direct", form: HTMLFormElement, pairs: Pairs) {
+export async function sendForm(kind: "agency" | "direct" | "briefing", form: HTMLFormElement, pairs: Pairs) {
   const fields = pairs.map(([l, v]) => [l, v.trim()] as [string, string]).filter(([, v]) => v);
   const honeypot = (form.elements.namedItem("contato_alt") as HTMLInputElement | null)?.value ?? "";
 
@@ -27,7 +27,12 @@ export async function sendForm(kind: "agency" | "direct", form: HTMLFormElement,
     window.clearTimeout(timer);
   }
 
-  const intro = kind === "agency" ? "Hi LoWa Studio! Agency briefing:" : "Hi LoWa Studio! I would like a website:";
+  const intro =
+    kind === "agency"
+      ? "Hi LoWa Studio! Agency briefing:"
+      : kind === "briefing"
+        ? "Hi LoWa Studio! My website briefing:"
+        : "Hi LoWa Studio! I would like a website:";
   const text = [intro, "", ...fields.map(([l, v]) => `${l}: ${v}`)].join("\n");
   const url = `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(text)}`;
   // After an await, popup blockers may refuse a new tab: then go there in this tab.

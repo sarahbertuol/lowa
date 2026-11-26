@@ -140,3 +140,105 @@
 .bz-hero + section{box-shadow:0 -24px 48px -24px rgba(58,30,18,.35)}
 .bz-foot,.bz-strip{position:relative;z-index:1;background-color:var(--cream)}
 .bz-strip{background-color:var(--blue)}
+
+/* Get started: a call to open the briefing, and a card to talk instead */
+.bz-start-lead{font-size:19px;max-width:40ch;margin:16px 0 0}
+.bz-facts{display:flex;flex-wrap:wrap;gap:8px;margin:20px 0 26px;padding:0;list-style:none}
+.bz-facts li{background:var(--paper);border:1px solid var(--line);border-radius:999px;padding:8px 14px;font-size:15px}
+.bz-start .bz-talk{background:var(--paper);border-radius:24px;padding:24px;margin:0;align-content:start}
+@media (min-width:900px){.bz-start{align-items:end}}
+
+/* Briefing pop-up (prototype: docs/referencia/Briefing.html). Full screen on phones, a sheet from 700px. */
+.bzb{border:0;padding:0;background:var(--cream);color:var(--ink);width:100%;max-width:100%;height:100%;max-height:100%;margin:0}
+.bzb::backdrop{background:rgba(58,30,18,.55)}
+.bzb[open]{display:grid;grid-template-rows:auto 1fr auto}
+@media (min-width:700px){.bzb{width:min(680px,calc(100vw - 48px));height:min(780px,calc(100vh - 48px));margin:auto;border-radius:30px;box-shadow:0 30px 60px -20px rgba(0,0,0,.5)}}
+.bzb-head{padding:16px 16px 0;display:grid;gap:12px}
+.bzb-top{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.bzb-x{width:44px;height:44px;flex:none;border-radius:50%;border:0;background:rgba(74,36,21,.08);color:var(--brown);font-size:24px;line-height:1;cursor:pointer;font-family:inherit}
+.bzb-bar{height:6px;border-radius:999px;background:var(--line);overflow:clip}
+.bzb-bar i{display:block;height:100%;background:var(--blue);transform-origin:left;transition:transform .4s cubic-bezier(.2,.8,.2,1)}
+.bzb-body{overflow-y:auto;overscroll-behavior:contain;padding:22px 16px 12px}
+.bzb-step:not([hidden]){display:block;animation:bzb-in .35s ease both}
+@keyframes bzb-in{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.bzb h3{font-family:'Instrument Serif',serif;font-weight:400;font-size:clamp(32px,6vw,44px);line-height:1.02;margin:0;text-wrap:balance}
+.bzb h3 em{font-style:italic}
+.bzb h3:focus{outline:none}
+.bzb-hint{color:var(--muted);margin:8px 0 0;font-size:16px}
+.bzb-foot{display:flex;gap:10px;justify-content:space-between;align-items:center;padding:12px 16px 16px;border-top:1px solid var(--line)}
+.bzb-foot .btn{flex:1;max-width:280px;justify-content:center}
+@media (min-width:700px){.bzb-head,.bzb-body,.bzb-foot{padding-inline:32px}.bzb-head{padding-top:22px}}
+
+.bzb-fields{display:grid;gap:14px;margin-top:22px}
+.bzb-f{display:grid;gap:6px}
+.bzb-q legend,.bzb-label{font-weight:600;font-size:15.5px;padding:0;margin:0 0 10px}
+.bzb-f label{font-weight:600;font-size:15.5px}
+.bzb-f input,.bzb-f textarea,.bzb-pre input{font:400 17px/1.4 'Familjen Grotesk',sans-serif;color:var(--ink);background:var(--paper);border:1.5px solid var(--line);border-radius:14px;padding:12px 14px;min-height:50px;width:100%;min-width:0}
+.bzb-f textarea{min-height:96px;resize:vertical}
+.bzb-f.bad input{border-color:#A3341A}
+.bzb-f .err{color:#A3341A;font-size:14.5px}
+.bzb-pre{display:flex;align-items:center;gap:10px}
+.bzb-pre label{flex:0 0 104px;font-weight:600;font-size:15px}
+.bzb-two{display:grid;gap:14px}
+@media (min-width:700px){.bzb-two{grid-template-columns:1fr 1fr}}
+.bzb-q{border:0;padding:0;margin:22px 0 0;min-width:0}
+.bzb-chips{display:flex;flex-wrap:wrap;gap:8px}
+.bzb-chip,.bzb-card{position:relative}
+.bzb-chip input,.bzb-card input{position:absolute;inset:0;opacity:0;margin:0;cursor:pointer;width:100%;height:100%}
+.bzb-chip>span{display:inline-flex;align-items:center;gap:8px;min-height:46px;padding:0 16px;border-radius:999px;background:var(--paper);border:1.5px solid var(--line);font-weight:500;font-size:16px}
+.bzb-chip input:checked+span{background:var(--brown);border-color:var(--brown);color:var(--butter)}
+.bzb-chip input:focus-visible+span,.bzb-card input:focus-visible+.bzb-inner{outline:3px solid var(--blue);outline-offset:3px}
+.bzb-cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+@media (min-width:700px){.bzb-cards.three{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.bzb-inner{display:grid;gap:6px;align-content:start;height:100%;padding:14px;border-radius:18px;background:var(--paper);border:1.5px solid var(--line)}
+.bzb-inner b{font-weight:600;font-size:16px;line-height:1.25}
+.bzb-inner small{color:var(--muted);font-size:14px;line-height:1.35}
+.bzb-inner .ico{font-size:24px;line-height:1}
+.bzb-card input:checked+.bzb-inner{border-color:var(--brown);box-shadow:inset 0 0 0 2px var(--brown)}
+.bzb-card input:checked+.bzb-inner::after{content:"\2713";position:absolute;top:10px;right:12px;width:26px;height:26px;border-radius:50%;background:var(--brown);color:var(--butter);display:grid;place-items:center;font-size:14px}
+
+/* Looks: a tiny drawn website each */
+.bzb-mock{height:96px;border-radius:12px;padding:10px;display:grid;align-content:space-between;overflow:clip}
+.bzb-mock i{display:block}
+.bzb-mock .t{height:12px;border-radius:3px;width:70%}
+.bzb-mock .l{height:5px;border-radius:3px;width:90%;opacity:.5}
+.bzb-mock .r{display:flex;gap:5px}
+.bzb-mock .r i{flex:1;height:22px;border-radius:5px}
+.bzb-mock.m1{background:#FAFAF7;border:1px solid #E6E6E0}.m1 .t{background:#222;width:55%}.m1 .l{background:#999}.m1 .r i{background:#EDEDE8}
+.bzb-mock.m2{background:#F3E3D3}.m2 .t{background:#8A4B2D;border-radius:10px}.m2 .l{background:#8A4B2D}.m2 .r i{background:#E2B996;border-radius:12px}
+.bzb-mock.m3{background:#FF5A36}.m3 .t{background:#1A1A1A;height:18px;width:85%}.m3 .l{background:#fff}.m3 .r i{background:#FFD23F}
+.bzb-mock.m4{background:#151515}.m4 .t{background:#D9BE85;height:9px;width:45%}.m4 .l{background:#888}.m4 .r i{background:#2A2A2A;border:1px solid #D9BE85}
+.bzb-mock.m5{background:#FFE9F3}.m5 .t{background:#7B4BFF;border-radius:999px}.m5 .l{background:#FF6FB1}.m5 .r i{background:#7FE0C3;border-radius:999px}
+.bzb-mock.m6{background:#E8EEDF}.m6 .t{background:#3F5A36}.m6 .l{background:#3F5A36}.m6 .r i{background:#B7C9A4;border-radius:999px 999px 6px 6px}
+
+.bzb-pal{display:flex;height:34px;border-radius:10px;overflow:clip}
+.bzb-pal i{flex:1}
+.bzb-pal.mine{background:repeating-linear-gradient(45deg,#eee 0 8px,#fff 8px 16px)}
+
+/* Logo styles: drawn with the client's business name */
+.bzb-lg{height:96px;border-radius:12px;display:grid;place-items:center;padding:8px;text-align:center;overflow:clip;background:#FAF6F0}
+.bzb-lg .nm{display:block;line-height:1.05;overflow-wrap:break-word;max-width:100%}
+.lg1 .nm{font:600 15px/1.2 'Familjen Grotesk',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#222}
+.lg2 .ini{width:58px;height:58px;border-radius:50%;background:var(--brown);color:var(--butter);display:grid;place-items:center;font:400 28px/1 'Instrument Serif',serif}
+.bzb-lg.lg3{display:flex;gap:6px;justify-content:center;align-items:center}
+.lg3 svg{width:26px;height:26px;fill:#3F5A36;flex:none}
+.lg3 .nm{font:600 16px/1.1 'Familjen Grotesk',sans-serif;color:#3F5A36;text-align:left}
+.lg4 .badge{border:2px solid #1F4F61;border-radius:999px;padding:8px 14px;color:#1F4F61;display:grid;gap:2px}
+.lg4 small{font:700 9px/1 'Space Mono',monospace;letter-spacing:.18em}
+.lg4 .nm{font:400 18px/1 'Instrument Serif',serif}
+.lg5 .nm{font:italic 400 26px/1 'Instrument Serif',serif;color:#8A4B2D}
+.bzb-lg.lg6{background:#FFE9F3}
+.lg6 .nm{font:700 19px/1 'Familjen Grotesk',sans-serif;color:#fff;background:#7B4BFF;border-radius:999px;padding:8px 14px;transform:rotate(-4deg)}
+
+.bzb-included{display:flex;flex-wrap:wrap;gap:8px;margin:0;padding:0;list-style:none}
+.bzb-included li{display:inline-flex;align-items:center;gap:6px;min-height:40px;padding:0 14px;border-radius:999px;background:var(--butter);color:var(--brown);font-weight:600;font-size:15px}
+.bzb-note{margin:14px 0 0;font-size:14.5px;color:var(--muted)}
+
+.bzb-done{text-align:center;padding-top:8vh;display:grid;justify-items:center;gap:12px}
+.bzb-done .ok{width:72px;height:72px;border-radius:50%;background:var(--brown);color:var(--butter);display:grid;place-items:center;font-size:34px}
+.bzb-done p{max-width:36ch;margin:0;color:var(--muted)}
+.bzb-done .btn{margin-top:14px}
+@media (prefers-reduced-motion:reduce){.bzb-step:not([hidden]){animation:none}.bzb-bar i{transition:none}}
+
+/* No background scroll while a pop-up is open (Black Friday or briefing). clip on the root acts like hidden on the viewport. */
+html:has(.bz-bf[open]),html:has(.bzb[open]){overflow:clip}

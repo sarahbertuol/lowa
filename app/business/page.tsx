@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import DirectForm from "@/components/DirectForm";
 import BlackFridayPopup from "@/components/business/BlackFridayPopup";
 import HeroStick from "@/components/business/HeroStick";
+import BriefingWizard from "@/components/business/BriefingWizard";
 import { cases } from "@/data/cases";
 import "./business.css";
 
@@ -243,8 +243,18 @@ export default function BusinessPage() {
             <h2>
               Tell us about <em>your business.</em>
             </h2>
-            <div className="bz-talk">
-              <p>Or talk to Sarah directly:</p>
+            <p className="bz-start-lead">
+              A few quick taps so we can design something great for you, fast. No long texts, promise.
+            </p>
+            <ul className="bz-facts">
+              <li>About 3 minutes</li>
+              <li>Mostly taps</li>
+              <li>No payment now</li>
+            </ul>
+            <BriefingWizard source={promo ? "Business page briefing (Black Friday)" : "Business page briefing"} />
+          </div>
+          <aside className="bz-talk">
+            <p className="mono">Rather talk?</p>
               <p>
                 <b>WhatsApp</b>{" "}
                 <a href={`https://wa.me/${WHATSAPP}`} target="_blank" rel="noopener noreferrer">
@@ -254,9 +264,7 @@ export default function BusinessPage() {
               <p>
                 <b>Email</b> <a href="mailto:hello@lowa-studio.com">hello@lowa-studio.com</a>
               </p>
-            </div>
-          </div>
-          <DirectForm source={promo ? "Business page (Black Friday)" : "Business page"} />
+          </aside>
         </section>
       </main>
 

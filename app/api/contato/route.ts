@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 
-// Receives the two forms on /contact (agency briefing and business owners) and sends them by email (Resend).
+// Receives the two forms on /contact (agency briefing and business owners) and the /business briefing pop-up,
+// and sends them by email (Resend).
 // Environment variables (Vercel, Production and Preview):
 //   RESEND_API_KEY   required
 //   PROPOSTA_TO      who receives (hello@lowa-studio.com)
@@ -14,10 +15,11 @@ const DEFAULT_FROM = "LoWa Studio <onboarding@resend.dev>"; // only delivers to 
 const TITLES = {
   agency: "New agency briefing",
   direct: "New message from a business owner",
+  briefing: "New website briefing",
 } as const;
 const LABEL_NAME = "Name";
 const LABEL_EMAIL = "Email";
-const LABEL_SUBJECT_EXTRA = { agency: "Agency", direct: "Business" } as const;
+const LABEL_SUBJECT_EXTRA = { agency: "Agency", direct: "Business", briefing: "Business" } as const;
 
 // Simple per-IP limit (per instance; stops bursts, not a firewall).
 const hits = new Map<string, number[]>();
@@ -50,7 +52,7 @@ export async function POST(req: Request) {
     // Honeypot: bots fill it, people do not. Answer "ok" without sending anything.
     if (body.site) return NextResponse.json({ ok: true });
 
-    const kind: keyof typeof TITLES = body.kind === "direct" ? "direct" : "agency";
+    const kind: keyof typeof TITLES = body.kind === "direct" || body.kind === "briefing" ? body.kind : "agency";
     const fields: unknown[] = Array.isArray(body.fields) ? body.fields.slice(0, 40) : [];
     const rows = fields
       .map((f) => (Array.isArray(f) ? [clean(f[0], 80), clean(f[1], 3000)] : ["", ""]))

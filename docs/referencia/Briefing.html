@@ -109,6 +109,20 @@ h2 em,h3 em{font-style:italic}
 .pal{display:flex;height:34px;border-radius:10px;overflow:clip}
 .pal i{flex:1}
 
+/* Logo styles: each sample is drawn with the client's business name */
+.lg{height:96px;border-radius:12px;display:grid;place-items:center;padding:8px;text-align:center;overflow:clip;background:#FAF6F0}
+.lg .lg-name{display:block;line-height:1.05;overflow-wrap:break-word;max-width:100%}
+.lg1 .lg-name{font:600 15px/1.2 var(--body);letter-spacing:.14em;text-transform:uppercase;color:#222}
+.lg2 .lg-ini{width:58px;height:58px;border-radius:50%;background:var(--brown);color:var(--butter);display:grid;place-items:center;font:400 28px/1 var(--display)}
+.lg3{display:flex;gap:6px;justify-content:center;align-items:center}
+.lg3 svg{width:26px;height:26px;fill:#3F5A36;flex:none}
+.lg3 .lg-name{font:600 16px/1.1 var(--body);color:#3F5A36;text-align:left}
+.lg4>span{border:2px solid #1F4F61;border-radius:999px;padding:8px 14px;color:#1F4F61;display:grid;gap:2px}
+.lg4 small{font:700 9px/1 var(--mono);letter-spacing:.18em}
+.lg4 .lg-name{font:400 18px/1 var(--display)}
+.lg5 .lg-name{font:italic 400 26px/1 var(--display);color:#8A4B2D}
+.lg6{background:#FFE9F3}.lg6 .lg-name{font:800 19px/1 var(--body);color:#fff;background:#7B4BFF;border-radius:999px;padding:8px 14px;transform:rotate(-4deg)}
+
 /* Done */
 .done{text-align:center;padding-top:8vh}
 .done .ok{width:72px;height:72px;border-radius:50%;background:var(--brown);color:var(--butter);display:grid;place-items:center;font-size:34px;margin:0 auto 18px}
@@ -164,8 +178,13 @@ h2 em,h3 em{font-style:italic}
         </div>
         <div class="two">
           <div class="f" id="f-email"><label for="email">Email</label><input id="email" type="email" autocomplete="email" required><span class="err">Please add a valid email.</span></div>
-          <div class="f"><label for="phone">WhatsApp (optional)</label><input id="phone" type="tel" autocomplete="tel"></div>
+          <div class="f" id="f-phone"><label for="phone">WhatsApp (optional)</label><input id="phone" type="tel" autocomplete="tel"><span class="err">Add your WhatsApp so we can reach you there.</span></div>
         </div>
+      </div>
+      <div class="q chips" role="radiogroup" aria-label="Best way to reach you">
+        <p style="width:100%">Best way to reach you?</p>
+        <label class="chip"><input type="radio" name="reach" value="WhatsApp"><span>💬 WhatsApp</span></label>
+        <label class="chip"><input type="radio" name="reach" value="Email" checked><span>✉️ Email</span></label>
       </div>
     </section>
 
@@ -232,6 +251,20 @@ h2 em,h3 em{font-style:italic}
         <label class="chip"><input type="radio" name="logo" value="Yes"><span>Yes</span></label>
         <label class="chip"><input type="radio" name="logo" value="Sort of"><span>Sort of, it needs love</span></label>
         <label class="chip"><input type="radio" name="logo" value="No"><span>Not yet</span></label>
+      </div>
+    </section>
+
+    <!-- 5b: only when there is no logo yet, or it needs love. Samples show the client's business name. -->
+    <section class="step" data-step data-logo-step>
+      <h3>Which logo style <em>do you like?</em></h3>
+      <p class="hint">Pick up to two. We used your business name so you can picture it.</p>
+      <div class="q cards three" id="logos">
+        <label class="card"><input type="checkbox" name="logostyle" value="Wordmark"><span class="inner"><span class="lg lg1"><span class="lg-name">Your Business</span></span><b>Just the name</b><small>Clean type, no symbol</small></span></label>
+        <label class="card"><input type="checkbox" name="logostyle" value="Initials"><span class="inner"><span class="lg lg2"><span class="lg-ini">YB</span></span><b>Initials</b><small>A monogram in a shape</small></span></label>
+        <label class="card"><input type="checkbox" name="logostyle" value="Symbol and name"><span class="inner"><span class="lg lg3"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2c3 4 7 6 7 11a7 7 0 0 1-14 0c0-5 4-7 7-11z"/></svg><span class="lg-name">Your Business</span></span><b>Symbol and name</b><small>A small icon next to it</small></span></label>
+        <label class="card"><input type="checkbox" name="logostyle" value="Badge"><span class="inner"><span class="lg lg4"><span><small>EST. 2026</small><span class="lg-name">Your Business</span></span></span><b>Badge</b><small>Classic, like a seal</small></span></label>
+        <label class="card"><input type="checkbox" name="logostyle" value="Handwritten"><span class="inner"><span class="lg lg5"><span class="lg-name">Your Business</span></span><b>Handwritten</b><small>Personal and warm</small></span></label>
+        <label class="card"><input type="checkbox" name="logostyle" value="Playful"><span class="inner"><span class="lg lg6"><span class="lg-name">Your Business</span></span><b>Playful</b><small>Bold, round and fun</small></span></label>
       </div>
     </section>
 
@@ -317,7 +350,7 @@ h2 em,h3 em{font-style:italic}
     <section class="step done" data-done>
       <div class="ok" aria-hidden="true">✓</div>
       <h3>Got it, <em id="who">thank you!</em></h3>
-      <p>Sarah will look at everything and get back to you with an idea for your site and the fixed price.</p>
+      <p>Sarah will look at everything and send you an idea for your site, with the fixed price, within 48 hours.</p>
       <button class="btn" type="button" id="close2" style="margin-top:26px">Back to the page</button>
     </section>
   </form>
@@ -337,15 +370,26 @@ h2 em,h3 em{font-style:italic}
   const count = document.getElementById("bf-count"), bar = document.getElementById("bar");
   let i = 0;
 
+  // The logo-style step only shows when there is no logo yet, or it needs love
+  const live = () => {
+    const hasLogo = document.querySelector('[name="logo"]:checked')?.value === "Yes";
+    return steps.filter((s) => !(hasLogo && s.hasAttribute("data-logo-step")));
+  };
+
   function show(n) {
     i = n;
+    const list = live(), cur = steps[n], pos = list.indexOf(cur);
     steps.forEach((s, k) => s.classList.toggle("on", k === n));
     done.classList.remove("on");
     document.getElementById("foot").style.display = "";
     back.style.visibility = n === 0 ? "hidden" : "visible";
-    next.innerHTML = n === steps.length - 1 ? "Send briefing" : 'Next <span aria-hidden="true">→</span>';
-    count.textContent = `Step ${n + 1} of ${steps.length}`;
-    bar.style.setProperty("--p", (n + 1) / steps.length);
+    next.innerHTML = pos === list.length - 1 ? "Send briefing" : 'Next <span aria-hidden="true">→</span>';
+    count.textContent = `Step ${pos + 1} of ${list.length}`;
+    bar.style.setProperty("--p", (pos + 1) / list.length);
+    const biz = document.getElementById("biz").value.trim() || "Your Business";
+    document.querySelectorAll(".lg-name").forEach((el) => (el.textContent = biz));
+    document.querySelector(".lg-ini").textContent =
+      biz.split(/\s+/).map((w) => w[0]).join("").slice(0, 2).toUpperCase();
     document.querySelector(".bf-body").scrollTop = 0;
     const first = steps[n].querySelector("h3");
     first.setAttribute("tabindex", "-1"); first.focus({ preventScroll: true });
@@ -360,25 +404,35 @@ h2 em,h3 em{font-style:italic}
       document.getElementById(w).classList.toggle("bad", bad);
       if (bad && ok) { el.focus(); ok = false; }
     });
+    const wa = document.querySelector('[name="reach"]:checked')?.value === "WhatsApp";
+    const phone = document.getElementById("phone");
+    const noPhone = wa && !phone.value.trim();
+    document.getElementById("f-phone").classList.toggle("bad", noPhone);
+    if (noPhone && ok) { phone.focus(); ok = false; }
     return ok;
   }
 
   next.onclick = () => {
     if (!valid()) return;
-    if (i < steps.length - 1) return show(i + 1);
+    const list = live(), pos = list.indexOf(steps[i]);
+    if (pos < list.length - 1) return show(steps.indexOf(list[pos + 1]));
     steps.forEach((s) => s.classList.remove("on"));
     done.classList.add("on");
     document.getElementById("who").textContent = (document.getElementById("name").value.trim().split(" ")[0] || "thank you") + "!";
     document.getElementById("foot").style.display = "none";
     count.textContent = "Sent"; bar.style.setProperty("--p", 1);
   };
-  back.onclick = () => i > 0 && show(i - 1);
+  back.onclick = () => {
+    const list = live(), pos = list.indexOf(steps[i]);
+    if (pos > 0) show(steps.indexOf(list[pos - 1]));
+  };
 
-  // Up to two looks
-  document.getElementById("looks").addEventListener("change", (e) => {
-    const on = [...document.querySelectorAll('[name="look"]:checked')];
-    if (on.length > 2) e.target.checked = false;
-  });
+  // Up to two looks, up to two logo styles
+  [["looks", "look"], ["logos", "logostyle"]].forEach(([box, name]) =>
+    document.getElementById(box).addEventListener("change", (e) => {
+      if (document.querySelectorAll(`[name="${name}"]:checked`).length > 2) e.target.checked = false;
+    }),
+  );
 
   document.getElementById("open").onclick = () => { d.showModal(); show(0); };
   document.getElementById("x").onclick = () => d.close();
