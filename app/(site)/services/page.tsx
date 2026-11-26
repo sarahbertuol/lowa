@@ -48,7 +48,6 @@ export default function ServicesPage() {
               <li>Three pages: Home, About and Contact</li>
               <li>CMS panel included</li>
               <li>Mobile and PageSpeed-first build</li>
-              <li>Live in 24 hours</li>
             </ul>
             <Link className="btn" href="/contact">
               Start this project <span className="arr">→</span>

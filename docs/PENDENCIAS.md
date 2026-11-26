@@ -22,8 +22,7 @@ Itens que dependem da Sarah ou do Marco. No código aparecem como `[colchetes]`.
 
 ## Comercial
 
-- [ ] Confirmar se "Live in 24 hours" pode aparecer nas propostas e em que condições
-- [ ] Condição do "Free hosting forever*". Até lá, propostas não mencionam hospedagem grátis
+- [ ] "Live in 24 hours" e "Free hosting forever" saíram do site em 26/11/2026 (decisão da Sarah). Só voltam com prazo e condição confirmados. Hospedagem de cliente na Vercel exige o plano Pro (o Hobby é só para uso não comercial)
 - [ ] Forma de pagamento padrão por serviço (ex.: 50% na entrada e 50% na entrega)
 - [ ] Preço e escopo do Landing page
 - [ ] Texto e condições da oferta para agências (white label, gestão de projetos Webflow)

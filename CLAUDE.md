@@ -25,8 +25,7 @@ Static marketing site for LoWa Studio, a US-only production studio that sells AI
 
 ## Copy rules
 - No em dashes (—) anywhere in the copy. Use commas, colons or parentheses.
-- Keep the lead claims true. "Live in 24 hours" and "2 slots left this month" are business promises: confirm before publishing and update monthly.
-- "Free hosting forever*" needs a footnote with the real condition, which is still pending from Sarah. Do not invent it.
+- Keep the lead claims true. "Live in 24 hours" and "Free hosting forever" were removed from the site on 26/11/2026: do not bring them back until Sarah confirms the turnaround and the hosting condition. "2 slots left this month" is a business promise: confirm before publishing and update monthly.
 - Prices are fixed: Small website US$920 (Home, About, Contact, CMS panel included). Bigger websites from US$1,200 (4+ pages), US$250 per extra page. Monthly maintenance US$180/month.
 - Founders: Sarah Bertuol (projects) and Marco (co-founder). Do not add titles or bios beyond what is here without asking.
 
@@ -38,7 +37,7 @@ Static marketing site for LoWa Studio, a US-only production studio that sells AI
 ## Open items for Sarah
 - Real photos (hero frames, intro frame, founders, case shots).
 - About: the short journey of Sarah B. and Marco K. (two milestones each; the Journey list was removed from the page until they arrive). Copy of the "Our story" section to review (Walter, Lorena due March 2027, LoWa = Lorena + Walter).
-- Free hosting condition (for the footnote).
+- Free hosting condition and the real turnaround (both removed from the site until confirmed).
 - Email: hello@lowa-studio.com should forward to Sarah's Gmail (Cloudflare Email Routing; the DNS is on GoDaddy today). Resend domain lowa-studio.com to verify, then the env vars on Vercel.
 - Trademark search for LoWa Studio (US classes 35 and 42) before launch.
 

@@ -1,8 +1,6 @@
 const items = [
-  "Website in a day",
   "Start at $920",
   "SEO-ready builds",
-  "Free hosting forever*",
   "Fixed price",
   "No surprises",
   "Human-directed AI",

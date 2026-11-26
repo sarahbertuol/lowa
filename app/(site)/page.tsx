@@ -42,7 +42,7 @@ export default function HomePage() {
         <div className="hero-photos" aria-hidden="true">
           <div className="hp hp1">
             <LoopClip src="/fun/cat-typing" className="hp-media" />
-            <small>24h to live</small>
+            <small>Human-directed AI</small>
           </div>
           <div className="hp hp2">
             <LoopClip src="/fun/finger-guns" className="hp-media" />
@@ -68,12 +68,12 @@ export default function HomePage() {
               label="Screen recording of convitelorena.vercel.app loading, a site built by LoWa Studio"
             />
             <div className="inner">
-              <strong>Live in 24 hours</strong>
+              <strong>From brief to live</strong>
               <span>From brief to a live site on your agency&apos;s domain.</span>
             </div>
             <div className="stamp" aria-hidden="true">
               <div>
-                <b>24h</b>
+                <b>AI</b>
                 <small>
                   Human
                   <br />
@@ -95,7 +95,7 @@ export default function HomePage() {
               <p className="lead">
                 We build websites with AI tools, directed by a senior designer and a project manager
                 who knows web businesses. Your client gets a fast, beautiful page that is ready to
-                convert, and you get it in a day.
+                convert, and you get it ready to resell.
               </p>
               <div className="cta-row">
                 <Link className="btn-ghost" href="/services">
@@ -131,7 +131,6 @@ export default function HomePage() {
                 <li>Three pages, built to sell</li>
                 <li>CMS panel included, so your client edits their own content</li>
                 <li>Mobile and PageSpeed-first build</li>
-                <li>Live in 24 hours</li>
               </ul>
               <Link className="btn" href="/contact">
                 Start this project <span className="arr">→</span>
@@ -205,8 +204,8 @@ export default function HomePage() {
           </div>
           <div className="stats">
             <div className="stat">
-              <b>24h</b>
-              <span>from brief to a live site</span>
+              <b>3 pages</b>
+              <span>Home, About and Contact in the Small website</span>
             </div>
             <div className="stat">
               <b>$920</b>
