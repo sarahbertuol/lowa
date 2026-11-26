@@ -241,11 +241,11 @@ export default function HomePage() {
             <div className="steps">
               <span className="progress" aria-hidden="true" />
               {[
-                ["0 h", "Brief", "A short form tells us the goal, the audience and the deadline."],
-                ["2 h", "Structure", "We send the page outline, timeline and fixed price."],
-                ["8 h", "Design", "Layout and copy come together, reviewed by a senior designer."],
-                ["16 h", "Build and check", "Pages built, forms tested, speed and SEO checked."],
-                ["24 h", "Live", "Site on the domain, with a short handoff for your client."],
+                ["Step 1", "Brief", "A short form tells us the goal, the audience and the deadline."],
+                ["Step 2", "Structure", "We send the page outline, timeline and fixed price."],
+                ["Step 3", "Design", "Layout and copy come together, reviewed by a senior designer."],
+                ["Step 4", "Build and check", "Pages built, forms tested, speed and SEO checked."],
+                ["Step 5", "Live", "Site on the domain, with a short handoff for your client."],
               ].map(([hr, h, p], i) => (
                 <div key={hr} className={`step${i === 4 ? " live" : ""}`}>
                   <div className="hr">{hr}</div>
