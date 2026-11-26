@@ -22,6 +22,9 @@ Itens que dependem da Sarah ou do Marco. No código aparecem como `[colchetes]`.
 
 ## Comercial
 
+- [ ] /business (SITE-01): prazo real de entrega, forma de pagamento, quem é dono do site e do domínio, e onde o site fica hospedado sem o plano mensal. Até lá, aparecem entre [colchetes] no protótipo
+- [ ] Black Friday a US$ 500: confirmar que cobre o custo. Para propostas do Engine, criar o item no catálogo e apagar em 05/12/2026
+- [ ] "We reply within 5 hours" (home, /contact e mensagem do formulário): confirmar se vale
 - [ ] "Live in 24 hours" e "Free hosting forever" saíram do site em 26/11/2026 (decisão da Sarah). Só voltam com prazo e condição confirmados. Hospedagem de cliente na Vercel exige o plano Pro (o Hobby é só para uso não comercial)
 - [ ] Forma de pagamento padrão por serviço (ex.: 50% na entrada e 50% na entrega)
 - [ ] Preço e escopo do Landing page

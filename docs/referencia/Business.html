@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>LoWa Business</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@400;500;600&family=Instrument+Serif:ital@0;1&family=Space+Mono:wght@400;700&display=swap">
+<style>
+/* Prototype of /business: the page behind the QR code at markets. One column on phones, two on desktop.
+   Site tokens from app/globals.css, light only like the rest of the site. */
+:root{
+  --sunset:#EDB08A; --cream:#F7F0E6; --paper:#FFFFFF; --butter:#F4DFA4; --brown:#4A2415;
+  --sky:#B5D6DF; --ink:#3A1E12; --muted:#7A5A4C; --blue:#2F6F86; --line:#E7D6C6;
+  --display:'Instrument Serif',Georgia,serif;
+  --body:'Familjen Grotesk',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --mono:'Space Mono',ui-monospace,Menlo,Consolas,monospace;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+body{background:var(--cream);color:var(--ink);font:400 17px/1.55 var(--body);margin:0}
+.proto{background:#111;color:#fff;font:400 11px/1 var(--mono);letter-spacing:.1em;text-align:center;padding:8px}
+.in{max-width:1120px;margin:0 auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+.mono{font:400 12px/1.2 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+h1{font:400 clamp(46px,9vw,96px)/.95 var(--display);margin:14px 0 0;letter-spacing:-.01em;text-wrap:balance}
+h1 em,h2 em{font-style:italic}
+h2{font:400 clamp(34px,5.5vw,56px)/1 var(--display);margin:10px 0 0;text-wrap:balance}
+p{margin:0}
+a{color:var(--blue)}
+.btn{display:inline-flex;align-items:center;gap:10px;min-height:52px;padding:0 24px;border-radius:999px;background:var(--blue);color:#fff;text-decoration:none;font-weight:600}
+.btn-ghost{display:inline-flex;align-items:center;min-height:52px;padding:0 22px;border-radius:999px;border:1.5px solid var(--blue);color:var(--blue);text-decoration:none;font-weight:600}
+.btn:focus-visible,.btn-ghost:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid var(--blue);outline-offset:3px}
+
+header.top{padding-block:16px}
+header.top .in{display:flex;justify-content:space-between;align-items:center}
+.logo{font:400 26px/1 var(--display);color:var(--ink);text-decoration:none}
+.logo em{font-style:italic}
+
+.hero{background:var(--sunset);padding-block:44px 56px}
+.hero .in{display:grid;gap:28px}
+.hero .lead{font-size:20px;max-width:34ch;margin-top:18px}
+.row{display:flex;flex-wrap:wrap;gap:10px}
+
+.deal{background:var(--brown);color:var(--cream);border-radius:28px;padding:24px;display:grid;gap:14px;align-content:start}
+.deal .mono{color:var(--butter)}
+.deal .was{font:400 22px/1 var(--display);color:rgba(247,240,230,.6);text-decoration:line-through}
+.deal .now{font:400 88px/.9 var(--display);color:var(--butter);font-variant-numeric:tabular-nums}
+.deal .now small{font:400 16px/1 var(--body);color:var(--cream);margin-left:6px}
+.deal p{font-size:16px}
+.deal .until{background:var(--butter);color:var(--brown);border-radius:12px;padding:10px 12px;font-weight:600;font-size:15px}
+
+.band{padding-block:56px}
+.grid2{display:grid;gap:28px}
+.get{list-style:none;margin:18px 0 0;padding:0;display:grid;gap:10px}
+.get li{background:var(--paper);border-radius:16px;padding:14px 16px;display:grid;gap:2px}
+.get b{font-weight:600}
+.get span{color:var(--muted);font-size:15.5px}
+.note{font-size:15px;color:var(--muted)}
+
+.steps{list-style:none;margin:20px 0 0;padding:0;display:grid;gap:12px;counter-reset:s}
+.steps li{counter-increment:s;background:var(--paper);border-radius:18px;padding:18px;display:grid;grid-template-columns:44px 1fr;gap:12px;align-items:start}
+.steps li::before{content:counter(s);font:400 40px/1 var(--display);color:var(--blue)}
+.steps b{display:block;font-weight:600}
+.steps span{color:var(--muted);font-size:15.5px}
+
+.care{background:var(--sky)}
+.care .box{display:flex;flex-wrap:wrap;justify-content:space-between;gap:16px;align-items:end}
+.care .amount{font:400 56px/1 var(--display);font-variant-numeric:tabular-nums}
+.care .amount small{font:400 16px/1 var(--body)}
+
+.faq{display:grid;gap:10px;margin-top:20px}
+details{background:var(--paper);border-radius:16px;padding:0 18px}
+summary{cursor:pointer;min-height:56px;display:flex;align-items:center;font-weight:600;list-style:none}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";margin-left:auto;font:400 26px/1 var(--display);color:var(--blue)}
+details[open] summary::after{content:"–"}
+details p{padding-bottom:16px;color:var(--muted)}
+
+.form{background:var(--paper);border-radius:28px;padding:24px;display:grid;gap:14px}
+label{display:grid;gap:6px;font-weight:600;font-size:15px}
+input,select,textarea{font:inherit;font-weight:400;border:1.5px solid var(--line);border-radius:14px;padding:12px 14px;min-height:50px;background:var(--cream);color:var(--ink);width:100%}
+textarea{min-height:110px;resize:vertical}
+.talk{display:grid;gap:8px;font-size:16px}
+.ph{background:var(--line);border-radius:6px;padding:0 4px}
+
+footer{padding-block:32px 48px;color:var(--muted);font-size:14px}
+
+@media (min-width:900px){
+  .hero .in{grid-template-columns:1.25fr .75fr;align-items:end}
+  .grid2{grid-template-columns:1fr 1fr;align-items:start}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<div class="proto">PROTOTYPE · /business · noindex, fora do menu, só pelo QR</div>
+
+<header class="top"><div class="in">
+  <a class="logo" href="#">LoWa <em>Studio</em></a>
+  <a class="btn-ghost" href="#start">Get started</a>
+</div></header>
+
+<section class="hero"><div class="in">
+  <div>
+    <div class="mono">For business owners</div>
+    <h1>A website for your business, <em>done for you.</em></h1>
+    <p class="lead">We design and build a small, fast website for your business, with a simple panel so you can edit it yourself. Fixed price, no hourly surprises.</p>
+    <div class="row" style="margin-top:26px">
+      <a class="btn" href="#start">Tell us about your business <span>→</span></a>
+      <a class="btn-ghost" href="#work">See sites we built</a>
+    </div>
+  </div>
+  <aside class="deal" aria-label="Black Friday price">
+    <div class="mono">Black Friday price</div>
+    <div class="was">$920</div>
+    <div class="now">$500<small>one time</small></div>
+    <p>Small website: Home, About and Contact, with the editing panel included.</p>
+    <div class="until">For projects confirmed by December 4, 2026.</div>
+  </aside>
+</div></section>
+
+<section class="band"><div class="in grid2">
+  <div>
+    <div class="mono">What you get</div>
+    <h2>Three pages that <em>do the work.</em></h2>
+    <ul class="get">
+      <li><b>Home, About and Contact</b><span>Who you are, what you sell and how to reach you, written to turn visitors into customers.</span></li>
+      <li><b>A panel to edit it yourself</b><span>Change text and photos without calling anyone.</span></li>
+      <li><b>Fast on phones</b><span>Built mobile first and checked for speed and Google.</span></li>
+      <li><b>A contact form that reaches you</b><span>Messages land in your email.</span></li>
+    </ul>
+    <p class="note" style="margin-top:14px">Need more pages? $250 per extra page. Online store? We quote it after a quick look at your products.</p>
+  </div>
+  <div>
+    <div class="mono">How it works</div>
+    <h2>Three steps, <em>one price.</em></h2>
+    <ol class="steps">
+      <li><div><b>Tell us about your business</b><span>The short form below, or a message to Sarah.</span></div></li>
+      <li><div><b>Get a one-page idea</b><span>What we noticed, what your site would do, and the fixed price.</span></div></li>
+      <li><div><b>We build, you review, it goes live</b><span>You see it before launch and ask for changes.</span></div></li>
+    </ol>
+  </div>
+</div></section>
+
+<section class="band care"><div class="in box">
+  <div style="max-width:52ch">
+    <div class="mono">Optional monthly care</div>
+    <h2 style="font-size:clamp(30px,4.5vw,44px)">We keep it <em>fast and safe.</em></h2>
+    <p style="margin-top:10px">Hosting, updates, backups and small edits. <span class="ph">[Without the plan, where is the site hosted? Pendente]</span></p>
+  </div>
+  <div class="amount">$180<small> / month</small></div>
+</div></section>
+
+<section class="band" id="work"><div class="in">
+  <div class="mono">Our work</div>
+  <h2>Sites we <em>built.</em></h2>
+  <p class="note" style="margin-top:10px">No produto: os mesmos cards reais da seção Work da home (componente WorkGrid). Nada inventado.</p>
+</div></section>
+
+<section class="band" style="padding-top:0"><div class="in">
+  <div class="mono">Questions</div>
+  <h2>Before you <em>ask.</em></h2>
+  <div class="faq">
+    <details><summary>Can I edit the site myself?</summary><p>Yes. The editing panel is included, so you change text and photos on your own.</p></details>
+    <details><summary>How long does it take?</summary><p><span class="ph">[Prazo real. Pendente: o "24 hours" saiu do site]</span></p></details>
+    <details><summary>How do I pay?</summary><p><span class="ph">[Forma de pagamento. Pendente]</span></p></details>
+    <details><summary>Do I own the site and the domain?</summary><p><span class="ph">[Pendente]</span></p></details>
+    <details><summary>What if I already have a website?</summary><p>We can redesign it. Tell us what you have and we send an idea with the price.</p></details>
+  </div>
+</div></section>
+
+<section class="band" id="start" style="padding-top:0"><div class="in grid2">
+  <div>
+    <div class="mono">Get started</div>
+    <h2>Tell us about <em>your business.</em></h2>
+    <div class="talk" style="margin-top:16px">
+      <p>Or talk to Sarah directly:</p>
+      <p><b>WhatsApp</b> <a href="#">+55 54 98149-0779</a></p>
+      <p><b>Email</b> <a href="#">hello@lowa-studio.com</a></p>
+    </div>
+  </div>
+  <form class="form" onsubmit="return false">
+    <p class="note">No produto: o DirectForm do /contact (mesmo envio por e-mail, antispam e WhatsApp de reserva), com a origem "business page".</p>
+    <label for="n">Your name<input id="n" autocomplete="name"></label>
+    <label for="e">Email<input id="e" type="email" autocomplete="email"></label>
+    <label for="w">What do you need?<select id="w"><option>A new website for my business</option><option>A new look for my current site</option><option>Not sure yet, I need advice</option></select></label>
+    <label for="a">About your business<textarea id="a"></textarea></label>
+    <button class="btn" type="submit" style="border:0;cursor:pointer;justify-content:center">Send</button>
+  </form>
+</div></section>
+
+<footer><div class="in">LoWa Studio · Websites for agencies and business owners</div></footer>
+</body>
+</html>
