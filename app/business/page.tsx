@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import DirectForm from "@/components/DirectForm";
 import BlackFridayPopup from "@/components/business/BlackFridayPopup";
+import HeroStick from "@/components/business/HeroStick";
 import { cases } from "@/data/cases";
 import "./business.css";
 
@@ -58,20 +59,23 @@ export default function BusinessPage() {
     ? ["Start 2027 with a strong online presence", `Black Friday: $${PROMO_PRICE} until December 4`, "Ready, working and yours to edit"]
     : ["Start 2027 with a strong online presence", "Ready, working and yours to edit", "Fixed price, no hourly surprises"];
   const run = [...strip, ...strip];
+  const track = (
+    <div className="bz-strip-track" aria-hidden="true">
+      {[0, 1].map((g) => (
+        <div key={g} className="bz-strip-group">
+          {run.map((t, i) => (
+            <span key={i}>{t}</span>
+          ))}
+        </div>
+      ))}
+    </div>
+  );
 
   return (
     <div className="bz">
       <div className="bz-strip">
         <p className="sr-only">{strip.join(". ")}.</p>
-        <div className="bz-strip-track" aria-hidden="true">
-          {[0, 1].map((g) => (
-            <div key={g} className="bz-strip-group">
-              {run.map((t, i) => (
-                <span key={i}>{t}</span>
-              ))}
-            </div>
-          ))}
-        </div>
+        {track}
       </div>
 
       <header className="bz-top">
@@ -258,6 +262,13 @@ export default function BusinessPage() {
         </Link>
         <span>Websites for agencies and business owners</span>
       </footer>
+
+      {/* Same strip at the very bottom; screen readers already heard it at the top */}
+      <div className="bz-strip" aria-hidden="true">
+        {track}
+      </div>
+
+      <HeroStick />
 
       {promo && <BlackFridayPopup price={PROMO_PRICE} was={PRICE} />}
     </div>

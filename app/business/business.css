@@ -131,3 +131,14 @@
   .bz-two:has(.bz-how){padding-bottom:clamp(48px,6vw,80px);background:linear-gradient(90deg,var(--cream) 50%,var(--brown) 50%)}
   .bz-how{background:none;margin:0;padding:0 0 0 clamp(8px,2vw,32px)}
 }
+
+/* Hero fills the first screen (below the strip and header) and stays put while the next
+   sections slide over it. A hero taller than the screen sticks once its end is visible.
+   --bz-above and --bz-hero-h come from components/business/HeroStick.tsx. */
+.bz-hero{min-height:calc(100svh - var(--bz-above,122px));align-content:center;position:sticky;top:min(0px,calc(100svh - var(--bz-hero-h,100svh)));z-index:0}
+.bz-hero ~ section{position:relative;z-index:1}
+:where(.bz-hero ~ section){background-color:var(--cream)}
+.bz-two:has(.bz-how){background-color:var(--cream)}
+.bz-hero + section{box-shadow:0 -24px 48px -24px rgba(58,30,18,.35)}
+.bz-foot,.bz-strip{position:relative;z-index:1;background-color:var(--cream)}
+.bz-strip{background-color:var(--blue)}
