@@ -146,12 +146,8 @@ export default function BusinessPage() {
                 <span>Messages land in your email.</span>
               </li>
             </ul>
-            <p className="bz-note">
-              The price covers design and build. Your domain is bought separately, in your name, and we connect it
-              for you. Online store? We quote it after a quick look at your products.
-            </p>
           </div>
-          <div>
+          <div className="bz-how">
             <div className="mono">How it works</div>
             <h2>
               Three steps,
@@ -172,6 +168,10 @@ export default function BusinessPage() {
                 <span>You see it before launch and ask for changes.</span>
               </li>
             </ol>
+            <p className="bz-note">
+              The price covers design and build. Your domain is bought separately, in your name, and we connect it
+              for you. Online store? We quote it after a quick look at your products.
+            </p>
           </div>
         </section>
 
