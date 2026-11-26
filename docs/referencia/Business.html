@@ -88,6 +88,42 @@ textarea{min-height:110px;resize:vertical}
 
 footer{padding-block:32px 48px;color:var(--muted);font-size:14px}
 
+/* Rotating strip on top: blue ground, white text (5.6:1). Moves with transform only. */
+.strip{background:var(--blue);color:#fff;overflow:clip;white-space:nowrap}
+.strip-track{display:flex;width:max-content;animation:slide 38s linear infinite}
+.strip-group{display:flex;gap:28px;padding:11px 14px;font:600 14.5px/1.2 var(--body)}
+.strip-group span::after{content:"+";margin-left:28px;color:var(--butter)}
+@keyframes slide{to{transform:translateX(-50%)}}
+
+/* Black Friday pop-up. Deep blue so butter (6.8:1) and sunset (4.7:1) pass AA; the brand blue is too light for sunset text. */
+.bf{border:0;padding:0;background:transparent;max-width:min(560px,calc(100vw - 32px));width:100%;color:var(--cream)}
+.bf::backdrop{background:rgba(58,30,18,.55)}
+.bf-card{background:#1F4F61;border-radius:30px;padding:30px 24px 24px;display:grid;gap:14px;position:relative;box-shadow:0 30px 60px -20px rgba(0,0,0,.5)}
+.bf[open] .bf-card{animation:pop .45s cubic-bezier(.2,.9,.3,1.2) both}
+@keyframes pop{from{opacity:0;transform:translateY(18px) scale(.96)}to{opacity:1;transform:none}}
+.bf-x{position:absolute;top:10px;right:10px;width:44px;height:44px;border-radius:50%;border:0;background:rgba(255,255,255,.12);color:var(--cream);font:400 24px/1 var(--body);cursor:pointer}
+.bf-tag{padding-right:44px;font:700 13px/1.3 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--sunset)}
+.bf h2{font:400 clamp(40px,8vw,58px)/.95 var(--display);color:var(--butter);margin:0}
+.bf h2 em{color:var(--sunset)}
+.bf-price{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+.bf-price b{font:400 clamp(84px,18vw,120px)/.85 var(--display);color:var(--butter);font-variant-numeric:tabular-nums}
+.bf-price s{font:400 28px/1 var(--display);color:var(--sunset)}
+.bf p{color:var(--cream);font-size:17px;max-width:40ch}
+.bf-until{background:var(--sunset);color:var(--brown);border-radius:14px;padding:12px 14px;font-weight:600}
+.bf-go{display:flex;justify-content:center;align-items:center;min-height:52px;border-radius:999px;background:var(--butter);color:var(--brown);font-weight:700;text-decoration:none}
+.bf-later{min-height:44px;border:0;background:none;color:var(--cream);font:500 15px/1 var(--body);text-decoration:underline;cursor:pointer}
+.bf-x:focus-visible,.bf-go:focus-visible,.bf-later:focus-visible{outline:3px solid var(--butter);outline-offset:3px}
+
+/* Work: five cards of the same size. */
+.works{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr));gap:16px;margin-top:22px}
+.work{background:var(--paper);border-radius:22px;overflow:clip;display:grid;grid-template-rows:auto 1fr}
+.work img{display:block;width:100%;aspect-ratio:16/10;object-fit:cover;object-position:top;background:var(--line)}
+.work div{padding:16px 18px 18px;display:grid;gap:6px;align-content:start}
+.work b{font:400 26px/1.05 var(--display)}
+.work a{display:inline-flex;align-items:center;min-height:44px;font-weight:600;text-decoration:none;word-break:break-word}
+.work a:hover{text-decoration:underline}
+@media (prefers-reduced-motion:reduce){.strip-track{animation:none}.bf[open] .bf-card{animation:none}}
+
 @media (min-width:900px){
   .hero .in{grid-template-columns:1.25fr .75fr;align-items:end}
   .grid2{grid-template-columns:1fr 1fr;align-items:start}
@@ -97,6 +133,26 @@ footer{padding-block:32px 48px;color:var(--muted);font-size:14px}
 </head>
 <body>
 <div class="proto">PROTOTYPE · /business · noindex, fora do menu, só pelo QR</div>
+
+<div class="strip" aria-label="Start 2027 with a strong online presence. Black Friday: a small website for $500, confirm by December 4.">
+  <div class="strip-track" aria-hidden="true">
+    <div class="strip-group"><span>Start 2027 with a strong online presence</span><span>Black Friday: $500 until December 4</span><span>Ready, working and yours to edit</span><span>Start 2027 with a strong online presence</span><span>Black Friday: $500 until December 4</span><span>Ready, working and yours to edit</span></div>
+    <div class="strip-group"><span>Start 2027 with a strong online presence</span><span>Black Friday: $500 until December 4</span><span>Ready, working and yours to edit</span><span>Start 2027 with a strong online presence</span><span>Black Friday: $500 until December 4</span><span>Ready, working and yours to edit</span></div>
+  </div>
+</div>
+
+<dialog class="bf" id="bf" aria-labelledby="bf-title">
+  <div class="bf-card">
+    <button class="bf-x" type="button" id="bf-x" aria-label="Close">×</button>
+    <span class="bf-tag">Black Friday · business owners only</span>
+    <h2 id="bf-title">Your website,<br><em>almost half off.</em></h2>
+    <div class="bf-price"><b>$500</b><s>$920</s></div>
+    <p>A small website, ready and working, that you edit yourself. Home, About and Contact.</p>
+    <div class="bf-until">Confirm your project by December 4, 2026.</div>
+    <a class="bf-go" href="#start" id="bf-go">Get my website →</a>
+    <button class="bf-later" type="button" id="bf-later">Maybe later</button>
+  </div>
+</dialog>
 
 <header class="top"><div class="in">
   <a class="logo" href="#">LoWa <em>Studio</em></a>
@@ -125,18 +181,18 @@ footer{padding-block:32px 48px;color:var(--muted);font-size:14px}
 <section class="band"><div class="in grid2">
   <div>
     <div class="mono">What you get</div>
-    <h2>Three pages that <em>do the work.</em></h2>
+    <h2>Three pages that<br><em>do the work.</em></h2>
     <ul class="get">
       <li><b>Home, About and Contact</b><span>Who you are, what you sell and how to reach you, written to turn visitors into customers.</span></li>
       <li><b>A panel to edit it yourself</b><span>Change text and photos without calling anyone.</span></li>
       <li><b>Fast on phones</b><span>Built mobile first and checked for speed and Google.</span></li>
       <li><b>A contact form that reaches you</b><span>Messages land in your email.</span></li>
     </ul>
-    <p class="note" style="margin-top:14px">Need more pages? $250 per extra page. Online store? We quote it after a quick look at your products.</p>
+    <p class="note" style="margin-top:14px">Online store? We quote it after a quick look at your products.</p>
   </div>
   <div>
     <div class="mono">How it works</div>
-    <h2>Three steps, <em>one price.</em></h2>
+    <h2>Three steps,<br><em>one price.</em></h2>
     <ol class="steps">
       <li><div><b>Tell us about your business</b><span>The short form below, or a message to Sarah.</span></div></li>
       <li><div><b>Get a one-page idea</b><span>What we noticed, what your site would do, and the fixed price.</span></div></li>
@@ -147,9 +203,9 @@ footer{padding-block:32px 48px;color:var(--muted);font-size:14px}
 
 <section class="band care"><div class="in box">
   <div style="max-width:52ch">
-    <div class="mono">Optional monthly care</div>
-    <h2 style="font-size:clamp(30px,4.5vw,44px)">We keep it <em>fast and safe.</em></h2>
-    <p style="margin-top:10px">Hosting, updates, backups and small edits. <span class="ph">[Without the plan, where is the site hosted? Pendente]</span></p>
+    <div class="mono">After launch, only if you want</div>
+    <h2 style="font-size:clamp(30px,4.5vw,44px)">Need more? <em>We've got you.</em></h2>
+    <p style="margin-top:10px">Your site goes live ready and working, and you edit the text yourself. If you want more, like new pages, new sections, or us making the text and photo changes for you, the monthly plan covers 5 hours of our work every month.</p>
   </div>
   <div class="amount">$180<small> / month</small></div>
 </div></section>
@@ -157,12 +213,18 @@ footer{padding-block:32px 48px;color:var(--muted);font-size:14px}
 <section class="band" id="work"><div class="in">
   <div class="mono">Our work</div>
   <h2>Sites we <em>built.</em></h2>
-  <p class="note" style="margin-top:10px">No produto: os mesmos cards reais da seção Work da home (componente WorkGrid). Nada inventado.</p>
+  <div class="works">
+    <article class="work"><img src="work/gampi.webp" alt="Screenshot of the Gampi Casa Criativa website" loading="lazy"><div><b>Gampi Casa Criativa</b><a href="https://gampi-site.vercel.app/" target="_blank" rel="noopener">Visit gampi-site.vercel.app ↗</a></div></article>
+    <article class="work"><img src="work/convitelorena.webp" alt="Screenshot of the Brunch de Fraldas da Lorena website" loading="lazy"><div><b>Brunch de Fraldas da Lorena</b><a href="https://convitelorena.vercel.app/" target="_blank" rel="noopener">Visit convitelorena.vercel.app ↗</a></div></article>
+    <article class="work"><img src="work/geraldoburigo.webp" alt="Screenshot of the Geraldo Búrigo website" loading="lazy"><div><b>Geraldo Búrigo</b><a href="https://geraldoburigo.com/" target="_blank" rel="noopener">Visit geraldoburigo.com ↗</a></div></article>
+    <article class="work"><img src="work/letipieruccini.webp" alt="Screenshot of the Leti Pieruccini website" loading="lazy"><div><b>Leti Pieruccini</b><a href="https://leti-pieruccini.vercel.app/" target="_blank" rel="noopener">Visit leti-pieruccini.vercel.app ↗</a></div></article>
+    <article class="work"><img src="work/fabianacampos.webp" alt="Screenshot of the Fabiana Campos website" loading="lazy"><div><b>Fabiana Campos</b><a href="https://www.fabianacampos.com.br/" target="_blank" rel="noopener">Visit fabianacampos.com.br ↗</a></div></article>
+  </div>
 </div></section>
 
 <section class="band" style="padding-top:0"><div class="in">
-  <div class="mono">Questions</div>
-  <h2>Before you <em>ask.</em></h2>
+  <div class="mono">Good to know</div>
+  <h2>Questions? <em>We love those.</em></h2>
   <div class="faq">
     <details><summary>Can I edit the site myself?</summary><p>Yes. The editing panel is included, so you change text and photos on your own.</p></details>
     <details><summary>How long does it take?</summary><p><span class="ph">[Prazo real. Pendente: o "24 hours" saiu do site]</span></p></details>
@@ -193,5 +255,19 @@ footer{padding-block:32px 48px;color:var(--muted);font-size:14px}
 </div></section>
 
 <footer><div class="in">LoWa Studio · Websites for agencies and business owners</div></footer>
+<script>
+// Pop-up opens as the page loads (no produto: uma vez por sessão, via sessionStorage).
+(function(){
+  var d=document.getElementById('bf'); if(!d||!d.showModal) return;
+  var seen=false; try{ seen=sessionStorage.getItem('bf-seen')==='1'; }catch(e){}
+  function close(){ d.close(); try{ sessionStorage.setItem('bf-seen','1'); }catch(e){} }
+  document.getElementById('bf-x').addEventListener('click',close);
+  document.getElementById('bf-later').addEventListener('click',close);
+  document.getElementById('bf-go').addEventListener('click',close);
+  d.addEventListener('click',function(e){ if(e.target===d) close(); });
+  d.addEventListener('cancel',function(){ try{ sessionStorage.setItem('bf-seen','1'); }catch(e){} });
+  if(!seen) setTimeout(function(){ d.showModal(); },400);
+})();
+</script>
 </body>
 </html>
