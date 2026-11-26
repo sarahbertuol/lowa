@@ -26,6 +26,7 @@ Itens que dependem da Sarah ou do Marco. No código aparecem como `[colchetes]`.
 - [ ] Black Friday a US$ 500: confirmar que cobre o custo. Para propostas do Engine, criar o item no catálogo e apagar em 05/12/2026
 - [ ] "We reply within 5 hours" (home, /contact e mensagem do formulário): confirmar se vale
 - [ ] "Live in 24 hours" e "Free hosting forever" saíram do site em 26/11/2026 (decisão da Sarah). Só voltam com prazo e condição confirmados. Hospedagem de cliente na Vercel exige o plano Pro (o Hobby é só para uso não comercial)
+- [ ] /business: a pedido da Sarah (26/11/2026), o pop-up diz "live in just a few days" e o FAQ diz "Hosting is free". Confirmar quantos dias são "a few", e em qual conta e plano fica a hospedagem grátis (Vercel Pro da LoWa?) e até quando, antes de publicar
 - [ ] Forma de pagamento padrão por serviço (ex.: 50% na entrada e 50% na entrega)
 - [ ] Preço e escopo do Landing page
 - [ ] Texto e condições da oferta para agências (white label, gestão de projetos Webflow)

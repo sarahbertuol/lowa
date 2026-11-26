@@ -90,10 +90,9 @@
 .bz-bf-price b{font-family:'Instrument Serif',serif;font-weight:400;font-size:clamp(84px,18vw,120px);line-height:.85;color:var(--butter);font-variant-numeric:tabular-nums}
 .bz-bf-price s{font-family:'Instrument Serif',serif;font-size:28px;line-height:1;color:var(--sunset)}
 .bz-bf p{margin:0;color:var(--cream);font-size:17px;max-width:40ch}
-.bz-bf-until{background:var(--sunset);color:var(--brown);border-radius:14px;padding:12px 14px;font-weight:600}
+.bz-bf-until{justify-self:start;background:var(--sunset);color:var(--brown);border-radius:14px;padding:12px 14px;font-weight:600}
 .bz-bf-go{display:flex;justify-content:center;align-items:center;min-height:52px;border-radius:999px;background:var(--butter);color:var(--brown);font-weight:700;text-decoration:none}
-.bz-bf-later{min-height:44px;border:0;background:none;color:var(--cream);font:inherit;font-weight:500;font-size:15px;text-decoration:underline;cursor:pointer}
-.bz-bf-x:focus-visible,.bz-bf-go:focus-visible,.bz-bf-later:focus-visible{outline:3px solid var(--butter);outline-offset:3px}
+.bz-bf-x:focus-visible,.bz-bf-go:focus-visible{outline:3px solid var(--butter);outline-offset:3px}
 
 @media (min-width:900px){
   .bz-hero{grid-template-columns:1.25fr .75fr;align-items:end}
@@ -115,7 +114,6 @@
 
 /* Domain note (bought by the client, not in the price) */
 .bz-deal .bz-fine{font-size:14px;color:rgba(247,240,230,.85)}
-.bz-bf .bz-bf-fine{font-size:14.5px;color:var(--butter)}
 
 /* "How it works": the right half of the section in the hero card brown, text in butter.
    Phones: a full-width brown band under "What you get". From 900px: the right half of the section. */

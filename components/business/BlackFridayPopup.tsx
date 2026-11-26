@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react";
 
-/** Black Friday pop-up on /business: opens once per visit, closes on X, "Maybe later", Esc or a tap outside. */
+/** Black Friday pop-up on /business: opens once per visit, closes on X, Esc or a tap outside. */
 export default function BlackFridayPopup({ price, was }: { price: number; was: number }) {
   const ref = useRef<HTMLDialogElement>(null);
 
@@ -57,15 +57,11 @@ export default function BlackFridayPopup({ price, was }: { price: number; was: n
             <span className="sr-only">Regular price </span>${was}
           </s>
         </div>
-        <p>Design and build of a small website, ready and working, that you edit yourself. Home, About and Contact.</p>
-        <p className="bz-bf-fine">Domain bought separately, in your name.</p>
+        <p>Start 2027 with a beautiful website that works, live in just a few days.</p>
         <div className="bz-bf-until">Confirm your project by December 4, 2026.</div>
         <a className="bz-bf-go" href="#start" onClick={close}>
-          Get my website →
+          Tell me more →
         </a>
-        <button className="bz-bf-later" type="button" onClick={close}>
-          Maybe later
-        </button>
       </div>
     </dialog>
   );

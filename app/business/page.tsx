@@ -33,7 +33,11 @@ const SHOWCASE = [
   "fabianacampos.com.br",
 ];
 
-const faq: [string, string][] = [
+const faq = (price: number): [string, string][] => [
+  [
+    "What will I pay in total?",
+    `$${price} covers the design and build of your website, ready and working, with the editing panel included. Hosting is free. Anything beyond that is yours to choose and pay for: your domain (bought in your name), extra pages ($250 each), an online store (quoted after a look at your products) and, only if you want it, the monthly plan ($180).`,
+  ],
   ["Can I edit the site myself?", "Yes. The editing panel is included, so you change text and photos on your own, any time."],
   [
     "Do I have to sign up for the monthly plan?",
@@ -224,7 +228,7 @@ export default function BusinessPage() {
             Questions? <em>We love those.</em>
           </h2>
           <div className="bz-faq">
-            {faq.map(([q, a]) => (
+            {faq(promo ? PROMO_PRICE : PRICE).map(([q, a]) => (
               <details key={q}>
                 <summary>{q}</summary>
                 <p>{a}</p>

@@ -26,7 +26,7 @@ Static marketing site for LoWa Studio, a US-only production studio that sells AI
 
 ## Copy rules
 - No em dashes (—) anywhere in the copy. Use commas, colons or parentheses.
-- Keep the lead claims true. "Live in 24 hours" and "Free hosting forever" were removed from the site on 26/11/2026: do not bring them back until Sarah confirms the turnaround and the hosting condition. "2 slots left this month" is a business promise: confirm before publishing and update monthly.
+- Keep the lead claims true. "Live in 24 hours" and "Free hosting forever" were removed from the site on 26/11/2026: do not bring them back until Sarah confirms the turnaround and the hosting condition. Exception asked by Sarah on 26/11/2026, only on /business: the pop-up says "live in just a few days" and the FAQ says "Hosting is free". "2 slots left this month" is a business promise: confirm before publishing and update monthly.
 - Prices are fixed: Small website US$920 (Home, About, Contact, CMS panel included). Bigger websites from US$1,200 (4+ pages), US$250 per extra page. Monthly maintenance US$180/month.
 - Founders: Sarah Bertuol (projects) and Marco (co-founder). Do not add titles or bios beyond what is here without asking.
 
