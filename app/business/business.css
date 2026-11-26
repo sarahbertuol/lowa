@@ -112,3 +112,7 @@
 /* Five cases: three per row on tablets and small laptops, all five in one row on wide screens */
 @media (min-width:760px){.bz-works{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media (min-width:1280px){.bz-works{grid-template-columns:repeat(5,minmax(0,1fr))}.bz-work h3{font-size:22px}}
+
+/* Domain note (bought by the client, not in the price) */
+.bz-deal .bz-fine{font-size:14px;color:rgba(247,240,230,.85)}
+.bz-bf .bz-bf-fine{font-size:14.5px;color:var(--butter)}

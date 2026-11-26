@@ -42,6 +42,10 @@ const faq: [string, string][] = [
     "What if I already have a website?",
     "We can redesign it. Tell us what you have and we send you an idea with the price.",
   ],
+  [
+    "Is the domain included?",
+    "No. The price covers the design and build of your site. You buy your domain (the address, like yourbusiness.com) in your own name, so it is always yours, and we connect it to the site for you.",
+  ],
   ["Do you build online stores?", "Yes. We quote them after a quick look at your products, so the price fits what you sell."],
 ];
 
@@ -110,7 +114,8 @@ export default function BusinessPage() {
               ${promo ? PROMO_PRICE : PRICE}
               <small>one time</small>
             </div>
-            <p>Small website: Home, About and Contact, with the editing panel included.</p>
+            <p>Design and build of your Small website: Home, About and Contact, with the editing panel included.</p>
+            <p className="bz-fine">Your domain (yourbusiness.com) is bought separately, in your name.</p>
             {promo && <div className="bz-until">For projects confirmed by December 4, 2026.</div>}
           </aside>
         </section>
@@ -141,7 +146,10 @@ export default function BusinessPage() {
                 <span>Messages land in your email.</span>
               </li>
             </ul>
-            <p className="bz-note">Online store? We quote it after a quick look at your products.</p>
+            <p className="bz-note">
+              The price covers design and build. Your domain is bought separately, in your name, and we connect it
+              for you. Online store? We quote it after a quick look at your products.
+            </p>
           </div>
           <div>
             <div className="mono">How it works</div>

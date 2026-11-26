@@ -57,7 +57,8 @@ export default function BlackFridayPopup({ price, was }: { price: number; was: n
             <span className="sr-only">Regular price </span>${was}
           </s>
         </div>
-        <p>A small website, ready and working, that you edit yourself. Home, About and Contact.</p>
+        <p>Design and build of a small website, ready and working, that you edit yourself. Home, About and Contact.</p>
+        <p className="bz-bf-fine">Domain bought separately, in your name.</p>
         <div className="bz-bf-until">Confirm your project by December 4, 2026.</div>
         <a className="bz-bf-go" href="#start" onClick={close}>
           Get my website →
