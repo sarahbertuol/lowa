@@ -6,15 +6,15 @@ const SITE = "https://www.lowa-studio.com";
 export const metadata: Metadata = {
   metadataBase: new URL(SITE),
   title: {
-    default: "LoWa Studio, AI-built websites for US agencies",
+    default: "LoWa Studio, AI-built websites for US agencies and business owners",
     template: "%s · LoWa Studio",
   },
   description:
-    "LoWa Studio builds AI-built websites for US agencies to resell. Fixed price from US$920, with a senior designer on every site.",
+    "LoWa Studio builds AI-built websites for US agencies to resell and for business owners. Fixed price from US$920, with a senior designer on every site.",
   alternates: { canonical: "/" },
   openGraph: {
     title: "LoWa Studio, We built. You sell.",
-    description: "AI-built websites for US agencies. Fixed price, senior designer on every site.",
+    description: "AI-built websites for US agencies and business owners. Fixed price, senior designer on every site.",
     url: SITE,
     siteName: "LoWa Studio",
     locale: "en_US",

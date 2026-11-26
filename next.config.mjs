@@ -21,6 +21,8 @@ const nextConfig = {
     ];
     return [
       { source: "/proposal/:path*", headers: noindex },
+      // QR page for business owners (SITE-01): reachable only by the QR code.
+      { source: "/business", headers: noindex },
       // The token is the key: never send it to other sites as a referrer.
       { source: "/opportunity/:path*", headers: [...hardened, { key: "Referrer-Policy", value: "no-referrer" }] },
       { source: "/discover", headers: app },

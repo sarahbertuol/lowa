@@ -15,7 +15,8 @@ const needs = [
   "Not sure yet, I need advice",
 ];
 
-export default function DirectForm() {
+/** `source` names the page the form was sent from (e.g. the /business page), so the email says where the lead came from. */
+export default function DirectForm({ source }: { source?: string } = {}) {
   const [errors, setErrors] = useState<Errors>({});
   const [done, setDone] = useState<false | "email" | "whatsapp">(false);
   const [busy, setBusy] = useState(false);
@@ -52,6 +53,7 @@ export default function DirectForm() {
       ["Current website", v("d-site")],
       ["About the business", v("d-about")],
       ["When", v("d-when")],
+      ["Sent from", source ?? ""],
     ]);
     setBusy(false);
     setDone(via);

@@ -4,3 +4,4 @@ Disallow: /proposal/
 Disallow: /opportunity/
 Disallow: /discover
 Disallow: /api/
+Disallow: /business

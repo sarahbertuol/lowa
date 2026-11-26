@@ -25,8 +25,8 @@ export default function HomePage() {
           </Reveal>
           <Reveal delay={1}>
             <p className="lead">
-              LoWa Studio is a production team behind US agencies that resell AI-built websites. Fast
-              delivery, great price, happy clients.
+              LoWa Studio is the production team behind US agencies that resell AI-built websites, and we
+              build for business owners too. Fast delivery, great price, happy clients.
             </p>
           </Reveal>
           <Reveal delay={2} className="cta-row">
@@ -170,6 +170,17 @@ export default function HomePage() {
             $180
             <small> / month</small>
           </div>
+        </Reveal>
+        <Reveal className="owner-cta">
+          <div>
+            <div className="mono">Not an agency?</div>
+            <p>
+              <strong>Own a business?</strong> Same team, same fixed price, built for you directly.
+            </p>
+          </div>
+          <Link className="btn" href="/contact#direct">
+            Get your website <span className="arr">→</span>
+          </Link>
         </Reveal>
         <div className="svc-list">
           {[

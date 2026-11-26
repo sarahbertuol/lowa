@@ -176,6 +176,9 @@ p{margin:0}
 .maint p{margin-top:8px;max-width:560px;font-size:17px;font-weight:300}
 .maint .amount{font-family:'Instrument Serif',serif;font-size:52px;line-height:1}
 .maint .amount small{font-family:'Familjen Grotesk';font-size:15px}
+.owner-cta{margin-top:16px;border-radius:28px;padding:24px clamp(24px,4vw,40px);background:var(--paper);border:1.5px solid var(--line);display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:16px 24px}
+.owner-cta p{margin:8px 0 0;font-size:18px;max-width:560px}
+.owner-cta strong{font-weight:600}
 
 /* Proof */
 .proof{padding-block:0 clamp(72px,9vw,120px)}

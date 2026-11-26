@@ -22,7 +22,7 @@ Static marketing site for LoWa Studio, a US-only production studio that sells AI
 5. SEO and social: titles, descriptions and canonicals are in place. Still missing: an Open Graph image at `public/og.png` (1200x630). Domain: www.lowa-studio.com (set in `app/layout.tsx`).
 6. Performance: target PageSpeed 90+ on mobile. No heavy libraries. Preload the Google Fonts used above, with `display=swap`.
 7. Accessibility: check contrast of the blue text on cream and on the sky band, visible focus, reduced motion (already set).
-8. SITE-01 (26/11/2026, aguardando aprovação do protótipo `docs/referencia/Business.html`): página `/business` para donos de negócio, a do QR das feiras. Fora do menu, noindex, fora do sitemap. Black Friday: Small website a US$ 500 (de US$ 920) para projetos confirmados até 04/12/2026; tirar a promoção no dia 05/12. Usa o DirectForm e os cards reais do WorkGrid. Home passa a dizer que atende agências e donos de negócio, com o mesmo preço público (US$ 920) e link para /contact#direct, nunca para a promoção.
+8. SITE-01 (26/11/2026, protótipo aprovado, feito na branch site/sem-promessas): página `/business` para donos de negócio, a do QR das feiras. Fora do menu, noindex, fora do sitemap. Black Friday: Small website a US$ 500 (de US$ 920) para projetos confirmados até 04/12/2026; tirar a promoção no dia 05/12. Usa o DirectForm e os cards reais do WorkGrid. Home passa a dizer que atende agências e donos de negócio, com o mesmo preço público (US$ 920) e link para /contact#direct, nunca para a promoção.
 
 ## Copy rules
 - No em dashes (—) anywhere in the copy. Use commas, colons or parentheses.
