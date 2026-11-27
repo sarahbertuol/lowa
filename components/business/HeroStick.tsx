@@ -19,8 +19,15 @@ export default function HeroStick() {
       hero.style.setProperty("--bz-hero-h", `${hero.offsetHeight}px`);
     };
     set();
-    const ro = new ResizeObserver(set);
+    const care = document.querySelector<HTMLElement>(".bz-care");
+    const setCare = () => care?.style.setProperty("--bz-care-h", `${care.offsetHeight}px`);
+    setCare();
+    const ro = new ResizeObserver(() => {
+      set();
+      setCare();
+    });
     ro.observe(hero);
+    if (care) ro.observe(care);
     window.addEventListener("resize", set);
     return () => {
       ro.disconnect();

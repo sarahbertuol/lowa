@@ -74,7 +74,7 @@
 .bz-talk p{margin:0}
 .bz-talk a{color:var(--blue)}
 
-.bz-foot{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:10px;padding-block:28px 44px;color:var(--muted);font-size:14px;border-top:1px solid var(--line)}
+.bz-foot{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:10px;padding-block:12px;color:var(--muted);font-size:14px;border-top:1px solid var(--line)}
 
 /* Black Friday pop-up. Deep blue so butter (6.8:1) and sunset (4.7:1) pass AA. */
 .bz-bf{border:0;padding:0;background:transparent;max-width:min(560px,calc(100vw - 32px));width:100%;color:var(--cream)}
@@ -261,22 +261,23 @@ html:has(.bz-bf[open]),html:has(.bzb[open]){overflow:clip}
 @media (max-width:640px){.bz-start .bzb-cta{width:100%;justify-content:center}}
 
 
-/* Hero: "done for you." in Instrument Serif Italic, drawn by pen (components/business/HandWritten.tsx).
-   The outline is traced (stroke-dashoffset, approved exception), then the letter fills in (opacity)
-   and the pen line fades (opacity). The transparent real text keeps the layout. Waits while the
-   Black Friday pop-up is open, so the visitor sees it being written. */
-.bz-hand{position:relative;white-space:nowrap}
-.bz-hand-text{color:transparent}
-.bz-hand-anchor{display:inline-block;position:relative;width:0;height:0;vertical-align:baseline}
-.bz-hand svg{position:absolute;overflow:visible;pointer-events:none}
-.bz-hand .f{fill:var(--brown);opacity:0;animation:bz-show .5s ease calc(var(--at) + var(--t) * .75 + .7s) forwards}
-.bz-hand .o{fill:none;stroke:var(--brown);stroke-width:12;stroke-linejoin:round;stroke-dasharray:var(--l);stroke-dashoffset:var(--l);
-  animation:bz-draw var(--t) cubic-bezier(.45,.05,.55,.95) calc(var(--at) + .7s) forwards,bz-hide .5s ease calc(var(--at) + var(--t) + .8s) forwards}
-@keyframes bz-draw{to{stroke-dashoffset:0}}
-@keyframes bz-show{to{opacity:1}}
-@keyframes bz-hide{to{opacity:0}}
-html:has(.bz-bf[open]) .bz-hand path{animation-play-state:paused}
-@media (prefers-reduced-motion:reduce){.bz-hand-anchor{display:none}.bz-hand-text{color:inherit}}
+/* Italic words typed key by key (components/business/Typed.tsx), with a blinking cursor.
+   Opacity only. The hero types on load and waits while the Black Friday pop-up is open;
+   the others type the first time they scroll into view. */
+.bz-type{white-space:nowrap;--k:.09s}
+.bz-type--load{--d:.6s}
+.bz-type--view{--d:.15s}
+.bz-type .c{position:relative}
+.bz-type--load .c,.bz-type--view[data-armed] .c{opacity:0}
+.bz-type--load .c,.bz-type--view[data-go] .c{animation:bz-key .01s linear calc(var(--d) + var(--i) * var(--k)) forwards}
+.bz-type .c::after{content:"";position:absolute;left:100%;top:.16em;bottom:.04em;width:.055em;margin-left:.02em;background:currentColor;opacity:0;transform:skewX(-12deg)}
+.bz-type--load .c::after,.bz-type--view[data-go] .c::after{animation:bz-caret var(--k) step-end calc(var(--d) + var(--i) * var(--k))}
+.bz-type--load .last::after,.bz-type--view[data-go] .last::after{animation:bz-blink .9s step-end calc(var(--d) + var(--i) * var(--k)) 4}
+@keyframes bz-key{to{opacity:1}}
+@keyframes bz-caret{0%,100%{opacity:1}}
+@keyframes bz-blink{0%{opacity:1}50%{opacity:0}100%{opacity:0}}
+html:has(.bz-bf[open]) .bz-type .c,html:has(.bz-bf[open]) .bz-type .c::after{animation-play-state:paused}
+@media (prefers-reduced-motion:reduce){.bz-type .c{opacity:1!important;animation:none!important}.bz-type .c::after{display:none}}
 
 /* Floating round "Get started", bottom right, gently floating. Hover: the same butter sweep as the
    calls to action. Shows once the section after the hero covers that corner, steps aside on Get started. */
@@ -298,3 +299,7 @@ html:has(.bz-bf[open]) .bz-hand path{animation-play-state:paused}
 /* Close buttons: a drawn X, exactly centred (the × character sits off-centre in most fonts) */
 .bz-bf-x,.bzb-x{display:grid;place-items:center;padding:0}
 .bz-bf-x svg,.bzb-x svg{display:block}
+
+/* Our work slides over the monthly plan: the plan stays put once fully on screen. --bz-care-h from HeroStick.tsx */
+.bz-hero ~ .bz-care{position:sticky;top:min(0px,calc(100svh - var(--bz-care-h,100svh)))}
+.bz-care + section{box-shadow:0 -24px 48px -24px rgba(58,30,18,.35)}

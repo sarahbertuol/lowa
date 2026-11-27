@@ -3,7 +3,7 @@ import Link from "next/link";
 import BlackFridayPopup from "@/components/business/BlackFridayPopup";
 import HeroStick from "@/components/business/HeroStick";
 import BriefingWizard from "@/components/business/BriefingWizard";
-import HandWritten from "@/components/business/HandWritten";
+import Typed from "@/components/business/Typed";
 import FloatingStart from "@/components/business/FloatingStart";
 import { cases } from "@/data/cases";
 import "./business.css";
@@ -98,7 +98,7 @@ export default function BusinessPage() {
           <div>
             <div className="mono">For business owners</div>
             <h1>
-              A website for your business, <HandWritten />
+              A website for your business, <Typed text="done for you." when="load" />
             </h1>
             <p className="bz-lead">
               We design and build a small, fast website for your business, with a simple panel so you can edit it
@@ -162,7 +162,7 @@ export default function BusinessPage() {
             <h2>
               Three steps,
               <br />
-              <em>one price.</em>
+              <Typed text="one price." />
             </h2>
             <ol className="bz-steps">
               <li>
@@ -205,7 +205,7 @@ export default function BusinessPage() {
         <section className="bz-band" id="work">
           <div className="mono">Our work</div>
           <h2>
-            Sites we <em>built.</em>
+            Sites we <Typed text="built." />
           </h2>
           <div className="bz-works">
             {work.map((c) => (
@@ -227,7 +227,7 @@ export default function BusinessPage() {
         <section className="bz-band">
           <div className="mono">Good to know</div>
           <h2>
-            Questions? <em>We love those.</em>
+            Questions? <Typed text="We love those." />
           </h2>
           <div className="bz-faq">
             {faq(promo ? PROMO_PRICE : PRICE).map(([q, a]) => (
