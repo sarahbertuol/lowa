@@ -275,7 +275,7 @@ export default function BriefingWizard({ source }: { source: string }) {
 
   return (
     <>
-      <button className="btn" type="button" onClick={open}>
+      <button className="btn bzb-cta" type="button" onClick={open}>
         Fill in the 3-minute briefing <span className="arr">→</span>
       </button>
 
