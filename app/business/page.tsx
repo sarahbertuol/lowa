@@ -3,6 +3,8 @@ import Link from "next/link";
 import BlackFridayPopup from "@/components/business/BlackFridayPopup";
 import HeroStick from "@/components/business/HeroStick";
 import BriefingWizard from "@/components/business/BriefingWizard";
+import HandWritten from "@/components/business/HandWritten";
+import FloatingStart from "@/components/business/FloatingStart";
 import { cases } from "@/data/cases";
 import "./business.css";
 
@@ -96,7 +98,7 @@ export default function BusinessPage() {
           <div>
             <div className="mono">For business owners</div>
             <h1>
-              A website for your business, <em>done for you.</em>
+              A website for your business, <HandWritten />
             </h1>
             <p className="bz-lead">
               We design and build a small, fast website for your business, with a simple panel so you can edit it
@@ -281,6 +283,7 @@ export default function BusinessPage() {
       </div>
 
       <HeroStick />
+      <FloatingStart />
 
       {promo && <BlackFridayPopup price={PROMO_PRICE} was={PRICE} />}
     </div>
