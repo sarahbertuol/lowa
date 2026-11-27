@@ -303,3 +303,12 @@ html:has(.bz-bf[open]) .bz-type .c,html:has(.bz-bf[open]) .bz-type .c::after{ani
 /* Our work slides over the monthly plan: the plan stays put once fully on screen. --bz-care-h from HeroStick.tsx */
 .bz-hero ~ .bz-care{position:sticky;top:min(0px,calc(100svh - var(--bz-care-h,100svh)))}
 .bz-care + section{box-shadow:0 -24px 48px -24px rgba(58,30,18,.35)}
+
+/* Monthly plan fills the screen: it locks as soon as it is fully visible and Our work slides over it.
+   Bigger paragraph and price so the blue band reads well while it is held. */
+.bz-care{min-height:100svh;align-content:center;row-gap:32px}
+.bz-care>div:first-child{max-width:min(100%,820px)}
+.bz-care h2{font-size:clamp(40px,6vw,76px)}
+.bz-care p{font-size:clamp(19px,1.7vw,24px);line-height:1.5;margin-top:18px}
+.bz-amount{font-size:clamp(84px,11vw,168px)}
+.bz-amount small{font-size:clamp(18px,1.6vw,24px)}
