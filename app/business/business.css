@@ -261,27 +261,40 @@ html:has(.bz-bf[open]),html:has(.bzb[open]){overflow:clip}
 @media (max-width:640px){.bz-start .bzb-cta{width:100%;justify-content:center}}
 
 
-/* Hero: "done for you." drawn by pen, stroke after stroke (components/business/HandWritten.tsx).
-   Approved exception to transform/opacity: stroke-dashoffset on this one SVG. Waits while the
+/* Hero: "done for you." in Instrument Serif Italic, drawn by pen (components/business/HandWritten.tsx).
+   The outline is traced (stroke-dashoffset, approved exception), then the letter fills in (opacity)
+   and the pen line fades (opacity). The transparent real text keeps the layout. Waits while the
    Black Friday pop-up is open, so the visitor sees it being written. */
-.bz-hand{display:block;font-style:normal;margin-top:.04em}
-.bz-hand svg{display:block;height:1.4em;width:auto;max-width:100%;overflow:visible}
-.bz-hand path{fill:none;stroke:var(--brown);stroke-width:46;stroke-linecap:round;stroke-linejoin:round;
-  stroke-dasharray:var(--l);stroke-dashoffset:var(--l);animation:bz-draw var(--t) cubic-bezier(.45,.05,.55,.95) calc(var(--at) + .7s) forwards}
+.bz-hand{position:relative;white-space:nowrap}
+.bz-hand-text{color:transparent}
+.bz-hand-anchor{display:inline-block;position:relative;width:0;height:0;vertical-align:baseline}
+.bz-hand svg{position:absolute;overflow:visible;pointer-events:none}
+.bz-hand .f{fill:var(--brown);opacity:0;animation:bz-show .5s ease calc(var(--at) + var(--t) * .75 + .7s) forwards}
+.bz-hand .o{fill:none;stroke:var(--brown);stroke-width:12;stroke-linejoin:round;stroke-dasharray:var(--l);stroke-dashoffset:var(--l);
+  animation:bz-draw var(--t) cubic-bezier(.45,.05,.55,.95) calc(var(--at) + .7s) forwards,bz-hide .5s ease calc(var(--at) + var(--t) + .8s) forwards}
 @keyframes bz-draw{to{stroke-dashoffset:0}}
+@keyframes bz-show{to{opacity:1}}
+@keyframes bz-hide{to{opacity:0}}
 html:has(.bz-bf[open]) .bz-hand path{animation-play-state:paused}
-@media (prefers-reduced-motion:reduce){.bz-hand path{animation:none;stroke-dashoffset:0}}
+@media (prefers-reduced-motion:reduce){.bz-hand-anchor{display:none}.bz-hand-text{color:inherit}}
 
-/* Floating round "Get started", bottom left. Steps aside while the Get started section is on screen. */
-.bz-float{position:fixed;left:max(16px,env(safe-area-inset-left,0px));bottom:max(16px,env(safe-area-inset-bottom,0px));z-index:30;
-  width:96px;height:96px;border-radius:50%;background:var(--blue);color:#fff;display:grid;place-content:center;justify-items:center;gap:2px;
-  text-align:center;text-decoration:none;font-weight:700;font-size:15px;line-height:1.1;
+/* Floating round "Get started", bottom right, gently floating. Hover: the same butter sweep as the
+   calls to action. Shows once the section after the hero covers that corner, steps aside on Get started. */
+.bz-float{position:fixed;right:max(16px,env(safe-area-inset-right,0px));bottom:max(16px,env(safe-area-inset-bottom,0px));z-index:30;
+  width:96px;height:96px;border-radius:50%;text-decoration:none;transition:transform .35s cubic-bezier(.2,.8,.2,1),opacity .35s}
+.bz-float-dot{position:relative;isolation:isolate;overflow:clip;width:100%;height:100%;border-radius:50%;background:var(--blue);color:#fff;
+  display:grid;place-items:center;text-align:center;font-weight:700;font-size:15px;line-height:1.1;
   box-shadow:0 16px 32px -12px rgba(31,79,97,.75),0 0 0 4px rgba(247,240,230,.9);
-  transition:transform .35s cubic-bezier(.2,.8,.2,1),opacity .35s}
-.bz-float .arr{color:var(--butter);transition:transform .35s cubic-bezier(.2,.8,.2,1)}
-.bz-float:hover{transform:translateY(-3px) scale(1.04)}
-.bz-float:hover .arr{transform:translateX(4px)}
+  animation:bz-bob 3.2s ease-in-out infinite;transition:color .35s}
+.bz-float-dot::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--butter);transform:translateX(-101%);transition:transform .5s cubic-bezier(.2,.8,.2,1)}
+.bz-float:hover .bz-float-dot{color:var(--brown)}
+.bz-float:hover .bz-float-dot::before{transform:translateX(0)}
 .bz-float:focus-visible{outline:3px solid var(--brown);outline-offset:4px}
 .bz-float.away{opacity:0;transform:scale(.6);pointer-events:none}
-@media (max-width:640px){.bz-float{width:84px;height:84px;font-size:14px}}
-@media (prefers-reduced-motion:reduce){.bz-float{transition:none}}
+@keyframes bz-bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+@media (max-width:640px){.bz-float{width:84px;height:84px}.bz-float-dot{font-size:14px}}
+@media (prefers-reduced-motion:reduce){.bz-float{transition:none}.bz-float-dot{animation:none}}
+
+/* Close buttons: a drawn X, exactly centred (the × character sits off-centre in most fonts) */
+.bz-bf-x,.bzb-x{display:grid;place-items:center;padding:0}
+.bz-bf-x svg,.bzb-x svg{display:block}

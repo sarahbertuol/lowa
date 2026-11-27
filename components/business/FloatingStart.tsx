@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 
 /**
- * /business: round "Get started" button fixed at the bottom left. Takes the visitor to the
+ * /business: round "Get started" button fixed at the bottom right. Takes the visitor to the
  * Get started section. Shows only once the section after the hero covers that corner
  * (so it never sits on the hero buttons) and steps aside while Get started is on screen.
  */
@@ -43,13 +43,12 @@ export default function FloatingStart() {
       aria-hidden={show ? undefined : true}
       tabIndex={show ? undefined : -1}
     >
-      <span>
-        Get
-        <br />
-        started
-      </span>
-      <span className="arr" aria-hidden="true">
-        →
+      <span className="bz-float-dot">
+        <span>
+          Get
+          <br />
+          started
+        </span>
       </span>
     </a>
   );

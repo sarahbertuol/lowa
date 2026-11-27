@@ -293,7 +293,7 @@ export default function BriefingWizard({ source }: { source: string }) {
               {done ? "Briefing sent" : `Website briefing · Step ${pos + 1} of ${steps.length}`}
             </span>
             <button className="bzb-x" type="button" aria-label="Close the briefing" onClick={() => dlg.current?.close()}>
-              ×
+              <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" /></svg>
             </button>
           </div>
           <div className="bzb-bar" aria-hidden="true">
